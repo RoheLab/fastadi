@@ -34,3 +34,5 @@ RoxygenNote: 6.1.1
 LinkingTo: 
     Rcpp,
     RcppEigen
+URL: https://github.com/alexpghayes/fastadi
+BugReports: https://github.com/alexpghayes/fastadi/issues
