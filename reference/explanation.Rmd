@@ -18,6 +18,8 @@ knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
 
 ## Motivation
 
+TODO: add references section and save the PDFs in the repository with the code here, etc
+
 TODO: go through and be really really careful with notation. missing some $i$'s in algorithm 2. explain hadamard product. express frobenius inner product of matrices as sum of elements of hadamard products.
 
 Notation: $y -> Y$ and treat it as a bitmask matrix
@@ -1030,6 +1032,11 @@ Y <- as(Y, "CsparseMatrix")
 Y <- as(Y, "lgCMatrix")
 Y <- as(Y, "lgTMatrix")
 
+# ugh: RcppArmadillo only supports dgTMatrix rather than
+# lgTMatrix which is somewhat unfortunate
+
+# link: https://cran.r-project.org/web/packages/RcppArmadillo/vignettes/RcppArmadillo-sparseMatrix.pdf
+
 Y
 
 x <- rnorm(5)
@@ -1116,6 +1123,14 @@ n x d = (n x r) x (r x r) x (r x d)
 \end{bmatrix}
 \end{align}
 
+Also because I never remember anything, recall that $Z$ is $n \times d$, $x$ is $d \times 1$ and $Zx$ is $n \times 1$:
+
+\begin{align}
+(Zx)_i = \sum_{j=1}^d Z_{ij} \cdot x_j
+\end{align}
+
+(recall that $X_i$ always refers to the $i^{th}$ column of $X$ in this document)
+
 ```{r}
 # mask as a pair list
 # L and Z / svd are both n x d matrices
@@ -1124,19 +1139,98 @@ masked_svd_times_x <- function(s, mask, x) {
   
   stopifnot(inherits(mask, "lgTMatrix"))
   
-  out <- numeric(length(x))
-  r <- ncol(s$u)
+  u <- s$u
+  d <- s$d
+  v <- s$v
   
-  # i indexes row, j indexes column
-  for (i in mask@i) {
-    for (j in mask@j) {
-      
-    }
+  zx <- numeric(nrow(u))
+  
+  # lgTMatrix uses zero based indexing, add one
+  row <- mask@i + 1
+  col <- mask@j + 1
+  
+  # need to loop over index of indexes
+  # double looping over i and j here feels intuitive
+  # but is incorrect
+  for (idx in seq_along(row)) {
+    i <- row[idx]
+    j <- col[idx]
+    
+    z_ij <- sum(u[i, ] * d * v[j, ])
+    zx[i] <- zx[i] + x[j] * z_ij
   }
   
+  zx
 }
 
+# how to calculate just one element of the reconstructed
+# data using the SVD
 
+i <- 6
+j <- 4
+
+sum(s$u[i, ] * s$d * s$v[j, ])
+Z[i, j]
+
+# the whole masked matrix multiply
+
+Z <- s$u %*% diag(s$d) %*% t(s$v)
+out <- drop((Z * Y) %*% x)
+
+# check that we did this right
+all.equal(
+  masked_svd_times_x(s, Y, x),
+  out
+)
+```
+
+This is gonna be painfully slow in R so we rewrite in C++
+
+```{r results = "hide"}
+library(Rcpp)
+
+cppFunction(
+  depends = "RcppArmadillo",
+  "arma::vec masked_svd_times_x_impl(
+      const arma::mat& U,
+      const arma::rowvec& d,
+      const arma::mat& V,
+      const arma::vec& row,
+      const arma::vec& col,
+      const arma::vec& x) {
+  
+    int i, j;
+    double z_ij;
+  
+    arma::vec zx = arma::zeros<arma::vec>(U.n_rows);
+  
+    for (int idx = 0; idx < row.n_elem; idx++) {
+  
+      i = row(idx);
+      j = col(idx);
+  
+      // % does elementwise multiplication in Armadillo
+      // accu() gives the sum of elements of resulting vector
+      z_ij = accu(U.row(i) % d % V.row(j));
+      
+      zx(i) += x(j) * z_ij;
+    }
+  
+    return zx;
+  }")
+
+# wrap with slightly nicer interface
+masked_svd_times_x_cpp <- function(s, mask, x) {
+  drop(masked_svd_times_x_impl(s$u, s$d, s$v, mask@i, mask@j, x))
+}
+
+```
+
+```{r}
+bench::mark(
+  masked_svd_times_x_cpp(s, Y, x),
+  masked_svd_times_x(s, Y, x)
+)
 ```
 
 
