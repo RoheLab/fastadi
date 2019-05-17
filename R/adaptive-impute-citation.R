@@ -1,7 +1,9 @@
 #' AdaptiveImpute (sparse)
 #'
 #' A reference implemention of the `AdaptiveImpute` algorithm using sparse
-#' matrix computations.
+#' matrix computations. For citation matrices where missing values in
+#' the upper triangle are taken to be *explicitly observed* observed
+#' zeros, as opposed to missing values.
 #'
 #' @param M A sparse Matrix created by one of the [Matrix] pkg
 #'   constructors.
@@ -36,13 +38,13 @@
 #' # observed elements of M
 #' masked_approximation(s, M)
 #'
-sparse_adaptive_impute <- function(M, r, epsilon = 1e-7) {
+citation_adaptive_impute <- function(M, r, epsilon = 1e-7) {
 
   # coerce M to sparse matrix such that we use sparse operations
   M <- as(M, "dgCMatrix")
 
   # low rank svd-like object, s ~ Z_1
-  s <- sparse_adaptive_initialize(M, r)  # line 1
+  s <- citation_adaptive_initialize(M, r)  # line 1
   delta <- Inf
   d <- ncol(M)
   norm_M <- sum(M@x^2)
@@ -74,13 +76,6 @@ sparse_adaptive_impute <- function(M, r, epsilon = 1e-7) {
   s
 }
 
-relative_f_norm_change <- function(s_new, s) {
-  # TODO: don't do the dense calculation here
-
-  Z_new <- s_new$u %*% diag(s_new$d) %*% t(s_new$v)
-  Z <- s$u %*% diag(s$d) %*% t(s$v)
-  sum((Z_new - Z)^2) / sum(Z^2)
-}
 
 Ax <- function(x, args) {
   drop(args$R %*% x + args$u %*% diag(args$d) %*% crossprod(args$v, x))

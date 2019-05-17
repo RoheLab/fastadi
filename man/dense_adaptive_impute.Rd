@@ -11,6 +11,9 @@ dense_adaptive_impute(M, r, epsilon = 1e-07)
 constructors.}
 
 \item{r}{Desired rank to use in the low rank approximation.}
+
+\item{epsilon}{Tolerance, measured in terms of relative change
+in Frobenius norm of the full imputed matrix.}
 }
 \value{
 A list with elements:

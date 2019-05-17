@@ -6,6 +6,8 @@
 #' @param M A sparse Matrix created by one of the [Matrix] pkg
 #'   constructors.
 #' @param r Desired rank to use in the low rank approximation.
+#' @param epsilon Tolerance, measured in terms of relative change
+#'   in Frobenius norm of the full imputed matrix.
 #'
 #' @return A list with elements:
 #'

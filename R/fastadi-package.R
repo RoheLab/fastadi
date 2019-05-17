@@ -10,8 +10,7 @@
 "_PACKAGE"
 
 ## usethis namespace: start
-#' @import RcppEigen
+#' @importFrom Rcpp sourceCpp evalCpp
 #' @useDynLib fastadi, .registration = TRUE
-#' @importFrom Rcpp sourceCpp
 ## usethis namespace: end
 NULL

@@ -23,9 +23,16 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  message = FALSE,
+  warning = FALSE,
+  eval = FALSE
 )
 ```
+
+\newcommand \bv {\mathbf{v}}
+\newcommand \bu {\mathbf{u}}
+\newcommand \bl {\boldsymbol{\lambda}}
 
 ## Low-rank implementation
 
@@ -123,7 +130,7 @@ Quickly check that the components works before we try the code that integrates t
 Finally, sanity check this by comparing to the reference implementation. These don't agree, which isn't great:
 
 ```{r}
-lr_init <- low_rank_adaptive_initialize(dat, r)
+lr_init <- sparse_adaptive_initialize(dat, r)
 
 # some weird stuff is happening with the singular values but I'm
 # going to not worry about it for the time being
@@ -451,13 +458,13 @@ relative_f_norm_change <- function(s_new, s) {
 
 
 ```{r}
-low_rank_adaptive_impute <- function(M, r, epsilon = 1e-03) {
+sparse_adaptive_impute <- function(M, r, epsilon = 1e-03) {
 
   # coerce M to sparse matrix such that we use sparse operations
   M <- as(M, "dgCMatrix")
   
   # low rank svd-like object, s ~ Z_1
-  s <- low_rank_adaptive_initialize(M, r)  # line 1
+  s <- sparse_adaptive_initialize(M, r)  # line 1
   delta <- Inf
   d <- ncol(M)
   norm_M <- sum(M@x^2)
@@ -490,7 +497,7 @@ low_rank_adaptive_impute <- function(M, r, epsilon = 1e-03) {
 ```
 
 ```{r}
-out <- low_rank_adaptive_impute(M, r)
+out <- sparse_adaptive_impute(M, r)
 out
 ```
 

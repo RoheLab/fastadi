@@ -19,22 +19,17 @@ Authors@R:
              comment = c(ORCID = "0000-0002-4985-5160")))
 Description: More about what it does (maybe more than one line)
     Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+License: MIT + file LICENSE
 Imports: 
     Matrix,
     RSpectra,
     methods,
     glue,
-    Rcpp,
-    RcppEigen
+    Rcpp
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.1.1
-LinkingTo: 
-    Rcpp,
-    RcppEigen,
-    RcppArmadillo
 URL: https://github.com/alexpghayes/fastadi
 BugReports: https://github.com/alexpghayes/fastadi/issues
 Suggests: 
@@ -42,3 +37,6 @@ Suggests:
     knitr,
     rmarkdown
 VignetteBuilder: knitr
+LinkingTo: 
+    Rcpp,
+    RcppArmadillo

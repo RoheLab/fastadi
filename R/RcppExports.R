@@ -5,10 +5,6 @@ AdaptiveInitialize <- function(M, r) {
     .Call(`_fastadi_AdaptiveInitialize`, M, r)
 }
 
-lt_multiply <- function(U, V, x) {
-    .Call(`_fastadi_lt_multiply`, U, V, x)
-}
-
 masked_svd_times_x_impl <- function(U, d, V, row, col, x) {
     .Call(`_fastadi_masked_svd_times_x_impl`, U, d, V, row, col, x)
 }
