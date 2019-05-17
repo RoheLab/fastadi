@@ -33,6 +33,12 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.1.1
 LinkingTo: 
     Rcpp,
-    RcppEigen
+    RcppEigen,
+    RcppArmadillo
 URL: https://github.com/alexpghayes/fastadi
 BugReports: https://github.com/alexpghayes/fastadi/issues
+Suggests: 
+    testthat,
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr

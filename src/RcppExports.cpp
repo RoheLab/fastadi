@@ -2,30 +2,20 @@
 // Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 #include <RcppEigen.h>
+#include <RcppArmadillo.h>
 #include <Rcpp.h>
 
 using namespace Rcpp;
 
-// initial_guess
-VectorXd initial_guess(const MatrixXd& M, const int r);
-RcppExport SEXP _fastadi_initial_guess(SEXP MSEXP, SEXP rSEXP) {
+// AdaptiveInitialize
+Rcpp::List AdaptiveInitialize(const sp_mat& M, const int r);
+RcppExport SEXP _fastadi_AdaptiveInitialize(SEXP MSEXP, SEXP rSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const MatrixXd& >::type M(MSEXP);
+    Rcpp::traits::input_parameter< const sp_mat& >::type M(MSEXP);
     Rcpp::traits::input_parameter< const int >::type r(rSEXP);
-    rcpp_result_gen = Rcpp::wrap(initial_guess(M, r));
-    return rcpp_result_gen;
-END_RCPP
-}
-// timesTwo
-NumericVector timesTwo(NumericVector x);
-RcppExport SEXP _fastadi_timesTwo(SEXP xSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(timesTwo(x));
+    rcpp_result_gen = Rcpp::wrap(AdaptiveInitialize(M, r));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -42,58 +32,27 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// rcppeigen_hello_world
-Eigen::MatrixXd rcppeigen_hello_world();
-RcppExport SEXP _fastadi_rcppeigen_hello_world() {
+// masked_svd_times_x_impl
+vec masked_svd_times_x_impl(const mat& U, const rowvec& d, const mat& V, const vec& row, const vec& col, const vec& x);
+RcppExport SEXP _fastadi_masked_svd_times_x_impl(SEXP USEXP, SEXP dSEXP, SEXP VSEXP, SEXP rowSEXP, SEXP colSEXP, SEXP xSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(rcppeigen_hello_world());
-    return rcpp_result_gen;
-END_RCPP
-}
-// rcppeigen_outerproduct
-Eigen::MatrixXd rcppeigen_outerproduct(const Eigen::VectorXd& x);
-RcppExport SEXP _fastadi_rcppeigen_outerproduct(SEXP xSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const Eigen::VectorXd& >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(rcppeigen_outerproduct(x));
-    return rcpp_result_gen;
-END_RCPP
-}
-// rcppeigen_innerproduct
-double rcppeigen_innerproduct(const Eigen::VectorXd& x);
-RcppExport SEXP _fastadi_rcppeigen_innerproduct(SEXP xSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const Eigen::VectorXd& >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(rcppeigen_innerproduct(x));
-    return rcpp_result_gen;
-END_RCPP
-}
-// rcppeigen_bothproducts
-Rcpp::List rcppeigen_bothproducts(const Eigen::VectorXd& x);
-RcppExport SEXP _fastadi_rcppeigen_bothproducts(SEXP xSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const Eigen::VectorXd& >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(rcppeigen_bothproducts(x));
+    Rcpp::traits::input_parameter< const mat& >::type U(USEXP);
+    Rcpp::traits::input_parameter< const rowvec& >::type d(dSEXP);
+    Rcpp::traits::input_parameter< const mat& >::type V(VSEXP);
+    Rcpp::traits::input_parameter< const vec& >::type row(rowSEXP);
+    Rcpp::traits::input_parameter< const vec& >::type col(colSEXP);
+    Rcpp::traits::input_parameter< const vec& >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(masked_svd_times_x_impl(U, d, V, row, col, x));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_fastadi_initial_guess", (DL_FUNC) &_fastadi_initial_guess, 2},
-    {"_fastadi_timesTwo", (DL_FUNC) &_fastadi_timesTwo, 1},
+    {"_fastadi_AdaptiveInitialize", (DL_FUNC) &_fastadi_AdaptiveInitialize, 2},
     {"_fastadi_lt_multiply", (DL_FUNC) &_fastadi_lt_multiply, 3},
-    {"_fastadi_rcppeigen_hello_world", (DL_FUNC) &_fastadi_rcppeigen_hello_world, 0},
-    {"_fastadi_rcppeigen_outerproduct", (DL_FUNC) &_fastadi_rcppeigen_outerproduct, 1},
-    {"_fastadi_rcppeigen_innerproduct", (DL_FUNC) &_fastadi_rcppeigen_innerproduct, 1},
-    {"_fastadi_rcppeigen_bothproducts", (DL_FUNC) &_fastadi_rcppeigen_bothproducts, 1},
+    {"_fastadi_masked_svd_times_x_impl", (DL_FUNC) &_fastadi_masked_svd_times_x_impl, 6},
     {NULL, NULL, 0}
 };
 

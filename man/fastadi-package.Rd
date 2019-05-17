@@ -9,6 +9,14 @@
 More about what it does (maybe more than one line)
     Use four spaces when indenting paragraphs within the Description.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/alexpghayes/fastadi}
+  \item Report bugs at \url{https://github.com/alexpghayes/fastadi/issues}
+}
+
+}
 \author{
 \strong{Maintainer}: Alex Hayes \email{alexpghayes@gmail.com} (0000-0002-4985-5160)
 
