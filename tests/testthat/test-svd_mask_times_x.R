@@ -1,4 +1,4 @@
-# context("test-svd_mask_times_x_cpp")
+# context("test-svd_mask_times_x")
 #
 # library(Matrix)
 # library(RSpectra)

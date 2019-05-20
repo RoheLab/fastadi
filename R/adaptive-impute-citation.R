@@ -13,9 +13,9 @@
 #'
 #' @return A list with elements:
 #'
-#'   - `u`: Left-singular-ish vectors
+#'   - `u`: Left singular-ish vectors
 #'   - `d`: Singular-ish values
-#'   - `v`: Right-singular-ish vectors
+#'   - `v`: Right singular-ish vectors
 #'
 #' @export
 #'
@@ -28,7 +28,7 @@
 #' # create a random 8 x 12 sparse matrix with 30 nonzero entries
 #' M <- rsparsematrix(8, 12, nnz = 30)
 #'
-#' s <- sparse_adaptive_impute(M, 5)
+#' s <- citation_adaptive_impute(M, 5)
 #' s
 #'
 #' # reconstruct a rank-5 approximation of M
@@ -41,13 +41,15 @@
 citation_adaptive_impute <- function(M, r, epsilon = 1e-7) {
 
   # coerce M to sparse matrix such that we use sparse operations
-  M <- as(M, "dgCMatrix")
+  M <- as(M, "TsparseMatrix")
 
-  # low rank svd-like object, s ~ Z_1
-  s <- citation_adaptive_initialize(M, r)  # line 1
+  # NOTE: no differences are necessary from the sparse
+  # adaptive_initialize since M just has more zeros
+
+  s <- sparse_adaptive_initialize(M, r)  # line 1
   delta <- Inf
   d <- ncol(M)
-  norm_M <- sum(M@x^2)
+  f_norm_M <- sum(M@x^2)
 
   while (delta > epsilon) {
 
@@ -57,15 +59,24 @@ citation_adaptive_impute <- function(M, r, epsilon = 1e-7) {
     R <- M - masked_approximation(s, M)  # residual matrix
     args <- list(u = s$u, d = s$d, v = s$v, R = R)
 
-    s_new <- svds(Ax, k = r, Atrans = Atx, dim = dim(M), args = args)
+    s_new <- svds(
+      Ax_citation,
+      k = r,
+      Atrans = Atx_citation,
+      dim = dim(M),
+      args = args
+    )
 
-    MtM <- norm_M + sum(s_new$d^2) - sum(masked_approximation(s_new, M)^2)
+    M_tilde_f_norm <- f_norm_M + sum(s_new$d^2) -
+      p_omega_f_norm_ut(s_new, M)
 
-    alpha <- (sum(MtM) - sum(s_new$d^2)) / (d - r)  # line 6
+    alpha <- (M_tilde_f_norm - sum(s_new$d^2)) / (d - r)  # line 6
 
     s_new$d <- sqrt(s_new$d^2 - alpha)  # line 7
 
     # NOTE: skip explicit computation of line 8
+
+    # TODO: this needs to be faster
     delta <- relative_f_norm_change(s_new, s)
 
     s <- s_new
@@ -76,12 +87,20 @@ citation_adaptive_impute <- function(M, r, epsilon = 1e-7) {
   s
 }
 
-
-Ax <- function(x, args) {
-  drop(args$R %*% x + args$u %*% diag(args$d) %*% crossprod(args$v, x))
+# mask needs to be a sparse matrix stored as triplets
+p_omega_f_norm_ut <- function(s, mask) {
+  p_omega_f_norm_ut_impl(s$u, s$d, s$v, mask@i, mask@j)
 }
 
-Atx <- function(x, args) {
-  drop(t(args$R) %*% x + args$v %*% diag(args$d) %*% crossprod(args$u, x))
+Ax_citation <- function(x, args) {
+  drop0(args$M) %*% x -
+    p_omega_zx_impl(args$u, args$d, args$v, args$M@i, args$M@j, x) +
+    args$u %*% diag(args$d) %*% crossprod(args$v, x)
+}
+
+Atx_citation <- function(x, args) {
+  t(drop0(args$M)) %*% x -
+    p_omega_ztx_impl(args$u, args$d, args$v, args$M@i, args$M@j, x) +
+    args$v %*% diag(args$d) %*% crossprod(args$u, x)
 }
 

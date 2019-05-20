@@ -74,14 +74,6 @@ sparse_adaptive_impute <- function(M, r, epsilon = 1e-7) {
   s
 }
 
-relative_f_norm_change <- function(s_new, s) {
-  # TODO: don't do the dense calculation here
-
-  Z_new <- s_new$u %*% diag(s_new$d) %*% t(s_new$v)
-  Z <- s$u %*% diag(s$d) %*% t(s$v)
-  sum((Z_new - Z)^2) / sum(Z^2)
-}
-
 Ax <- function(x, args) {
   drop(args$R %*% x + args$u %*% diag(args$d) %*% crossprod(args$v, x))
 }

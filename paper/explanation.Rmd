@@ -119,7 +119,7 @@ If you haven't used the `Matrix` package before, we recommend reading [this intr
 ```{r}
 library(Matrix)
 
-set.seed(17)
+set.seed(27)
 
 # create a random 8 x 12 sparse matrix with 30 nonzero entries
 M <- rsparsematrix(8, 12, nnz = 30)
@@ -186,7 +186,7 @@ A * (1 - y)
 all(A * y + A * (1 - y) == A)  # can recover A from both projections together
 ```
 
-crossproducts
+matrix-matrix crossproducts
 
 ```{r}
 bench::mark(
@@ -196,6 +196,13 @@ bench::mark(
   check = FALSE
 )
 ```
+
+matrix-vector crossproducts
+
+```{r}
+# TODO
+```
+
 
 the `drop()` function helps us manage dimensions
 
@@ -208,6 +215,11 @@ drop(one_row)
 
 c(one_col)  # same thing, less explicit. use drop to be explicit
 ```
+
+```{r}
+# TODO: drop vs drop0 vs drop1
+```
+
 
 diagonal of crossproduct
 
@@ -1069,13 +1081,27 @@ And now we need to figure out how to calculate
     P_\Omega (Z_t) +
     P_\Omega (Z_t) +
     P_\Omega^\perp (Z_t) \right] x \\
-  &= P_\Omega(M)  - P_\Omega(Z_t) x + Z_t x \\
-  &= P_{\tilde \Omega}(M)  - P_\Omega(Z_t) x + Z_t x
+  &= P_\Omega(M)x  - P_\Omega(Z_t) x + Z_t x \\
+  &= P_{\tilde \Omega}(M)x  - P_\Omega(Z_t) x + Z_t x
 \end{align}
 
 We already know how to calculate $P_{\tilde \Omega}(M)$ and $Z_t x$ using sparse operations, so we're left with $P_\Omega(Z_t) x$. Note that $P_\Omega(Z_t) x \neq P_{\tilde \Omega} (Z_t) x$ since $Z_t$ is not necessarily zero on $\tilde \Omega^\perp$. In other words $P_\Omega^\perp (Z_t) \neq Z_t$.
 
 When $Y$ is dense, there is no way to avoid paying the computational cost of the dense or near dense computation. Our primary concern is fitting $Y$ into memory for large datasets. This is an issue when $Y$ is dense but with no discernible structure that permits a more compact representation.
+
+Similarly we need to be able to calculate
+
+\begin{align}
+\tilde M^{(t)^T} x 
+  &= \left[ P_\Omega(M) + P_\Omega^\perp (Z_t) \right]^T x \\
+  &= \left[ P_\Omega(M)^T + P_\Omega^\perp (Z_t)^T \right] x \\
+  &= \left[ P_\Omega(M)^T -
+    P_\Omega (Z_t)^T +
+    P_\Omega (Z_t)^T +
+    P_\Omega^\perp (Z_t)^T \right] x \\
+  &= P_\Omega(M)^T x  - P_\Omega(Z_t)^T x + Z_t^T x \\
+  &= P_{\tilde \Omega}(M)^T x  - P_\Omega(Z_t)^T x + Z_t^T x
+\end{align}
 
 If we can fit $Y$ into memory, we can do a low-rank computation, only calculating elements $Z^{(t)}_{ij}$ when $Y_{ij} = 1$. When $Y$ is stored as a vector of row indices together with a vector of column indices (plus some information about the dimension), we can write the computation out:
 
@@ -1102,7 +1128,7 @@ Y <- rbind(
 
 s <- svds(M, 2)
 
-Y <- as(Y, "CsparseMatrix")
+Y <- as(Y, "TsparseMatrix")
 
 # triplet form
 # compressed column matrix form even better but don't
@@ -1207,7 +1233,21 @@ Also because I never remember anything, recall that $Z$ is $n \times d$, $x$ is 
 (Zx)_i = \sum_{j=1}^d Z_{ij} \cdot x_j
 \end{align}
 
-(recall that $X_i$ always refers to the $i^{th}$ column of $X$ in this document)
+(recall that $X_i$ always refers to the $i^{th}$ column of $X$ in this document, and $X_{i \cdot}$ refers to the $i^{th}$ row of $X$)
+
+Also note that 
+
+\begin{align}
+Z_{ij} = \sum_{k=1}^r d_k U_{ik} V_{kj}
+\end{align}
+
+Putting these together we find
+
+\begin{align}
+(Zx)_i &= \sum_{j=1}^d Z_{ij} \cdot x_j \\
+&= \sum_{j=1}^d \sum_{k=1}^r d_k U_{ik} V_{kj} \cdot x_j \\
+&= \sum_{j=1}^d U_{i \cdot}^T (D V)_{j \cdot} \cdot x_j
+\end{align}
 
 ```{r}
 # mask as a pair list
@@ -1315,6 +1355,77 @@ bench::mark(
 )
 ```
 
+Now we also need to work out $(Z_t^T x)_i$, which I am hella blanking on.
+
+
+```{r}
+library(Matrix)
+
+set.seed(27)
+
+# create a random 8 x 12 sparse matrix with 30 nonzero entries
+M <- rsparsematrix(8, 11, nnz = 20)
+M
+
+s <- svds(M, 3)
+mask <- as(M, "TsparseMatrix")
+
+u <- s$u
+d <- s$d
+v <- s$v
+
+Z <- u %*% diag(d) %*% t(v)
+
+ztx <- numeric(nrow(v))
+
+# lgTMatrix uses zero based indexing, add one
+row <- mask@i + 1
+col <- mask@j + 1
+
+# need to loop over index of indexes
+# double looping over i and j here feels intuitive
+# but is incorrect
+for (idx in seq_along(row)) {
+  
+  # here's where we do the row / column swap
+  j <- row[idx]
+  i <- col[idx]
+  
+  z_ij <- sum(u[i, ] * d * v[j, ])
+  zx[i] <- zx[i] + x[j] * z_ij
+}
+
+ztx
+
+x <- rnorm(8)
+t(M) %*% x
+```
+
+START MISC
+
+$Z$ is an $n \times d$ matrix. Thus we must have $x \in \mathbb{R}^n$, and then $Z^T x \in \mathbb{R}^d$.
+
+\begin{align}
+(Z^Tx)_i = \sum_{j=1}^n Z^T_{ij} \cdot x_j
+\end{align}
+
+Also note that 
+
+\begin{align}
+Z^T_{ij} &= Z_{ji} \\
+&= \sum_{k=1}^r d_k U_{jk} V_{ki}
+\end{align}
+
+Putting these together we find
+
+\begin{align}
+(Z^T x)_i &= \sum_{j=1}^n Z^T_{ij} \cdot x_j \\
+&= \sum_{j=1}^n \sum_{k=1}^r d_k U_{jk} V_{ki} \cdot x_j \\
+&= \sum_{j=1}^n U_{j \cdot}^T (D V)_{i \cdot} \cdot x_j
+\end{align}
+
+END MISC
+
 TODO:
 
 - the tranpose multiplication
@@ -1340,25 +1451,25 @@ using namespace arma;
 // [[Rcpp::export]]
 
 double p_omega_f_norm_impl(
-      const mat& U,
-      const rowvec& d,
-      const mat& V,
-      const vec& row,
-      const vec& col) {
+    const mat& U,
+    const rowvec& d,
+    const mat& V,
+    const vec& row,
+    const vec& col) {
   
-    int i, j;
-    double total = 0;
+  int i, j;
+  double total = 0;
   
-    for (int idx = 0; idx < row.n_elem; idx++) {
-  
-      i = row(idx);
-      j = col(idx);
-  
-      total += accu(U.row(i) % d % V.row(j));
-    }
-  
-    return total;
+  for (int idx = 0; idx < row.n_elem; idx++) {
+    
+    i = row(idx);
+    j = col(idx);
+    
+    total += accu(U.row(i) % d % V.row(j));
   }
+  
+  return total;
+}
 ```
 
 ```{r}

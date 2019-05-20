@@ -18,9 +18,9 @@ in Frobenius norm of the full imputed matrix.}
 \value{
 A list with elements:
 \itemize{
-\item \code{u}: Left-singular-ish vectors
+\item \code{u}: Left singular-ish vectors
 \item \code{d}: Singular-ish values
-\item \code{v}: Right-singular-ish vectors
+\item \code{v}: Right singular-ish vectors
 }
 }
 \description{
@@ -38,7 +38,7 @@ set.seed(27)
 # create a random 8 x 12 sparse matrix with 30 nonzero entries
 M <- rsparsematrix(8, 12, nnz = 30)
 
-s <- sparse_adaptive_impute(M, 5)
+s <- citation_adaptive_impute(M, 5)
 s
 
 # reconstruct a rank-5 approximation of M

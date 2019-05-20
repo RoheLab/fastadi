@@ -1,19 +1,22 @@
-# context("test-adaptive-impute-sparse")
+context("adaptive impute sparse")
+
+test_that("agrees with dense implementation", {
+
+  set.seed(27)
+
+  M <- rsparsematrix(8, 12, nnz = 30)
+
+  sparse <- sparse_adaptive_impute(M, 5)
+  dense <- dense_adaptive_impute(M, 5)
+
+  expect_true(equal_svds(sparse, dense))
+})
+
 #
 # set.seed(17)
 #
 # M <- rsparsematrix(8, 12, nnz = 30)
 # s <- svds(M, 5)
-#
-# y <- as(M, "lgCMatrix")
-#
-# Z <- s$u %*% diag(s$d) %*% t(s$v)
-#
-# all.equal(
-#   svd_perp(s, M),
-#   Z * y
-# )
-#
 #
 # set.seed(17)
 # r <- 5
@@ -80,37 +83,6 @@
 #   svd_M_tilde,
 #   test2
 # )
-#
-# # mask as a pair list
-# # L and Z / svd are both n x d matrices
-# # x is a d x 1 matrix / vector
-# masked_svd_times_x <- function(s, mask, x) {
-#
-#   stopifnot(inherits(mask, "lgTMatrix"))
-#
-#   u <- s$u
-#   d <- s$d
-#   v <- s$v
-#
-#   zx <- numeric(nrow(u))
-#
-#   # lgTMatrix uses zero based indexing, add one
-#   row <- mask@i + 1
-#   col <- mask@j + 1
-#
-#   # need to loop over index of indexes
-#   # double looping over i and j here feels intuitive
-#   # but is incorrect
-#   for (idx in seq_along(row)) {
-#     i <- row[idx]
-#     j <- col[idx]
-#
-#     z_ij <- sum(u[i, ] * d * v[j, ])
-#     zx[i] <- zx[i] + x[j] * z_ij
-#   }
-#
-#   zx
-# }
 #
 # # how to calculate just one element of the reconstructed
 # # data using the SVD

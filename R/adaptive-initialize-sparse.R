@@ -54,7 +54,7 @@ sparse_adaptive_initialize <- function(M, r) {
 
   # NOTE: alpha is again incorrect since we work with eigenvalues
   # rather than singular values here
-  sum_eigen_values <- sum(M@x^2) / p^2 - (1 - p) * sum(colSums(M^2))
+  sum_eigen_values <- sum(M@x^2) / p_hat^2 - (1 - p_hat) * sum(colSums(M^2))
   alpha <- (sum_eigen_values - sum(eig_p$values)) / (d - r)  # line 6
 
   lambda_hat <- sqrt(eig_p$values - alpha) / p_hat  # line 7
@@ -75,8 +75,6 @@ sparse_adaptive_initialize <- function(M, r) {
   list(u = u_hat, d = lambda_hat, v = v_hat)
 }
 
-# Take the eigendecomposition of t(M) %*% M - (1 - p) * diag(t(M) %*% M)
-# using sparse computations only
 eigen_helper <- function(M, r) {
   eigs_sym(
     Mx, r,
