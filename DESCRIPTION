@@ -3,7 +3,12 @@ Package: fastadi
 Title: Data Adaptive Matrix Imputation
 Version: 0.1.0
 Authors@R: 
-    c(person(given = "Juhee",
+    c(person(given = "Alex",
+             family = "Hayes",
+             role = c("aut", "cre"),
+             email = "alexpghayes@gmail.com",
+             comment = c(ORCID = "0000-0002-4985-5160")),
+      person(given = "Juhee",
              family = "Cho",
              role = "aut"),
       person(given = "Donggyu",
@@ -11,12 +16,7 @@ Authors@R:
              role = "aut"),
       person(given = "Karl",
              family = "Rohe",
-             role = "aut"),
-      person(given = "Alex",
-             family = "Hayes",
-             role = c("aut", "cre"),
-             email = "alexpghayes@gmail.com",
-             comment = c(ORCID = "0000-0002-4985-5160")))
+             role = "aut"))
 Description: More about what it does (maybe more than one line)
     Use four spaces when indenting paragraphs within the Description.
 License: MIT + file LICENSE

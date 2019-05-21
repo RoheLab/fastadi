@@ -40,6 +40,11 @@ sparse_adaptive_initialize <- function(M, r) {
 
   p_hat <- nnzero(M) / prod(dim(M))  # line 1
 
+  # now that we have counted explicitly observed zeros
+  # we can make the explicit zeros implicit for more
+  # efficiency in the initializer
+  M <- drop0(M)
+
   # NOTE: skip explicit computation of line 2
   # NOTE: skip explicit computation of line 3
 

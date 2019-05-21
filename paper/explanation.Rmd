@@ -1360,6 +1360,8 @@ Now we also need to work out $(Z_t^T x)_i$, which I am hella blanking on.
 
 ```{r}
 library(Matrix)
+library(RSpectra)
+library(testthat)
 
 set.seed(27)
 
@@ -1368,13 +1370,23 @@ M <- rsparsematrix(8, 11, nnz = 20)
 M
 
 s <- svds(M, 3)
+
+Y <- M != 0
 mask <- as(M, "TsparseMatrix")
 
 u <- s$u
 d <- s$d
 v <- s$v
 
+
 Z <- u %*% diag(d) %*% t(v)
+
+Zt2 <- v %*% diag(d) %*% t(u)
+
+expect_equal(Zt2, t(Z))
+
+x <- rnorm(8)
+Ztx <- t(Z * Y) %*% x
 
 ztx <- numeric(nrow(v))
 
@@ -1388,17 +1400,39 @@ col <- mask@j + 1
 for (idx in seq_along(row)) {
   
   # here's where we do the row / column swap
-  j <- row[idx]
-  i <- col[idx]
+  i <- row[idx]
+  j <- col[idx]
   
   z_ij <- sum(u[i, ] * d * v[j, ])
-  zx[i] <- zx[i] + x[j] * z_ij
+  ztx[j] <- ztx[j] + x[i] * z_ij
 }
 
+Ztx
 ztx
 
-x <- rnorm(8)
-t(M) %*% x
+impl_result <- p_omega_ztx_impl(u, d, v, mask@i, mask@j, x)
+
+testthat::expect_equivalent(
+  drop(ztx),
+  drop(Ztx)
+)
+```
+
+
+```{r}
+# add the upper triangle back to Y since we're in the citation
+# setting
+Y <- Y | upper.tri(Y)
+
+obs_Zt <- t(Z * Y)                 # project SVD onto observed matrix
+
+Y <- as(Y, "TsparseMatrix")
+impl_result <- p_omega_ztx_impl(s$u, s$d, s$v, Y@i, Y@j, x)
+
+expect_equal(
+  drop(impl_result),
+  drop(obs_Zt %*% x)
+)
 ```
 
 START MISC

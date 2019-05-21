@@ -21,6 +21,10 @@ p_omega_f_norm_ut_impl <- function(U, d, V, row, col) {
     .Call(`_fastadi_p_omega_f_norm_ut_impl`, U, d, V, row, col)
 }
 
+p_omega_ztx_impl <- function(U, d, V, row, col, x) {
+    .Call(`_fastadi_p_omega_ztx_impl`, U, d, V, row, col, x)
+}
+
 p_omega_zx_impl <- function(U, d, V, row, col, x) {
     .Call(`_fastadi_p_omega_zx_impl`, U, d, V, row, col, x)
 }

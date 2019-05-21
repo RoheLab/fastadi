@@ -40,9 +40,6 @@
 #'
 citation_adaptive_impute <- function(M, r, epsilon = 1e-7) {
 
-  # coerce M to sparse matrix such that we use sparse operations
-  M <- as(M, "TsparseMatrix")
-
   # NOTE: no differences are necessary from the sparse
   # adaptive_initialize since M just has more zeros
 
@@ -51,13 +48,15 @@ citation_adaptive_impute <- function(M, r, epsilon = 1e-7) {
   d <- ncol(M)
   f_norm_M <- sum(M@x^2)
 
+  # coerce M to sparse matrix such that we use sparse operations
+  M <- as(M, "CsparseMatrix")
+
   while (delta > epsilon) {
 
     # update s: lines 4 and 5
     # take the SVD of M-tilde
 
-    R <- M - masked_approximation(s, M)  # residual matrix
-    args <- list(u = s$u, d = s$d, v = s$v, R = R)
+    args <- list(u = s$u, d = s$d, v = s$v, M = M)
 
     s_new <- svds(
       Ax_citation,
@@ -76,7 +75,6 @@ citation_adaptive_impute <- function(M, r, epsilon = 1e-7) {
 
     # NOTE: skip explicit computation of line 8
 
-    # TODO: this needs to be faster
     delta <- relative_f_norm_change(s_new, s)
 
     s <- s_new
@@ -89,18 +87,24 @@ citation_adaptive_impute <- function(M, r, epsilon = 1e-7) {
 
 # mask needs to be a sparse matrix stored as triplets
 p_omega_f_norm_ut <- function(s, mask) {
+  mask <- as(mask, "TsparseMatrix")
   p_omega_f_norm_ut_impl(s$u, s$d, s$v, mask@i, mask@j)
 }
 
 Ax_citation <- function(x, args) {
+  mask <- as(args$M, "TsparseMatrix")
+
   drop0(args$M) %*% x -
-    p_omega_zx_impl(args$u, args$d, args$v, args$M@i, args$M@j, x) +
+    p_omega_zx_impl(args$u, args$d, args$v, mask@i, mask@j, x) +
     args$u %*% diag(args$d) %*% crossprod(args$v, x)
 }
 
 Atx_citation <- function(x, args) {
+
+  mask <- as(args$M, "TsparseMatrix")
+
   t(drop0(args$M)) %*% x -
-    p_omega_ztx_impl(args$u, args$d, args$v, args$M@i, args$M@j, x) +
+    p_omega_ztx_impl(args$u, args$d, args$v, mask@i, mask@j, x) +
     args$v %*% diag(args$d) %*% crossprod(args$u, x)
 }
 

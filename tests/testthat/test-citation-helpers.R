@@ -58,13 +58,6 @@ test_that("Ax_citation", {
   # vector to multiply by
   x <- rnorm(40)
 
-  # build a residual matrix with matching missingness
-  R <- A
-  R@x <- rnorm(50)
-
-  expect_false(isTRUE(all.equal(A, R)))
-  expect_equal(A != 0, R != 0)
-
   # expand the SVD only at observed values by hand
 
   Z <- s$u %*% diag(s$d) %*% t(s$v)  # full SVD
@@ -108,13 +101,6 @@ test_that("Atx_citation", {
   # vector to multiply by
   x <- rnorm(30)
 
-  # build a residual matrix with matching missingness
-  R <- A
-  R@x <- rnorm(50)
-
-  expect_false(isTRUE(all.equal(A, R)))
-  expect_equal(A != 0, R != 0)
-
   # expand the SVD only at observed values by hand
 
   Z <- s$u %*% diag(s$d) %*% t(s$v)  # full SVD
@@ -140,5 +126,8 @@ test_that("Atx_citation", {
   args <- list(u = s$u, d = s$d, v = s$v, M = A)
   wrapped_result <- Atx_citation(x, args)
 
-  expect_equal(wrapped_result, expected)
+  expect_equivalent(
+    wrapped_result,
+    expected
+  )
 })
