@@ -91,20 +91,25 @@ p_omega_f_norm_ut <- function(s, mask) {
   p_omega_f_norm_ut_impl(s$u, s$d, s$v, mask@i, mask@j)
 }
 
+# KEY: must return a vector! test this otherwise you will be sad!
 Ax_citation <- function(x, args) {
   mask <- as(args$M, "TsparseMatrix")
 
-  drop0(args$M) %*% x -
+  out <- drop0(args$M) %*% x -
     p_omega_zx_impl(args$u, args$d, args$v, mask@i, mask@j, x) +
     args$u %*% diag(args$d) %*% crossprod(args$v, x)
+
+  drop(out)
 }
 
 Atx_citation <- function(x, args) {
 
   mask <- as(args$M, "TsparseMatrix")
 
-  t(drop0(args$M)) %*% x -
+  out <- t(drop0(args$M)) %*% x -
     p_omega_ztx_impl(args$u, args$d, args$v, mask@i, mask@j, x) +
     args$v %*% diag(args$d) %*% crossprod(args$u, x)
+
+  drop(out)
 }
 
