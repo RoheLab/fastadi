@@ -1,7 +1,7 @@
 ---
 title: "computational details of low-rank matrix completion via adaptive-impute"
 author: "Alex Hayes"
-date: "`r Sys.Date()`"
+date: "2019-05-29"
 output: pdf_document
 bibliography: references.bib
 link-citations: true
@@ -16,9 +16,7 @@ header-includes:
   \renewcommand{\familydefault}{\sfdefault}
 ---
 
-```{r setup, include = FALSE}
-knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
-```
+
 
 \newcommand \bv {\mathbf{v}}
 \newcommand \bu {\mathbf{u}}
@@ -116,7 +114,8 @@ If you haven't used the `Matrix` package before, we recommend reading [this intr
 [matrix_intro]: https://cran.r-project.org/web/packages/Matrix/vignettes/Intro2Matrix.pdf
 [matrix_2nd_intro]: https://cran.r-project.org/web/packages/Matrix/vignettes/Intro2Matrix.pdf
 
-```{r}
+
+```r
 library(Matrix)
 
 set.seed(27)
@@ -127,13 +126,15 @@ M
 ```
 
 
-```{r}
+
+```r
 summary(M)
 ```
 
 TODO: different storage formats for sparse matrices. CSC, triplet, symmetric. for the most part `Matrix` does the right thing for you. The triplet form will be most important for us later on when we right out some matrix multiplications by hand.
 
-```{r}
+
+```r
 # note that Matrix objects are S4 classes so we access their
 # slots using the @ symbol
 class(M)
@@ -144,7 +145,8 @@ M@i  # corresponding row indices
 
 coercing
 
-```{r}
+
+```r
 # we want a tripletMatrix, but *don't* specify the subclass
 M2 <- as(M, "TsparseMatrix") 
 
@@ -157,7 +159,8 @@ M2@j
 
 We will repeatedly calculate squared Frobenious norms throughout this tutorial. It's important to know that there are *many, many* ways to calculate this norm. We will almost always calculate the squared Frobenius norm of a sparse Matrix `M` via `sum(M@x^2)`. That said, these are all equivalent:
 
-```{r}
+
+```r
 M^2    # square each element in M elementwise, return as sparse matrix
 M@x^2  # square each element in M elementwise, return as vector of nonzeros
 
@@ -174,7 +177,8 @@ bench::mark(
 
 The projections $P_\Omega (A)$ and $P_\Omega^\perp (A)$ where $\Omega$ indicates the observed elements of a matrix $M$ and $A$ is another matrix with the same dimensions as $M$.
 
-```{r}
+
+```r
 y <- as(M, "lgCMatrix")  # indicator matrix only
 all.equal(y * M, M)  # don't lose anything multiplying by indicators
 
@@ -197,7 +201,8 @@ all(A * y + A * (1 - y) == A)  # can recover A from both projections together
 
 matrix-matrix crossproducts
 
-```{r}
+
+```r
 bench::mark(
   crossprod(M),     # dsCMatrix -- most specialized class, want this
   crossprod(M, M),  # dgCMatrix
@@ -208,14 +213,16 @@ bench::mark(
 
 matrix-vector crossproducts
 
-```{r}
+
+```r
 # TODO
 ```
 
 
 the `drop()` function helps us manage dimensions
 
-```{r}
+
+```r
 one_col <- matrix(1:4)
 one_row <- matrix(5:8, nrow = 1)
 
@@ -225,14 +232,16 @@ drop(one_row)
 c(one_col)  # same thing, less explicit. use drop to be explicit
 ```
 
-```{r}
+
+```r
 # TODO: drop vs drop0 vs drop1
 ```
 
 
 diagonal of crossproduct
 
-```{r eval = FALSE}
+
+```r
 v_sign == colSums(svd_M$v * v_hat)
 diag(t(svd_M$v) %*% v_hat)
 diag(crossprod(svd_M$v, v_hat))
@@ -247,7 +256,8 @@ bench::mark(
 # write a diag_crossprod helper
 ```
 
-```{r}
+
+```r
 rhos <- matrix(1:12, ncol = 4, byrow = TRUE)
 
 bench::mark(
@@ -282,7 +292,8 @@ A more elegant solution as proposed in @bro_resolving_2007 and used in Karl's pa
 
 NOTE TO SELF: identifying the signs of a single SVD is a much harder task than comparing two SVDs and seeing if they are the same up to sign differences. we only need to check if they are the same up to sign differences.
 
-```{r}
+
+```r
 set.seed(17)
 M <- rsparsematrix(8, 12, nnz = 30) # small example, not very sparse
 
@@ -354,7 +365,8 @@ Again computing `alpha` deserves some explanation.
 - Frobenius norm (A) = trace(crossprod(A))
 - TODO: how we know this thing is strictly positive to prevent sqrt() from exploding
 
-```{r}
+
+```r
 ## STOPPED HERE: WHY ARE the following not the same?
   isSymmetric(sigma_p)
   eigen(sigma_p)$values
@@ -409,14 +421,16 @@ FACT: sum(diag(crossprod(M))) == sum(M^2)
 
 ## Reference implementation
 
-```{r}
+
+```r
 library(RSpectra)
 library(Matrix)
 ```
 
 <!-- ```{#AdaptiveImpute .R .numberLines} -->
 
-```{r}
+
+```r
 adaptive_initialize <- function(M, r) {
   
   # TODO: ignores observed zeros!
@@ -481,7 +495,8 @@ It's worth commenting on computation of `alpha` and `s_hat`.
 When we compute `alpha` in line 20 `adaptive_initialize()`, we don't want to do the full eigendecomposition of $\Sigma_{\hat p}$ since that could take a long time, so we use trick and recall that the trace of a matrix (the sum of it's diagonal elements) equals the sum of all the eigenvalues. Then we subtract off the first $r$ eigenvalues, which we do compute, and are left with $\sum_{i = r + 1}^d \lambda_i(\Sigma_{\hat p})$.
 
 <!-- ```{#AdaptiveImpute .R .numberLines} -->
-```{r}
+
+```r
 adaptive_impute <- function(M, r, epsilon = 1e-7) {
   
   s <- adaptive_initialize(M, r)
@@ -518,7 +533,8 @@ adaptive_impute <- function(M, r, epsilon = 1e-7) {
 
 Finally we can do a minimal sanity check and see if this code even runs, and see if we are recovering something close-ish to implanted low-rank structure.
 
-```{r eval = FALSE}
+
+```r
 n <- 500
 d <- 100
 r <- 5
@@ -544,7 +560,8 @@ The reference implementation has some problems. As our data matrix $M$ gets larg
 
 This leads us to following implementation:
 
-```{r}
+
+```r
 low_rank_adaptive_initialize <- function(M, r) {
   
   M <- as(M, "dgCMatrix")
@@ -589,7 +606,8 @@ low_rank_adaptive_initialize <- function(M, r) {
 
 What does `eigen_helper()` do? Describe the return object (also do this for svds)
 
-```{r}
+
+```r
 # Take the eigendecomposition of t(M) %*% M - (1 - p) * diag(t(M) %*% M)
 # using sparse computations only
 eigen_helper <- function(M, r) {
@@ -616,7 +634,8 @@ Mx <- function(x, args) {
 
 Now we check that `Mx` works
 
-```{r}
+
+```r
 x <- rnorm(12)
 p <- 0.3
 out <- (t(M) %*% M / p^2 - (1 - p) * diag(diag(t(M) %*% M))) %*% x
@@ -633,7 +652,8 @@ Quickly check that the components works before we try the code that integrates t
 
 Finally, sanity check this by comparing to the reference implementation. These don't agree, which isn't great:
 
-```{r}
+
+```r
 lr_init <- low_rank_adaptive_initialize(dat, r)
 
 # some weird stuff is happening with the singular values but I'm
@@ -772,7 +792,8 @@ Putting it all together we see
 
 In code we will have a sparse matrix `M` and a list `s` with elements of the SVD. The first Frobenious norm is quick to calculate, but I am not sure how to calculate the other two frobenius norms.
 
-```{r}
+
+```r
 # s is a matrix defined in terms of it's svd
 # G is a sparse matrix
 # compute only elements of U %*% diag(d) %*% t(V) only on non-zero elements of G
@@ -805,7 +826,8 @@ svd_perp <- function(s, mask) {
 
 Test it
 
-```{r}
+
+```r
 set.seed(17)
 
 M <- rsparsematrix(8, 12, nnz = 30)
@@ -823,7 +845,8 @@ all.equal(
 
 So, to take an eigendecomp you just need to be able to do $Mx$. To take an SVD, what do you need? matrix vector and matrix transpose vector multiplication
 
-```{r}
+
+```r
 set.seed(17)
 r <- 5
 
@@ -846,7 +869,8 @@ all.equal(
 
 ### SVD of M tilde
 
-```{r}
+
+```r
 set.seed(17)
 r <- 5
 
@@ -863,7 +887,8 @@ svd_M_tilde
 ```
 
 
-```{r}
+
+```r
 Ax <- function(x, args) {
   drop(M_tilde %*% x)
 }
@@ -924,7 +949,8 @@ Similarly, for the transpose, we have
 
 This leads us to a second, less memory intensive implementation of `Ax()` and `Atx()`:
 
-```{r}
+
+```r
 # input: M, Z_t as a low-rank SVD list s
 
 R <- M - svd_perp(s, M)  # residual matrix
@@ -948,7 +974,8 @@ all.equal(
 )
 ```
 
-```{r}
+
+```r
 relative_f_norm_change <- function(s_new, s) {
   # TODO: don't do the dense calculation here
   
@@ -957,11 +984,11 @@ relative_f_norm_change <- function(s_new, s) {
   
   sum((Z_new - Z)^2) / sum(Z^2)
 }
-
 ```
 
 
-```{r}
+
+```r
 low_rank_adaptive_impute <- function(M, r, epsilon = 1e-03) {
 
   # coerce M to sparse matrix such that we use sparse operations
@@ -1000,7 +1027,8 @@ low_rank_adaptive_impute <- function(M, r, epsilon = 1e-03) {
 }
 ```
 
-```{r}
+
+```r
 out <- low_rank_adaptive_impute(M, r)
 out
 ```
@@ -1114,7 +1142,8 @@ Similarly we need to be able to calculate
 
 If we can fit $Y$ into memory, we can do a low-rank computation, only calculating elements $Z^{(t)}_{ij}$ when $Y_{ij} = 1$. When $Y$ is stored as a vector of row indices together with a vector of column indices (plus some information about the dimension), we can write the computation out:
 
-```{r}
+
+```r
 M <- Matrix(
   rbind(
     c(0, 0, 3, 1, 0),
@@ -1260,7 +1289,8 @@ Recall that $x \in \mathbb{R}^d$. Putting these together we find
 &= \sum_{j=1}^d U_{i \cdot}^T (D V)_{j \cdot} \cdot x_j
 \end{align}
 
-```{r}
+
+```r
 # mask as a pair list
 # L and Z / svd are both n x d matrices
 # x is a d x 1 matrix / vector
@@ -1315,7 +1345,8 @@ all.equal(
 
 This is gonna be painfully slow in R so we rewrite in C++
 
-```{Rcpp}
+
+```cpp
 #include <RcppArmadillo.h>
 
 using namespace arma;
@@ -1352,14 +1383,16 @@ vec masked_svd_times_x_impl(
 }
 ```
 
-```{r}
+
+```r
 # wrap with slightly nicer interface
 masked_svd_times_x_cpp <- function(s, mask, x) {
   drop(masked_svd_times_x_impl(s$u, s$d, s$v, mask@i, mask@j, x))
 }
 ```
 
-```{r}
+
+```r
 bench::mark(
   masked_svd_times_x_cpp(s, Y, x),
   masked_svd_times_x(s, Y, x)
@@ -1369,7 +1402,8 @@ bench::mark(
 Now we also need to work out $(Z_t^T x)_i$, which I am hella blanking on.
 
 
-```{r}
+
+```r
 library(Matrix)
 library(RSpectra)
 library(testthat)
@@ -1430,7 +1464,8 @@ testthat::expect_equivalent(
 ```
 
 
-```{r}
+
+```r
 # add the upper triangle back to Y since we're in the citation
 # setting
 Y <- Y | upper.tri(Y)
@@ -1489,7 +1524,8 @@ KEY NOTE: $\lambda_i$ is the $i^{th}$ singular value of the $Z^{(t-1)}$, *not* $
 
 This is the other computationally intensive part so let's write it up in Armadillo as well
 
-```{Rcpp}
+
+```cpp
 #include <RcppArmadillo.h>
 
 using namespace arma;
@@ -1519,14 +1555,16 @@ double p_omega_f_norm_impl(
 }
 ```
 
-```{r}
+
+```r
 # wrap with slightly nicer interface
 p_omega_f_norm_cpp <- function(s, mask) {
   p_omega_f_norm_impl(s$u, s$d, s$v, mask@i, mask@j)
 }
 ```
 
-```{r}
+
+```r
 all.equal(
   sum(Z * Y),
   p_omega_f_norm_cpp(s, Y)
@@ -1598,7 +1636,8 @@ Recall that $x \in \mathbb{R}^d$. Putting these together we find
 &= \sum_{j=1}^d U_{i \cdot}^T (D V)_{j \cdot} \cdot x_j
 \end{align}
 
-```{r}
+
+```r
 library(Matrix)
 library(RSpectra)
 library(testthat)
@@ -1640,12 +1679,12 @@ expect_equal(
   drop(out),
   drop(expected)
 )
-
 ```
 
 Okay so I'm getting stuck making this work for citation matrices so let's just do a standard matrix multiply this way
 
-```{r}
+
+```r
 library(Matrix)
 library(RSpectra)
 library(testthat)
