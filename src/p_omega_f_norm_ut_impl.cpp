@@ -22,7 +22,8 @@ double p_omega_f_norm_ut_impl(
     j = col(idx);
 
     // only elements of the lower triangle
-    if (i > j) {
+    // KEY: include the diagonal
+    if (i >= j) {
       z_ij = arma::accu(U.row(i) % d % V.row(j));
       total += pow(z_ij, 2);
     }

@@ -1,10 +1,16 @@
 context("citation helpers")
 
+library(Matrix)
+library(RSpectra)
+
 test_that("p_omega_f_norm_ut", {
 
+  # important: make sure to test when there are elements on the diagonal
+  # in practice this shouldn't happen, but we still want correct
+  # calculations when this is the case
   M <- Matrix(
     rbind(
-      c(0, 0, 3, 1, 0),
+      c(4, 0, 3, 1, 0),
       c(3, 0, 0, 8, 0),
       c(0, -1, 0, 0, 0),
       c(0, 0, 0, 0, 0),
@@ -15,7 +21,7 @@ test_that("p_omega_f_norm_ut", {
 
   # NOTE: not treating nodes as citing themselves!
   Y <- rbind(
-    c(0, 1, 1, 1, 1),
+    c(1, 1, 1, 1, 1),
     c(1, 0, 1, 1, 1),
     c(0, 1, 0, 1, 1),
     c(0, 0, 0, 0, 1),
@@ -45,9 +51,6 @@ test_that("p_omega_f_norm_ut", {
 
 test_that("Ax_citation", {
 
-  library(Matrix)
-  library(RSpectra)
-
   set.seed(27)
 
   # matrix to build an SVD from
@@ -70,7 +73,7 @@ test_that("Ax_citation", {
   obs_Z <- Z * Y                     # project SVD onto observed matrix
 
   A0 <- drop0(A)
-  expected <- A0 %*% x - obs_Z %*% x + Z %*% x
+  expected <- drop(A0 %*% x - obs_Z %*% x + Z %*% x)
 
   A <- as(A, "TsparseMatrix")
   impl_result <- p_omega_zx_impl(s$u, s$d, s$v, A@i, A@j, x)
@@ -87,9 +90,6 @@ test_that("Ax_citation", {
 })
 
 test_that("Atx_citation", {
-
-  library(Matrix)
-  library(RSpectra)
 
   set.seed(27)
 
@@ -113,7 +113,7 @@ test_that("Atx_citation", {
   obs_Zt <- t(Z * Y)                 # project SVD onto observed matrix
 
   A0 <- drop0(A)
-  expected <- t(A0) %*% x - obs_Zt %*% x + t(Z) %*% x
+  expected <- drop(t(A0) %*% x - obs_Zt %*% x + t(Z) %*% x)
 
   A <- as(A, "TsparseMatrix")
   impl_result <- p_omega_ztx_impl(s$u, s$d, s$v, A@i, A@j, x)
@@ -129,5 +129,84 @@ test_that("Atx_citation", {
   expect_equivalent(
     wrapped_result,
     expected
+  )
+})
+
+test_that("citation svd", {
+
+  set.seed(27)
+
+  # matrix to build an SVD from
+  M <- rsparsematrix(30, 40, nnz = 50)
+  r <- 5
+
+  s <- svds(M, r)
+
+  # vector to multiply by
+  x <- rnorm(30)
+
+  # expand the SVD only at observed values by hand
+
+  Z <- s$u %*% diag(s$d) %*% t(s$v)  # full SVD
+  Y <- M != 0                        # observed indicator
+
+  # add the upper triangle back to Y since we're in the citation
+  # setting
+  Y <- Y | upper.tri(Y)
+
+  # KEY! M_tilde = P_\Omega(M) + P_\Omega^\perp(Z_t) x
+  M_tilde <- M + as(!Y, "CsparseMatrix") * Z
+
+  ### SVD: reference calculation
+
+  expected_svd <- svd(M_tilde, r, r)
+
+  ### SVD: fancy calculation
+
+  args <- list(u = s$u, d = s$d, v = s$v, M = M)
+
+  s_new <- svds(
+    Ax_citation,
+    k = r,
+    Atrans = Atx_citation,
+    dim = dim(M),
+    args = args
+  )
+
+  expect_true(equal_svds(s_new, expected_svd))
+
+  ### alpha: reference calculation
+
+  expected_alpha <- mean(expected_svd$d[(r+1):length(expected_svd$d)]^2)
+
+  ### alpha: fancy calculation
+
+  f_norm_M <- sum(M@x^2)
+
+  # p_omega_f_norm_ut() expects r singular values where r is the rank
+  # of the decomposition, but svd() always returns *all* singular values
+  # be sure to use s, corresponding to Z_(t-1) here
+  clean_svd <- s
+  clean_svd$d <- clean_svd$d[1:r]
+
+  # s is the SVD of M
+  M_tilde_f_norm <- f_norm_M + sum(s$d^2) - p_omega_f_norm_ut(clean_svd, M)
+
+  # make sure we got the norm of M tilde right
+  expect_equal(M_tilde_f_norm, sum(M_tilde^2))
+
+  # as a general rule we want to find the average of the remaining
+  # singular values. but in this case, we are working with a wide
+  # matrix instead of a tall matrix, so it is impossible to calculate
+  # d = ncol(M) singular values. this serves as a brief reminder of
+  # that:
+
+  num_s_values <- min(dim(M))
+
+  fancy_alpha <- (M_tilde_f_norm - sum(s_new$d^2)) / (num_s_values - r)
+
+  expect_equal(
+    fancy_alpha,
+    expected_alpha
   )
 })

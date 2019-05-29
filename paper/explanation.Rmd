@@ -1447,7 +1447,7 @@ Also note that
 
 \begin{align}
 Z^T_{ij} &= Z_{ji} \\
-&= \sum_{k=1}^r d_k U_{jk} V_{ki}
+&= \sum_{k=1}^r d_k U_{jk} V_{ki}^T
 \end{align}
 
 Putting these together we find
@@ -1473,6 +1473,8 @@ Recall that to calculate the average singular value we want
   \sum_{i = 1}^r \lambda_i^2 - 
   \left \Vert Z_t \odot Y \right \Vert_F^2
 \end{align}
+
+KEY NOTE: $\lambda_i$ is the $i^{th}$ singular value of the $Z^{(t-1)}$, *not* $Z^{(t)}$.
 
 This is the other computationally intensive part so let's write it up in Armadillo as well
 

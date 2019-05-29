@@ -66,7 +66,9 @@ citation_adaptive_impute <- function(M, r, epsilon = 1e-7) {
       args = args
     )
 
-    M_tilde_f_norm <- f_norm_M + sum(s_new$d^2) -
+    # TODO: negative alpha is clearly incorrect
+
+    M_tilde_f_norm <- f_norm_M + sum(s$d^2) -
       p_omega_f_norm_ut(s_new, M)
 
     alpha <- (M_tilde_f_norm - sum(s_new$d^2)) / (d - r)  # line 6
@@ -95,9 +97,9 @@ p_omega_f_norm_ut <- function(s, mask) {
 Ax_citation <- function(x, args) {
   mask <- as(args$M, "TsparseMatrix")
 
-  out <- drop0(args$M) %*% x -
-    p_omega_zx_impl(args$u, args$d, args$v, mask@i, mask@j, x) +
-    args$u %*% diag(args$d) %*% crossprod(args$v, x)
+  out <- drop0(args$M) %*% x
+  out <- out - p_omega_zx_impl(args$u, args$d, args$v, mask@i, mask@j, x)
+  out <- out + args$u %*% diag(args$d) %*% crossprod(args$v, x)
 
   drop(out)
 }
@@ -106,9 +108,9 @@ Atx_citation <- function(x, args) {
 
   mask <- as(args$M, "TsparseMatrix")
 
-  out <- t(drop0(args$M)) %*% x -
-    p_omega_ztx_impl(args$u, args$d, args$v, mask@i, mask@j, x) +
-    args$v %*% diag(args$d) %*% crossprod(args$u, x)
+  out <- t(drop0(args$M)) %*% x
+  out <- out - p_omega_ztx_impl(args$u, args$d, args$v, mask@i, mask@j, x)
+  out <- out + args$v %*% diag(args$d) %*% crossprod(args$u, x)
 
   drop(out)
 }
