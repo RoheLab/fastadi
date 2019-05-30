@@ -1813,7 +1813,33 @@ testthat::expect_equal(
 Okay now we need to do a little bit of benchmarking to make sure this has all been worth it
 
 ```{r}
+# big matrix for more realistic stress test
 
+set.seed(27)
+
+n <- 150000
+nnz <- 900000
+
+M <- rsparsematrix(nrow = n, ncol = n, nnz = nnz)
+x <- rnorm(n)
+
+s <- svds(M, 10)
+mask <- as(M, "TsparseMatrix")
+
+no <- function(s, mask, x) {
+  drop(p_omega_zx_impl(s$u, s$d, s$v, mask@i, mask@j, x))
+}
+
+yes <- function(s, mask, x) {
+  drop( 
+    p_u_zx_impl(s$u, s$d, s$v, x) +
+      p_u_tilde_zx_impl(s$u, s$d, s$v, mask@i, mask@j, x)
+  )
+}
+
+bench::mark(
+  yes(s, mask, x)
+)
 ```
 
 Next we do more a thorough sanity check and build a replacement for the older slower `Ax_citation()` function.
