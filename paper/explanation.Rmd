@@ -1556,23 +1556,28 @@ $P_{\tilde U} (Z_t) x$ is again easy so we focus on:
 \begin{align}
 \left( P_U (Z_t) \, x \right)_i
 &= \sum_{j=1}^d Z_{ij} \cdot \mathbf 1 (i < j) \cdot x_j  \\
-&= \sum_{j=1}^d \left( \sum_{k=1}^r U_{ik} (DV)_{kj} \right) \cdot x_j \cdot \mathbf 1 (i < j) \\
-&= \sum_{j=1}^d \left( \sum_{k=1}^r U_{ik} (DV)_{kj} x_j \right) \cdot \mathbf 1 (i < j)
+&= \sum_{j=1}^d \left( \sum_{k=1}^r U_{ik} (DV^T)_{kj} \right) \cdot x_j \cdot \mathbf 1 (i < j) \\
+&= \sum_{j=1}^d \left( \sum_{k=1}^r U_{ik} (DV^T)_{kj} x_j \right) \cdot \mathbf 1 (i < j)
 \end{align}
 
-Now let $W$ be an $r \times d$ matrix such that that $j^{th}$ column of $W$ is $(DV)_j \cdot x_j$. Then
+Now let $W$ be an $r \times d$ matrix such that that $j^{th}$ column of $W$ is $(DV^T)_j \cdot x_j$. Then
 
 \begin{align}
 ...
-&= \sum_{j=1}^d \sum_{k=1}^r U_{ik} (DV)_{kj} x_j \cdot \mathbf 1 (i < j) \\
-&= \sum_{k=1}^r \sum_{j=1}^d U_{ik} (DV)_{kj} x_j \cdot \mathbf 1 (i < j) \\
-&= \sum_{k=1}^r U_{ik} \sum_{j=1}^d (DV)_{kj} x_j \cdot \mathbf 1 (i < j) \\
-&= \sum_{i=1}^n \langle u_j, v_i \rangle x_i \mathbf 1 (i < j) \\
-&= \sum_{i=1}^n \sum_{\ell = 1}^r u_{j \ell} v_{i \ell} 
-  x_i \mathbf 1 (i < j) \\
-&= \sum_{\ell = 1}^r u_{j \ell} \sum_{i=1}^j v_{i \ell} x_i
+&= \sum_{j=1}^d \sum_{k=1}^r U_{ik} (DV^T)_{kj} x_j \cdot \mathbf 1 (i < j) \\
+&= \sum_{k=1}^r \sum_{j=1}^d U_{ik} (DV^T)_{kj} x_j \cdot \mathbf 1 (i < j) \\
+&= \sum_{k=1}^r U_{ik} \sum_{j=1}^d (DV^T)_{kj} x_j \cdot \mathbf 1 (i < j) \\
+&= \sum_{k=1}^r U_{ik} \sum_{j=1}^d W_{kj} \cdot \mathbf 1 (i < j) \\
+&= \sum_{k=1}^r U_{ik} \sum_{j=i+1}^d W_{kj}
 \end{align}
 
+Now let $\tilde W_{kj} = \sum_{j=i+1}^d W_{kj}$, which we can compute by taking a cumulative sum of the rows of $W$. Pay close attention to the indices in the next step:
+
+\begin{align}
+...
+&= \sum_{k=1}^r U_{ik} \tilde W_{ki} \\
+&= \langle U_{i \cdot}, \tilde W_i \rangle
+\end{align}
 
 Also because I never remember anything, recall that $Z$ is $n \times d$, $x$ is $d \times 1$ and $Zx$ is $n \times 1$:
 
@@ -1587,15 +1592,15 @@ Also note that
 \begin{align}
 Z_{ij} &= \sum_{k=1}^r U_{ik} d_k V_{kj} \\
 &= \langle U_{i \cdot}, (D V^T)_j \rangle \\
-&= \langle U_{i \cdot}, (D V)_{j \cdot} \rangle \\
-&= U_{i \cdot}^T (D V)_{j \cdot}
+&= \langle U_{i \cdot}, (VD)_{j \cdot} \rangle \\
+&= U_{i \cdot}^T (VD)_{j \cdot}
 \end{align}
 
 Recall that $x \in \mathbb{R}^d$. Putting these together we find
 
 \begin{align}
 (Zx)_i &= \sum_{j=1}^d Z_{ij} \cdot x_j \\
-&= \sum_{j=1}^d U_{i \cdot}^T (D V)_{j \cdot} \cdot x_j
+&= \sum_{j=1}^d U_{i \cdot}^T (VD)_{j \cdot} \cdot x_j
 \end{align}
 
 ```{r}
@@ -1605,7 +1610,11 @@ library(testthat)
 
 set.seed(27)
 
-M <- rsparsematrix(8, 11, nnz = 20)
+# NOTE: this currently works with square and wide matrices
+# it could probably be extended to long matrices but that would
+# take more work
+
+M <- rsparsematrix(9, 11, nnz = 20)
 M
 
 n <- nrow(M)  # 8
@@ -1623,79 +1632,230 @@ DVt <- diag(s$d) %*% t(s$v)
 expected <- drop((U %*% DVt * Y) %*% x)
 expected
 
-# TODO: be careful how broadcasting works
-# could broadcast on either rows or columns here
-# especially in square case
-DVtx <- DVt * x
+# you may be tempting to do the following, which is incorrect:
+# ARRRRGH VECTOR RECYCLING GROSS GROSS GROSS GROSS
+# DVtx <- DVt * x
+W <- sweep(DVt, 2, x, "*")
 
-CDVx <- matrixStats::colCumsums(DVx)
+# sanity check that the second row is right
+testthat::expect_equal(W[, 2], DVt[, 2] * x[2])
+# 
+# # want cumulative row sums starting from the right rather than
+# # the left
+# W <- matrix(1:6, 2, 3)
+# W
+# 
+# ## approach 1
+# 
+# W <- cbind(W, 0)
+# 
+# for (j in (ncol(W) - 2):1)
+#   W[, j] <- W[, j] + W[, j + 1]
+# 
+# W[, -1]
+# 
+# ## approach 2
+# 
+# CW <- matrixStats::rowCumsums(W)
+# -sweep(CW, 1, rowSums(W))
+
+## back to the regularly scheduled programming
+
+CW <- matrixStats::rowCumsums(W)
+W_tilde <- -sweep(CW, 1, rowSums(W))
 
 out <- numeric(n)
 
 for (j in 1:n) {
-  out[j] <- sum(U[j, ] * CDVx[, j])
+  out[j] <- sum(U[j, ] * W_tilde[, j])
 }
 
 expect_equal(
   drop(out),
   drop(expected)
 )
-
 ```
 
-Okay so I'm getting stuck making this work for citation matrices so let's just do a standard matrix multiply this way
+Now it's time to make this fast in C++
+
+```{Rcpp}
+#include <RcppArmadillo.h>
+
+using namespace arma;
+
+// [[Rcpp::depends(RcppArmadillo)]]
+// [[Rcpp::export]]
+arma::vec p_u_zx_impl(
+    const arma::mat& U,
+    const arma::vec& d,
+    const arma::mat& V,
+    const arma::vec& x) {
+  
+  // just DVt at this point
+  arma::mat W = diagmat(d) * V.t();
+  
+  // multiply columns by x to obtain W
+  for (int j = 0; j < W.n_cols; j++) {
+    W.col(j) *= x(j); 
+  }
+  
+  // cumulative summation step
+  
+  // the farthest right column should should always be all zero
+  // add a column of zeros to the right side of matrix
+  W.insert_cols(W.n_cols, 1);
+  
+  // perform the cumulative summation from right to left
+  // skip the rightmost two columns, which are already fine
+  // and the leftmost column, which we will drop
+  for (int j = W.n_cols - 3; j > 0; j--) {
+    W.col(j) += W.col(j + 1);
+  }
+  
+  // drop the leftmost column. now we have W_tilde in full
+  W.shed_col(0);
+  
+  // do the matrix-vector multiplication
+  arma::vec zx = zeros<vec>(U.n_rows);
+  
+  for (int j = 0; j < U.n_rows; j++) {
+    zx(j) = dot(U.row(j), W.col(j));
+  }
+  
+  return zx;
+}
+```
+
+Test that the C++ does what we want it to
 
 ```{r}
-library(Matrix)
-library(RSpectra)
-library(testthat)
+impl_result <- p_u_zx_impl(s$u, s$d, s$v, x)
 
-set.seed(27)
+expect_equal(
+  drop(impl_result),
+  drop(expected)
+)
+```
 
-M <- rsparsematrix(8, 11, nnz = 20)
-M
+Now that we have this, we need to complete the calculation of $P_\Omega(Z_t) x$, which requires computing $P_{\tilde U} (Z_t) x$. We do this next:
 
-n <- nrow(M)  # 8
-d <- ncol(M)  # 11
+```{Rcpp}
+#include <RcppArmadillo.h>
 
-x <- rnorm(d)
+using namespace arma;
 
-s <- svds(M, 3)
+// [[Rcpp::depends(RcppArmadillo)]]
+// [[Rcpp::export]]
+arma::vec p_u_tilde_zx_impl(
+    const arma::mat& U,
+    const arma::rowvec& d,
+    const arma::mat& V,
+    const arma::vec& row,
+    const arma::vec& col,
+    const arma::vec& x) {
 
-U <- s$u
-DVt <- diag(s$d) %*% t(s$v)
+  // first add the observed elements on the lower triangle
 
-expected <- drop((U %*% DVt) %*% x)
-expected
+  int i, j;
+  double z_ij;
 
-# TODO: be careful how broadcasting works
-# could broadcast on either rows or columns here
-# especially in square case
-DVtx <- DVt * x
-DVtx
+  arma::vec zx = zeros<vec>(U.n_rows);
 
-U %*% DVt %*% x
+  for (int idx = 0; idx < row.n_elem; idx++) {
 
-out <- numeric(n)
+    i = row(idx);
+    j = col(idx);
 
-for (j in 1:n) {
-  out[j] <- sum(U[j, ] * DVt[, j]) * x[j]
+    // only elements of the lower triangle
+    if (i > j) {
+      z_ij = arma::accu(U.row(i) % d % V.row(j));
+      zx(i) += x(j) * z_ij;
+    }
+  }
+
+  return zx;
 }
+```
 
-out <- U %*% DVt %*% x
+Now we sanity check the calculations
+
+```{r}
+# lower triangular non-zero mask
+L <- M & lower.tri(M)
+
+# project
+lower_expected <- (s$u %*% diag(s$d) %*% t(s$v) * L) %*% x
+
+mask <- as(L, "TsparseMatrix")
+lower_impl <- p_u_tilde_zx_impl(s$u, s$d, s$v, mask@i, mask@j, x)
+
+testthat::expect_equal(
+  drop(lower_impl),
+  drop(lower_expected)
+)
+```
+
+Now we see if we can combine the two to achieve what was previously happening with `p_omega_zx_impl()`:
+
+```{r}
+mmask <- as(M, "TsparseMatrix")
+
+no_cumsum <- p_omega_zx_impl(s$u, s$d, s$v, mmask@i, mmask@j, x)
+yes_cumsum <- p_u_zx_impl(s$u, s$d, s$v, x) +
+  p_u_tilde_zx_impl(s$u, s$d, s$v, mmask@i, mmask@j, x)
+
+testthat::expect_equal(
+  drop(no_cumsum),
+  drop(yes_cumsum)
+)
+```
+
+Okay now we need to do a little bit of benchmarking to make sure this has all been worth it
+
+```{r}
+
+```
+
+Next we do more a thorough sanity check and build a replacement for the older slower `Ax_citation()` function.
+
+```{r}
+Ax_citation2 <- function(x, args) {
+  mask <- as(args$M, "TsparseMatrix")
+
+  out <- drop0(args$M) %*% x
+  out <- out - p_omega_zx_impl(args$u, args$d, args$v, mask@i, mask@j, x)
+  out <- out + args$u %*% diag(args$d) %*% crossprod(args$v, x)
+
+  drop(out)
+}
+}
+```
+
+
+
+```{r}
+p_omega_citation_zx(s, mask, x) {
+  p_omega_citation_zx_impl(s$u, s$d, s$v, mask@i, mask)
+}
 
 expect_equal(
   drop(out),
   drop(expected)
 )
+
+
 ```
 
 
-
-Put $CVX = \sum_{i=1}^j v_{i \ell} x_i$
 
 ### A naive solution: the epsilon trick
 
 issue: we've moved back into dense computation land
+
+### Armadillo resources
+
+useful examples to crib from https://github.com/lsolanka/armadillo/blob/master/examples/example1.cpp
+
+http://arma.sourceforge.net/docs.html#syntax
 
 ## References
