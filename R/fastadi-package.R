@@ -12,6 +12,7 @@
 ## usethis namespace: start
 #' @importFrom Rcpp sourceCpp evalCpp
 #' @useDynLib fastadi, .registration = TRUE
+#' @importFrom Rcpp sourceCpp
 ## usethis namespace: end
 NULL
 

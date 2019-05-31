@@ -108,6 +108,66 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// p_u_tilde_ztx_impl
+arma::vec p_u_tilde_ztx_impl(const arma::mat& U, const arma::rowvec& d, const arma::mat& V, const arma::vec& row, const arma::vec& col, const arma::vec& x);
+RcppExport SEXP _fastadi_p_u_tilde_ztx_impl(SEXP USEXP, SEXP dSEXP, SEXP VSEXP, SEXP rowSEXP, SEXP colSEXP, SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat& >::type U(USEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type d(dSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type V(VSEXP);
+    Rcpp::traits::input_parameter< const arma::vec& >::type row(rowSEXP);
+    Rcpp::traits::input_parameter< const arma::vec& >::type col(colSEXP);
+    Rcpp::traits::input_parameter< const arma::vec& >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(p_u_tilde_ztx_impl(U, d, V, row, col, x));
+    return rcpp_result_gen;
+END_RCPP
+}
+// p_u_tilde_zx_impl
+arma::vec p_u_tilde_zx_impl(const arma::mat& U, const arma::rowvec& d, const arma::mat& V, const arma::vec& row, const arma::vec& col, const arma::vec& x);
+RcppExport SEXP _fastadi_p_u_tilde_zx_impl(SEXP USEXP, SEXP dSEXP, SEXP VSEXP, SEXP rowSEXP, SEXP colSEXP, SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat& >::type U(USEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type d(dSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type V(VSEXP);
+    Rcpp::traits::input_parameter< const arma::vec& >::type row(rowSEXP);
+    Rcpp::traits::input_parameter< const arma::vec& >::type col(colSEXP);
+    Rcpp::traits::input_parameter< const arma::vec& >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(p_u_tilde_zx_impl(U, d, V, row, col, x));
+    return rcpp_result_gen;
+END_RCPP
+}
+// p_u_ztx_impl
+arma::vec p_u_ztx_impl(const arma::mat& U, const arma::vec& d, const arma::mat& V, const arma::vec& x);
+RcppExport SEXP _fastadi_p_u_ztx_impl(SEXP USEXP, SEXP dSEXP, SEXP VSEXP, SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat& >::type U(USEXP);
+    Rcpp::traits::input_parameter< const arma::vec& >::type d(dSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type V(VSEXP);
+    Rcpp::traits::input_parameter< const arma::vec& >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(p_u_ztx_impl(U, d, V, x));
+    return rcpp_result_gen;
+END_RCPP
+}
+// p_u_zx_impl
+arma::vec p_u_zx_impl(const arma::mat& U, const arma::vec& d, const arma::mat& V, const arma::vec& x);
+RcppExport SEXP _fastadi_p_u_zx_impl(SEXP USEXP, SEXP dSEXP, SEXP VSEXP, SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat& >::type U(USEXP);
+    Rcpp::traits::input_parameter< const arma::vec& >::type d(dSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type V(VSEXP);
+    Rcpp::traits::input_parameter< const arma::vec& >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(p_u_zx_impl(U, d, V, x));
+    return rcpp_result_gen;
+END_RCPP
+}
 // relative_f_norm_change_impl
 double relative_f_norm_change_impl(const arma::mat& new_U, const arma::rowvec& new_d, const arma::mat& new_V, const arma::mat& U, const arma::rowvec& d, const arma::mat& V);
 RcppExport SEXP _fastadi_relative_f_norm_change_impl(SEXP new_USEXP, SEXP new_dSEXP, SEXP new_VSEXP, SEXP USEXP, SEXP dSEXP, SEXP VSEXP) {
@@ -149,6 +209,10 @@ static const R_CallMethodDef CallEntries[] = {
     {"_fastadi_p_omega_f_norm_ut_impl", (DL_FUNC) &_fastadi_p_omega_f_norm_ut_impl, 5},
     {"_fastadi_p_omega_ztx_impl", (DL_FUNC) &_fastadi_p_omega_ztx_impl, 6},
     {"_fastadi_p_omega_zx_impl", (DL_FUNC) &_fastadi_p_omega_zx_impl, 6},
+    {"_fastadi_p_u_tilde_ztx_impl", (DL_FUNC) &_fastadi_p_u_tilde_ztx_impl, 6},
+    {"_fastadi_p_u_tilde_zx_impl", (DL_FUNC) &_fastadi_p_u_tilde_zx_impl, 6},
+    {"_fastadi_p_u_ztx_impl", (DL_FUNC) &_fastadi_p_u_ztx_impl, 4},
+    {"_fastadi_p_u_zx_impl", (DL_FUNC) &_fastadi_p_u_zx_impl, 4},
     {"_fastadi_relative_f_norm_change_impl", (DL_FUNC) &_fastadi_relative_f_norm_change_impl, 6},
     {"_fastadi_masked_svd_times_x_impl", (DL_FUNC) &_fastadi_masked_svd_times_x_impl, 6},
     {NULL, NULL, 0}

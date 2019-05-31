@@ -29,6 +29,22 @@ p_omega_zx_impl <- function(U, d, V, row, col, x) {
     .Call(`_fastadi_p_omega_zx_impl`, U, d, V, row, col, x)
 }
 
+p_u_tilde_ztx_impl <- function(U, d, V, row, col, x) {
+    .Call(`_fastadi_p_u_tilde_ztx_impl`, U, d, V, row, col, x)
+}
+
+p_u_tilde_zx_impl <- function(U, d, V, row, col, x) {
+    .Call(`_fastadi_p_u_tilde_zx_impl`, U, d, V, row, col, x)
+}
+
+p_u_ztx_impl <- function(U, d, V, x) {
+    .Call(`_fastadi_p_u_ztx_impl`, U, d, V, x)
+}
+
+p_u_zx_impl <- function(U, d, V, x) {
+    .Call(`_fastadi_p_u_zx_impl`, U, d, V, x)
+}
+
 relative_f_norm_change_impl <- function(new_U, new_d, new_V, U, d, V) {
     .Call(`_fastadi_relative_f_norm_change_impl`, new_U, new_d, new_V, U, d, V)
 }

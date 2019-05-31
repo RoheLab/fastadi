@@ -1571,8 +1571,7 @@ Now let $W$ be an $r \times d$ matrix such that that $j^{th}$ column of $W$ is $
 &= \sum_{k=1}^r U_{ik} \sum_{j=i+1}^d W_{kj}
 \end{align}
 
-Now let $\tilde W_{kj} = \sum_{j=i+1}^d W_{kj}$, which we can compute by taking a cumulative sum of the rows of $W$. Pay close attention to the indices in the next step:
-
+Now let $\tilde W_{ki} = \sum_{j=i+1}^d W_{kj}$. We can form $\tilde W$ by taking cumulative row sums of $W$ from the right rather than from the left. Then 
 \begin{align}
 ...
 &= \sum_{k=1}^r U_{ik} \tilde W_{ki} \\
@@ -1637,7 +1636,7 @@ expected
 # DVtx <- DVt * x
 W <- sweep(DVt, 2, x, "*")
 
-# sanity check that the second row is right
+# sanity check that the second column is right
 testthat::expect_equal(W[, 2], DVt[, 2] * x[2])
 # 
 # # want cumulative row sums starting from the right rather than
@@ -1842,37 +1841,121 @@ bench::mark(
 )
 ```
 
-Next we do more a thorough sanity check and build a replacement for the older slower `Ax_citation()` function.
+To make things fast we also need to speed up the transposed multiply. This looks like:
+
+\begin{align}
+\tilde M^{(t)^T} x 
+  &= P_{\tilde \Omega}(M)^T x - P_\Omega(Z_t)^T x + Z_t^T x \\
+  &= P_{\tilde \Omega}(M)^T x - P_U (Z_t)^T x - P_{\tilde U} (Z_t)^T x + Z_t^T x
+\end{align}
+
+Quick aside: the upper triangle of $A$ contains all of the elements $A_{ij}$ where $i < j$, and the lower triangule contains all of the elements $A_{ij}$ such that $i > j$. These upper and lower triangule excluding the diagonal. To include the diagonal, use an inclusive inequality rather than a strict inequality.
+
+Again we are primarily concerned with $P_U (Z_t)^T x$. We are now working with $x \in \mathbb{R}^n$. Thus (the first two lines are easiest to understand if you draw a picture rather than work symbolically):
+
+\begin{align}
+\left( P_U (Z_t)^T x \right)_i 
+&= \left \langle \left( P_U (Z_t)^T \right)_{i \cdot} , x \right \rangle \\
+&= \left \langle P_U (Z_t)_i , x \right \rangle \\
+&= \sum_{j=1}^n Z_{ji} \cdot \mathbf 1 (j < i) \cdot x_j 
+  & \text{watch indices carefully!} \\
+&= \sum_{j=1}^n \sum_{k=1}^r x_j (UD)_{jk} V^T_{ki} \cdot \mathbf 1 (j < i) \\
+&= \sum_{j=1}^n \sum_{k=1}^r S_{jk} V^T_{ki} \cdot \mathbf 1 (j < i) \\
+&= \sum_{k=1}^r V^T_{ki} \sum_{j=1}^n S_{jk} \cdot \mathbf 1 (j < i) \\
+&= \sum_{k=1}^r V^T_{ki} \sum_{j=1}^{i - 1} S_{jk} \\
+&= \sum_{k=1}^r \tilde S_{ik} V^T_{ki} \\
+&= \langle \tilde S_{i \cdot} , V^T_i \rangle
+\end{align}
+
+where $S$ is an $n \times r$ matrix such that that $j^{th}$ row of $S$ is $(UD)_{j \cdot} \cdot x_j$ and $\tilde S_{ik} = \sum_{j=1}^{i - 1} S_{jk}$.
+
+Now we proceed to ~~HAMMERTIME~~ IMPLEMENTATION TIME.
 
 ```{r}
-Ax_citation2 <- function(x, args) {
-  mask <- as(args$M, "TsparseMatrix")
+library(Matrix)
+library(RSpectra)
+library(testthat)
 
-  out <- drop0(args$M) %*% x
-  out <- out - p_omega_zx_impl(args$u, args$d, args$v, mask@i, mask@j, x)
-  out <- out + args$u %*% diag(args$d) %*% crossprod(args$v, x)
+set.seed(27)
 
-  drop(out)
-}
-}
-```
+# NOTE: this currently works with square and wide matrices
+# it could probably be extended to long matrices but that would
+# take more work
 
+M <- rsparsematrix(11, 11, nnz = 20)
+x <- rnorm(11)
 
+Y <- as(upper.tri(M), "CsparseMatrix")
+s <- svds(M, 3)
 
-```{r}
-p_omega_citation_zx(s, mask, x) {
-  p_omega_citation_zx_impl(s$u, s$d, s$v, mask@i, mask)
+expected <- drop(t(s$u %*% diag(s$d) %*% t(s$v) * Y) %*% x)
+
+UD <- s$u %*% diag(s$d)
+S <- sweep(UD, 1, x, "*")
+
+# sanity check that the second row is right
+expect_equal(S[2, ], UD[2, ] * x[2])
+
+# get S_tilde
+S_tilde <- matrixStats::colCumsums(S)
+S_tilde <- rbind(0, S_tilde)
+S_tilde <- S_tilde[-nrow(S_tilde), ]
+
+out <- numeric(d)
+
+for (i in 1:d) {
+  out[i] <- sum(S_tilde[i, ] * s$v[i, ])
 }
 
 expect_equal(
   drop(out),
   drop(expected)
 )
+```
 
+Now bump to Armadillo
 
+```{Rcpp}
+#include <RcppArmadillo.h>
+
+using namespace arma;
+
+// [[Rcpp::depends(RcppArmadillo)]]
+// [[Rcpp::export]]
+arma::vec p_u_ztx_impl(
+    const arma::mat& U,
+    const arma::vec& d,
+    const arma::mat& V,
+    const arma::vec& x) {
+  
+  // just UD at this point
+  arma::mat S = U * diagmat(d);
+  
+  // multiply rows by x to obtain W
+  for (int i = 0; i < S.n_rows; i++) {
+    S.row(i) *= x(i);
+  }
+  
+  // cumulative summation step
+  
+  S = cumsum(S); // column-wise by default
+  S.insert_rows(0, 1); // add 1 row of zeros at zeroth row index
+  S.shed_row(S.n_rows - 1);
+  
+  // do the matrix-vector multiplication
+  arma::vec ztx = zeros<vec>(V.n_cols);
+  
+  for (int i = 0; i < V.n_cols; i++) {
+    ztx(i) = dot(S.row(i), V.row(i));
+  }
+  
+  return ztx;
+}
 ```
 
 
+
+Next we do more a thorough sanity check and build a replacement for the older slower `Ax_citation()` function.
 
 ### A naive solution: the epsilon trick
 
