@@ -17,15 +17,15 @@ arma::vec p_u_tilde_ztx_impl(
   int i, j;
   double z_ij;
 
-  arma::vec ztx = zeros<vec>(V.n_cols);
+  arma::vec ztx = zeros<vec>(V.n_rows);
 
   for (int idx = 0; idx < row.n_elem; idx++) {
 
     i = row(idx);
     j = col(idx);
 
-    // only elements of the lower triangle
-    if (i > j) {
+    // only elements of the lower triangle + diagonal!
+    if (i >= j) {
       z_ij = arma::accu(U.row(i) % d % V.row(j));
       ztx(j) += x(i) * z_ij;
     }

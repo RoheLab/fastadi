@@ -25,9 +25,9 @@ arma::vec p_u_ztx_impl(
   S.shed_row(S.n_rows - 1);
 
   // do the matrix-vector multiplication
-  arma::vec ztx = zeros<vec>(V.n_cols);
+  arma::vec ztx = zeros<vec>(V.n_rows);
 
-  for (int i = 0; i < V.n_cols; i++) {
+  for (int i = 0; i < V.n_rows; i++) {
     ztx(i) = dot(S.row(i), V.row(i));
   }
 

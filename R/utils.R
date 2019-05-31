@@ -2,7 +2,7 @@
 # slightly nicer wrappers for the C++ implementations
 
 masked_approximation <- function(s, mask) {
-  mask <- as(mask, "dgTMatrix")
+  mask <- as(mask, "TsparseMatrix")
   masked_approximation_impl(s$u, s$d, s$v, mask@i, mask@j)
 }
 

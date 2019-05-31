@@ -25,7 +25,7 @@ arma::vec p_omega_zx_impl(
     j = col(idx);
 
     // only elements of the lower triangle
-    if (i > j) {
+    if (i >= j) {
       z_ij = arma::accu(U.row(i) % d % V.row(j));
       zx(i) += x(j) * z_ij;
     }

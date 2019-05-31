@@ -43,7 +43,10 @@ citation_adaptive_impute <- function(M, r, epsilon = 1e-7) {
   # NOTE: no differences are necessary from the sparse
   # adaptive_initialize since M just has more zeros
 
-  s <- sparse_adaptive_initialize(M, r)  # line 1
+  # s <- sparse_adaptive_initialize(M, r)  # line 1
+
+  # start from a standard SVD
+  s <- svds(M, r)
   delta <- Inf
   d <- ncol(M)
   f_norm_M <- sum(M@x^2)
@@ -66,10 +69,16 @@ citation_adaptive_impute <- function(M, r, epsilon = 1e-7) {
       args = args
     )
 
+    # browser()
+
     # TODO: negative alpha is clearly incorrect
 
     M_tilde_f_norm <- f_norm_M + sum(s$d^2) -
       p_omega_f_norm_ut(s_new, M)
+
+    # print(glue("M_tilde_f_norm: {M_tilde_f_norm}\n"))
+    # print(glue("sum(s_new$d^2): {sum(s_new$d^2)}\n"))
+    # print(glue("(d - r):        {(d - r)}"))
 
     alpha <- (M_tilde_f_norm - sum(s_new$d^2)) / (d - r)  # line 6
 
@@ -97,8 +106,13 @@ p_omega_f_norm_ut <- function(s, mask) {
 Ax_citation <- function(x, args) {
   mask <- as(args$M, "TsparseMatrix")
 
+  # out <- drop0(args$M) %*% x
+  # out <- out - p_omega_zx_impl(args$u, args$d, args$v, mask@i, mask@j, x)
+  # out <- out + args$u %*% diag(args$d) %*% crossprod(args$v, x)
+
   out <- drop0(args$M) %*% x
-  out <- out - p_omega_zx_impl(args$u, args$d, args$v, mask@i, mask@j, x)
+  out <- out - p_u_zx_impl(args$u, args$d, args$v, x)
+  out <- out - p_u_tilde_zx_impl(args$u, args$d, args$v, mask@i, mask@j, x)
   out <- out + args$u %*% diag(args$d) %*% crossprod(args$v, x)
 
   drop(out)
@@ -108,8 +122,13 @@ Atx_citation <- function(x, args) {
 
   mask <- as(args$M, "TsparseMatrix")
 
+  # out <- t(drop0(args$M)) %*% x
+  # out <- out - p_omega_ztx_impl(args$u, args$d, args$v, mask@i, mask@j, x)
+  # out <- out + args$v %*% diag(args$d) %*% crossprod(args$u, x)
+
   out <- t(drop0(args$M)) %*% x
-  out <- out - p_omega_ztx_impl(args$u, args$d, args$v, mask@i, mask@j, x)
+  out <- out - p_u_ztx_impl(args$u, args$d, args$v, x)
+  out <- out - p_u_tilde_ztx_impl(args$u, args$d, args$v, mask@i, mask@j, x)
   out <- out + args$v %*% diag(args$d) %*% crossprod(args$u, x)
 
   drop(out)

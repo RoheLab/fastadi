@@ -24,10 +24,12 @@ double relative_f_norm_change_impl(
       new_z_ij = arma::accu(new_U.row(i) % new_d % new_V.row(j));
       z_ij = arma::accu(U.row(i) % d % V.row(j));
 
-      z_norm_sq += pow(z_ij, 2);
       diff_norm_sq += pow(new_z_ij - z_ij, 2);
     }
   }
+
+  // this is unhappy
+  z_norm_sq = sum(pow(d, 2));
 
   return diff_norm_sq / z_norm_sq;
 }

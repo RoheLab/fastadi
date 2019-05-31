@@ -14,8 +14,11 @@ pryr::object_size(M)
 
 lra <- citation_adaptive_impute(M, 10, epsilon = 1e-4)
 
+s <- svd(M, 10)
+sum(s$d^2)
+
 profvis({
-  lra <- citation_adaptive_impute(M, 10, epsilon = 1e-4)
+  lra <- citation_adaptive_impute(M, 10, epsilon = 1e-2)
 })
 
 n2 <- 100000

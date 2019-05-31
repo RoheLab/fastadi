@@ -24,8 +24,8 @@ arma::vec p_u_tilde_zx_impl(
     i = row(idx);
     j = col(idx);
 
-    // only elements of the lower triangle
-    if (i > j) {
+    // only elements of the lower triangle + diagonal!
+    if (i >= j) {
       z_ij = arma::accu(U.row(i) % d % V.row(j));
       zx(i) += x(j) * z_ij;
     }

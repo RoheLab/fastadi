@@ -28,7 +28,7 @@ arma::vec p_omega_ztx_impl(
     j = col(idx);
 
     // only elements of the (strict) upper triangle
-    if (i > j) {
+    if (i >= j) {
       z_ij = arma::accu(U.row(i) % d % V.row(j));
       ztx(j) += x(i) * z_ij;
     }

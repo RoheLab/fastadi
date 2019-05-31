@@ -53,13 +53,11 @@ test_that("Ax_citation", {
 
   set.seed(27)
 
-  # matrix to build an SVD from
-  A <- rsparsematrix(30, 40, nnz = 50)
+  # matrix to build an SVD from. must be square
+  A <- rsparsematrix(40, 40, nnz = 50)
+  x <- rnorm(40)
 
   s <- svds(A, 5)
-
-  # vector to multiply by
-  x <- rnorm(40)
 
   # expand the SVD only at observed values by hand
 
@@ -94,12 +92,10 @@ test_that("Atx_citation", {
   set.seed(27)
 
   # matrix to build an SVD from
-  A <- rsparsematrix(30, 40, nnz = 50)
+  A <- rsparsematrix(40, 40, nnz = 50)
+  x <- rnorm(40)
 
   s <- svds(A, 5)
-
-  # vector to multiply by
-  x <- rnorm(30)
 
   # expand the SVD only at observed values by hand
 
@@ -137,13 +133,11 @@ test_that("citation svd", {
   set.seed(27)
 
   # matrix to build an SVD from
-  M <- rsparsematrix(30, 40, nnz = 50)
+  M <- rsparsematrix(40, 40, nnz = 50)
+  x <- rnorm(40)
+
   r <- 5
-
   s <- svds(M, r)
-
-  # vector to multiply by
-  x <- rnorm(30)
 
   # expand the SVD only at observed values by hand
 
