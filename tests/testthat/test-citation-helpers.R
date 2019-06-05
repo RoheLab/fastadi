@@ -7,13 +7,12 @@ test_that("p_omega_f_norm_ut", {
 
   # important: make sure to test when there are elements on the diagonal
   # in practice this shouldn't happen, but we still want correct
-  # calculations when this is the case
+  # calculations when this is the case. must be diagonal!
   M <- Matrix(
     rbind(
       c(4, 0, 3, 1, 0),
       c(3, 0, 0, 8, 0),
       c(0, -1, 0, 0, 0),
-      c(0, 0, 0, 0, 0),
       c(0, 2, 0, 0, 0),
       c(5, 0, 7, 0, 4)
     )
@@ -24,8 +23,7 @@ test_that("p_omega_f_norm_ut", {
     c(1, 1, 1, 1, 1),
     c(1, 0, 1, 1, 1),
     c(0, 1, 0, 1, 1),
-    c(0, 0, 0, 0, 1),
-    c(0, 1, 0, 0, 0),
+    c(0, 1, 0, 0, 1),
     c(1, 0, 1, 0, 1)
   )
 

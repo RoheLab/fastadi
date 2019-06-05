@@ -12,24 +12,27 @@ double relative_f_norm_change_impl(
     const arma::rowvec& d,
     const arma::mat& V) {
 
-  double new_z_ij, z_ij;
+  arma::mat new_DVt = diagmat(new_d) * new_V.t();
+  arma::mat DVt = diagmat(d) * V.t();
 
-  double z_norm_sq = 0;
+  arma::rowvec new_Z_i, Z_i, diff;
   double diff_norm_sq = 0;
 
-  // i indexes row, j indexes column
+  // expand a single row of new_Z and Z at a time
+  // to avoid hitting memory limits
+
   for (int i = 0; i < U.n_rows; i++) {
-    for (int j = 0; j < V.n_rows; j++) {
 
-      new_z_ij = arma::accu(new_U.row(i) % new_d % new_V.row(j));
-      z_ij = arma::accu(U.row(i) % d % V.row(j));
+    new_Z_i = new_U.row(i) * new_DVt;
+    Z_i = U.row(i) * DVt;
 
-      diff_norm_sq += pow(new_z_ij - z_ij, 2);
-    }
+    diff = new_Z_i - Z_i;
+    diff_norm_sq += dot(diff, diff);
   }
 
-  // this is unhappy
-  z_norm_sq = sum(pow(d, 2));
+  // exploit connection between frobenius norm
+  // and singular values
+  double z_norm_sq = accu(pow(d, 2));
 
   return diff_norm_sq / z_norm_sq;
 }

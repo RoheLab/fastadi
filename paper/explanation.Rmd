@@ -41,6 +41,8 @@ There are two steps to computing the low rank approximation of [@cho_intelligent
 
 The input to these algorithms is a partially observed matrix $M$, and $r$, the desired rank of the low-rank approximation. We define $Y$ to be an indicator matrix that tells us whether or not we observed a particular value of $M$.
 
+TODO: flip the sign of v, not lambda, the singular values being positive is a good sanity check we don't want to lose
+
 \begin{algorithm}
 \linespread{1.6}\selectfont
 \DontPrintSemicolon
@@ -296,6 +298,11 @@ s2 <- svds(M, k, k)
 # only request the first K singular vectors
 s$u %*% diag(s$d[1:k]) %*% t(s$v)
 
+# A and B are matrices
+equal_up_to_sign <- function(A, B) {
+  isTRUE(all.equal(A, A * sign(A) * sign(B), check.attributes = FALSE))
+}
+
 # based on the flip_signs function of
 # https://stats.stackexchange.com/questions/134282/relationship-between-svd-and-pca-how-to-use-svd-to-perform-pca
 equal_svds <- function(s, s2) {
@@ -308,15 +315,9 @@ equal_svds <- function(s, s2) {
   
   # isTRUE because output of all.equal is not a boolean, it's something
   # weird when the inputs aren't equal. lol why
-  
-  u_ok <- isTRUE(
-    all.equal(s$u, s2$u * sign(s$u) * sign(s2$u), check.attributes = FALSE)
-  )
-  
-  v_ok <- isTRUE(
-    all.equal(s$v, s2$v * sign(s$v) * sign(s2$v), check.attributes = FALSE)
-  )
-  
+
+    u_ok <- equal_up_to_sign(s$u, s2$u)
+  v_ok <- equal_up_to_sign(s$v, s2$v)
   d_ok <- isTRUE(all.equal(s$d[1:k], s2$d[1:k], check.attributes = FALSE))
   
   u_ok && v_ok && d_ok
@@ -490,7 +491,7 @@ adaptive_impute <- function(M, r, epsilon = 1e-7) {
   
   while (delta > epsilon) {
     
-    y <- as(M, "lgCMatrix")  # indicator if entry of M observed
+    y <- M != 0  # indicator if entry of M observed
     M_tilde <- M + Z * (1 - y)  # line 3
     
     svd_M <- svds(M_tilde, r)
@@ -545,83 +546,214 @@ The reference implementation has some problems. As our data matrix $M$ gets larg
 This leads us to following implementation:
 
 ```{r}
-low_rank_adaptive_initialize <- function(M, r) {
-  
-  M <- as(M, "dgCMatrix")
-  
-  p_hat <- nnzero(M) / prod(dim(M))  # line 1
-  
+sparse_adaptive_initialize <- function(M, r,
+  additional = min(100, ncol(M) / 4)) {
+
+  M <- as(M, "CsparseMatrix")
+
+  n <- nrow(M)
+  d <- ncol(M)
+
+  p_hat <- nnzero(M) / (n * d)  # line 1
+
+  # now that we have counted explicitly observed zeros
+  # we can make the explicit zeros implicit for more
+  # efficiency in the initializer
+  M <- drop0(M)
+
   # NOTE: skip explicit computation of line 2
   # NOTE: skip explicit computation of line 3
+
+  # since sigma_p and sigma_t are symmetric the eigenvectors
+  # and left and right singular vectors are all the same
+  # and it is slightly nicer to user the eigs_sym() interface
+  # here than svds(). however, we need to be careful about
+  # the singular values. the singular values will be the
+  # absolute values of the eigenvalues
+
+  args <- list(M = M, p = p_hat)
   
-  eig_p <- eigen_helper(M, r)
-  eig_t <- eigen_helper(t(M), r)
+  additional <- min(d - r - 1, additional)
   
-  lr_v_hat <- eig_p$vectors  # line 4
-  lr_u_hat <- eig_t$vectors  # line 5
+  # next we run into the issue that computing the entire
+  # SVD of sigma_p will almost always be computational 
+  # infeasible. instead of computing all the remaining
+  # singular values after the first r singular values,
+  # we only compute `additional` many more, and assume
+  # the uncalculate singular values are zero. this leads
+  # to slightly lower value of alpha and less truncation
+  # than in the AdapativeInitialize algorithm itself.
+  # users can specify the `additional` argument if they
+  # better information about the rank of their matrix
+
+  # need the minimum to keep from asking for more singular values
+  # of sigma_p than exist. note that the eigenvalues are 
+  svd_p <- svds(Mx, r + additional, dim = c(d, d), Atrans = Mx,
+                args = args)
   
-  d <- ncol(M)
-  n <- nrow(M)
+  svd_t <- svds(Mtx, r, dim = c(n, n), Atrans = Mtx, args = args)
+
+  v_hat <- svd_p$v[, 1:r]  # line 4
+  u_hat <- svd_t$u         # line 5
   
-  # NOTE: alpha is again incorrect since we work with eigenvalues
-  # rather than singular values here
-  sum_eigen_values <- sum(M@x^2) / p^2 - (1 - p) * sum(colSums(M^2))
-  lr_alpha <- (sum_eigen_values - sum(eig_p$values)) / (d - r)  # line 6
+  # approximate calculation of line 6
+  alpha <- sum(svd_p$d[r + 1:additional]) / (d - r)
+
+  lambda_hat <- sqrt(svd_p$d[1:r] - alpha) / p_hat  # line 7
+
+  svd_M <- svds(M, r)
+
+  # diag(crossprod()) patterns
+  v_sign <- crossprod(rep(1, d), svd_M$v * v_hat)
+  u_sign <- crossprod(rep(1, n), svd_M$u * u_hat)
+  s_hat <- drop(sign(v_sign * u_sign))  # line 8
   
-  lr_lambda_hat <- sqrt(eig_p$values - lr_alpha) / p_hat  # line 7
-  
-  # TODO: Karl had another sign computation here that he said was faster
-  # but it wasn't documented anywhere, so I'm going with what was in the 
-  # paper
-  
-  lr_svd_M <- svds(M, r)
-  
-  # v_hat is d by r
-  lr_v_sign <- crossprod(rep(1, d), lr_svd_M$v * lr_v_hat)
-  lr_u_sign <- crossprod(rep(1, n), lr_svd_M$u * lr_u_hat)
-  lr_s_hat <- c(sign(lr_v_sign * lr_u_sign))  # line 8
-  
-  lr_lambda_hat <- lr_lambda_hat * lr_s_hat
-  
-  list(u = lr_u_hat, d = lr_lambda_hat, v = lr_v_hat)
+  # make the sign adjustment to v_hat so we don't have
+  # to carry s_hat around with use. multiplies each 
+  # *row* of v_hat (i.e. column v_hat^T) by the corresponding
+  # element of s_hat
+  v_hat <- sweep(v_hat, 2, s_hat, "*")
+
+  list(u = u_hat, d = lambda_hat, v = v_hat)
 }
+
+r <- 5
+lr_init <- sparse_adaptive_initialize(M, r, additional = 7)
+s <- svd(M, r)
+
+lr_init$d
+s$d[1:r]
+
+lr_init$d - s$d[1:r]
+
+lr_init$u - s$u
+
+
+# sanity check and make sure shit is on the same scale, etc
 ```
 
-What does `eigen_helper()` do? Describe the return object (also do this for svds)
+Now we need to make sure we've calculated the SVD correctly
+
+(TODO: I suspect the reference code may be wrong)
+
+(TODO: be sure the dimension notation is consistent throughout document)
+
+Let $M \in \mathbb{R}^{n \times d}$. Observe that $\Sigma_{\hat p} \in \mathbb{R}^{d \times d}$ and $\Sigma_{t \hat p} \in \mathbb{R}^{n \times n}$. So let $x \in \mathbb{R}^d, y \in \mathbb{R}^n$. We need to be able to calculate
+
+\begin{align}
+\Sigma_{\hat p} \, y \\
+&= M^T M y - (1 - \hat p) \diag(M^T M) y
+\end{align}
+
+and  
+
+\begin{align}
+\Sigma_{t \hat p}^T \, x \\
+&= M M^T x - (1 - \hat p) \diag(M M^T) x
+\end{align}
+
+TODO: figure out all this divide by $p^2$ nonsense
 
 ```{r}
-# Take the eigendecomposition of t(M) %*% M - (1 - p) * diag(t(M) %*% M)
-# using sparse computations only
-eigen_helper <- function(M, r) {
-  eigs_sym(
-    Mx, r,
-    n = ncol(M),
-    args = list(
-      M = M,
-      p = nnzero(M) / prod(dim(M))
-    )
-  )
-}
-
-# compute (t(M) %*% M / p^2 - (1 - p) * diag(diag(t(M) %*% M))) %*% x
-# using sparse operations
-
-# TODO: divide the second term by p^2 like in the reference implementatio
+# args are `M` and `p`
+# M is n x d, x is a vector in R^d. M^T M is then d x d.
+# computes M^T M x / p^2 - (1 - p) diag(M^T M) x
+# using tricks from before to calculate diagonals of cross-products
 Mx <- function(x, args) {
   drop(
-    crossprod(args$M, args$M %*% x) / args$p^2 - (1 - args$p) * Diagonal(ncol(args$M), colSums(args$M^2)) %*% x
+    crossprod(args$M, args$M %*% x) -
+      (1 - args$p) * Diagonal(ncol(args$M), colSums(args$M^2)) %*% x
+  )
+}
+
+# args are `M` and `p`
+# M is n x d, x is a vector in R^d. M M^T is then 
+# computes M^T M x / p^2 - (1 - p) diag(M^T M) x
+# using tricks from before to calculate diagonals of cross-products
+Mtx <- function(x, args) {
+  drop(
+    args$M %*% crossprod(args$M, x) -
+      (1 - args$p) * Diagonal(nrow(args$M), rowSums(args$M^2)) %*% x
   )
 }
 ```
 
-Now we check that `Mx` works
+Now we check that `Mx()` and `eigen_helper()` work
 
 ```{r}
-x <- rnorm(12)
-p <- 0.3
-out <- (t(M) %*% M / p^2 - (1 - p) * diag(diag(t(M) %*% M))) %*% x
-out2 <- Mx(x, args = list(M = M, p = p))
-all.equal(as.matrix(out), as.matrix(out))
+library(RSpectra)
+library(Matrix)
+library(testthat)
+
+n <- 8
+d <- 12
+
+M <- rsparsematrix(n, d, nnz = 20)
+
+x <- rnorm(d)
+y <- rnorm(n)
+
+p_hat <- nnzero(M) / prod(dim(M))
+r <- 5
+
+MtM <- crossprod(M)
+MMt <- tcrossprod(M)
+
+sigma_p <- MtM / p_hat^2 - (1 - p_hat) * diag(diag(MtM))
+sigma_t <- MMt / p_hat^2 - (1 - p_hat) * diag(diag(MMt))
+
+sigma_p <- as(sigma_p, "dgCMatrix")
+sigma_t <- as(sigma_t, "dgCMatrix")
+
+args <- list(M = M, p = p_hat)
+
+Mx_expected <- sigma_p %*% x
+Mx_result <- Mx(x, args)
+
+t(sigma_p) %*% y
+
+Mtx_expected <- sigma_t %*% y
+Mtx_result <- Mtx(y, args)
+
+expect_equal(
+  drop(Mx_result),
+  drop(Mx_expected)
+)
+
+expect_equal(
+  drop(Mtx_result),
+  drop(Mtx_expected)
+)
+
+expected_svd_p <- svds(sigma_p, r)
+expected_svd_t <- svds(sigma_t, r)
+
+
+# why use svds() instead of eigs_sym()? mostly to avoid
+# screwing around with possibly negative eigenvalues
+# TODO: is this slower?
+svd_p_result <- svds(Mx, r, Atrans = Mx, dim = c(d, d), args = args)
+svd_t_result <- svds(Mtx, r, Atrans = Mtx, dim = c(n, n), args = args)
+
+expect_true(
+  equal_svds(svd_p_result, expected_svd_p)
+)
+
+expect_true(
+  equal_svds(svd_t_result, expected_svd_t)
+)
+
+eig_p <- eigs_sym(Mx, r, n = d, args = args)
+eig_t <- eigs_sym(Mtx, r, n = n, args = args)
+
+# left and right singular vectors are both just the eigenvectors
+# since we're working with symmetric matrices
+
+equal_up_to_sign(eig_p$vectors, svd_p_result$u)
+equal_up_to_sign(eig_t$vectors, svd_t_result$u)
+
+equal_up_to_sign(eig_p$vectors, svd_p_result$v)
+equal_up_to_sign(eig_t$vectors, svd_t_result$v)
 ```
 
 
@@ -629,12 +761,10 @@ TODO: update alg description to divide by $p^2$ to get the right singular values
 
 Quickly check that the components works before we try the code that integrates them all together
 
-
-
 Finally, sanity check this by comparing to the reference implementation. These don't agree, which isn't great:
 
 ```{r}
-lr_init <- low_rank_adaptive_initialize(dat, r)
+lr_init <- sparse_adaptive_initialize(dat, r)
 
 # some weird stuff is happening with the singular values but I'm
 # going to not worry about it for the time being
@@ -1951,6 +2081,93 @@ arma::vec p_u_ztx_impl(
   
   return ztx;
 }
+```
+
+
+
+```{Rcpp}
+#include <RcppArmadillo.h>
+
+using namespace arma;
+
+// [[Rcpp::depends(RcppArmadillo)]]
+// [[Rcpp::export]]
+double p_u_f_norm_sq_impl(
+    const arma::mat& U,
+    const arma::rowvec& d,
+    const arma::mat& V) {
+  
+  int n = U.n_rows;
+  double total = 0;
+
+  arma::mat DVt = diagmat(d) * V.t();
+  
+  // i^th row of Z = U D V^T truncated to the portion
+  // in the upper triangle
+  arma::rowvec Z_i_trunc;
+  
+  // for (int i = 0; i < n; i++) {
+  //   Z_i_trunc = U.row(i) * DVt.cols(i, n - 1);
+  //   total += dot(Z_i_trunc, Z_i_trunc);
+  // }
+  
+  // norm of the upper triangle excluding diagonal
+  for (int i = 0; i < n - 1; i++) {
+    Z_i_trunc = U.row(i) * DVt.cols(i + 1, n - 1);
+    total += dot(Z_i_trunc, Z_i_trunc);
+  }
+
+  return total;
+}
+```
+
+```{r}
+library(Matrix)
+library(RSpectra)
+library(testthat)
+
+set.seed(27)
+
+# NOTE: this currently works with square and wide matrices
+# it could probably be extended to long matrices but that would
+# take more work
+
+n <- 11
+
+M <- rsparsematrix(n, n, nnz = 20)
+s <- svds(M, 3)
+
+Z <- s$u %*% diag(s$d) %*% t(s$v)
+Z_ut <- as(Z * upper.tri(Z), "CsparseMatrix")
+expected <- sum(Z_ut^2)
+
+DVt <- diag(s$d) %*% t(s$v)
+
+# A <- matrix(0, nrow = nrow(M), ncol = ncol(M))
+# 
+# for (i in 1:(n-1)) {
+#   print(i:n)
+#   print(s$u[i+1, ] %*% DVt[, (i+1):n])
+#   A[i, i:n] <- s$u[i, ] %*% DVt[, i:n]
+# }
+# 
+# expect_equivalent(
+#   as.matrix(A),
+#   as.matrix(Z_ut)
+# )
+
+Z_ut_with_diag <- as(Z * upper.tri(Z, diag = TRUE), "CsparseMatrix")
+
+expected <- sum(Z_ut_with_diag^2)
+
+out <- p_u_f_norm_sq_impl(s$u, s$d, s$v)
+expect_equal(out, expected)
+
+
+Z_ut_wo_diag <- as(Z * upper.tri(Z, diag = FALSE), "CsparseMatrix")
+
+expected_wo_diag <- sum(Z_ut_wo_diag^2)
+expect_equal(out, expected_wo_diag)
 ```
 
 

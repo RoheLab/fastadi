@@ -36,7 +36,6 @@
 #'
 dense_adaptive_initialize <- function(M, r) {
 
-  # TODO: ignores observed zeros!
   p_hat <- nnzero(M) / prod(dim(M))  # line 1
 
   MtM <- crossprod(M)
@@ -87,7 +86,7 @@ dense_adaptive_initialize <- function(M, r) {
   u_sign <- crossprod(rep(1, n), svd_M$u * u_hat)
   s_hat <- drop(sign(v_sign * u_sign))
 
-  lambda_hat <- lambda_hat * s_hat  # line 8
+  v_hat <- diag(s_hat) %*% v_hat  # line 8
 
   list(u = u_hat, d = lambda_hat, v = v_hat)
 }

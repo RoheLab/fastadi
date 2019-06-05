@@ -34,11 +34,18 @@
 #' # observed elements of M
 #' masked_approximation(s, M)
 #'
-sparse_adaptive_initialize <- function(M, r) {
+sparse_adaptive_initialize <- function(M, r,
+                                       additional = min(100, ncol(M) / 4)) {
 
-  M <- as(M, "dgCMatrix")
+  M <- as(M, "CsparseMatrix")
 
-  p_hat <- nnzero(M) / prod(dim(M))  # line 1
+  n <- nrow(M)
+  d <- ncol(M)
+
+  # as.numeric() promotes us from 32 bit integers to 53 bit doubles
+  # for some reason this happens by default in the console but not
+  # in compiled code
+  p_hat <- nnzero(M) / (as.numeric(n) * d)  # line 1
 
   # now that we have counted explicitly observed zeros
   # we can make the explicit zeros implicit for more
@@ -48,54 +55,78 @@ sparse_adaptive_initialize <- function(M, r) {
   # NOTE: skip explicit computation of line 2
   # NOTE: skip explicit computation of line 3
 
-  eig_p <- eigen_helper(M, r)
-  eig_t <- eigen_helper(t(M), r)
+  # since sigma_p and sigma_t are symmetric the eigenvectors
+  # and left and right singular vectors are all the same
+  # and it is slightly nicer to user the eigs_sym() interface
+  # here than svds(). however, we need to be careful about
+  # the singular values. the singular values will be the
+  # absolute values of the eigenvalues
 
-  v_hat <- eig_p$vectors  # line 4
-  u_hat <- eig_t$vectors  # line 5
+  args <- list(M = M, p = p_hat)
 
-  d <- ncol(M)
-  n <- nrow(M)
+  additional <- min(d - r - 1, additional)
 
-  # NOTE: alpha is again incorrect since we work with eigenvalues
-  # rather than singular values here
-  sum_eigen_values <- sum(M@x^2) / p_hat^2 - (1 - p_hat) * sum(colSums(M^2))
-  alpha <- (sum_eigen_values - sum(eig_p$values)) / (d - r)  # line 6
+  # next we run into the issue that computing the entire
+  # SVD of sigma_p will almost always be computational
+  # infeasible. instead of computing all the remaining
+  # singular values after the first r singular values,
+  # we only compute `additional` many more, and assume
+  # the uncalculate singular values are zero. this leads
+  # to slightly lower value of alpha and less truncation
+  # than in the AdapativeInitialize algorithm itself.
+  # users can specify the `additional` argument if they
+  # better information about the rank of their matrix
 
-  lambda_hat <- sqrt(eig_p$values - alpha) / p_hat  # line 7
+  # need the minimum to keep from asking for more singular values
+  # of sigma_p than exist. note that the eigenvalues are
+  svd_p <- svds(Mx, r + additional, dim = c(d, d), Atrans = Mx,
+                args = args)
 
-  # TODO: Karl had another sign computation here that he said was faster
-  # but it wasn't documented anywhere, so I'm going with what was in the
-  # paper
+  svd_t <- svds(Mtx, r, dim = c(n, n), Atrans = Mtx, args = args)
+
+  v_hat <- svd_p$v[, 1:r]  # line 4
+  u_hat <- svd_t$u         # line 5
+
+  # approximate calculation of line 6
+  alpha <- sum(svd_p$d[r + 1:additional]) / (d - r)
+
+  lambda_hat <- sqrt(svd_p$d[1:r] - alpha) / p_hat  # line 7
 
   svd_M <- svds(M, r)
 
-  # v_hat is d by r
+  # diag(crossprod()) patterns
   v_sign <- crossprod(rep(1, d), svd_M$v * v_hat)
   u_sign <- crossprod(rep(1, n), svd_M$u * u_hat)
-  s_hat <- c(sign(v_sign * u_sign))  # line 8
+  s_hat <- drop(sign(v_sign * u_sign))  # line 8
 
-  lambda_hat <- lambda_hat * s_hat
+  # make the sign adjustment to v_hat so we don't have
+  # to carry s_hat around with use. multiplies each
+  # *row* of v_hat (i.e. column v_hat^T) by the corresponding
+  # element of s_hat
+  v_hat <- sweep(v_hat, 2, s_hat, "*")
 
   list(u = u_hat, d = lambda_hat, v = v_hat)
 }
 
-eigen_helper <- function(M, r) {
-  eigs_sym(
-    Mx, r,
-    n = ncol(M),
-    args = list(
-      M = M,
-      p = nnzero(M) / prod(dim(M))
-    )
-  )
-}
-
-# compute (t(M) %*% M / p^2 - (1 - p) * diag(diag(t(M) %*% M))) %*% x
-# using sparse operations
+# args are `M` and `p`
+# M is n x d, x is a vector in R^d. M^T M is then d x d.
+# computes M^T M x - (1 - p) diag(M^T M) x
+# using tricks from before to calculate diagonals of cross-products
 Mx <- function(x, args) {
   drop(
-    crossprod(args$M, args$M %*% x) / args$p^2 -
+    crossprod(args$M, args$M %*% x) -
       (1 - args$p) * Diagonal(ncol(args$M), colSums(args$M^2)) %*% x
   )
 }
+
+# args are `M` and `p`
+# M is n x d, x is a vector in R^d. M M^T is then n x n
+# computes M^T M x - (1 - p) diag(M^T M) x
+# using tricks from before to calculate diagonals of cross-products
+Mtx <- function(x, args) {
+  drop(
+    args$M %*% crossprod(args$M, x) -
+      (1 - args$p) * Diagonal(nrow(args$M), rowSums(args$M^2)) %*% x
+  )
+}
+

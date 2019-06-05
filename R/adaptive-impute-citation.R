@@ -25,10 +25,9 @@
 #'
 #' set.seed(27)
 #'
-#' # create a random 8 x 12 sparse matrix with 30 nonzero entries
-#' M <- rsparsematrix(8, 12, nnz = 30)
+#' M <- rsparsematrix(12, 12, nnz = 30)
 #'
-#' s <- citation_adaptive_impute(M, 5)
+#' s <- citation_adaptive_impute(M, 5, max_iter = 20)
 #' s
 #'
 #' # reconstruct a rank-5 approximation of M
@@ -38,15 +37,22 @@
 #' # observed elements of M
 #' masked_approximation(s, M)
 #'
-citation_adaptive_impute <- function(M, r, epsilon = 1e-7) {
+citation_adaptive_impute <- function(M, r, epsilon = 1e-7, max_iter = 200,
+                                     additional = 100) {
+
+  # only works for square matrices
+  stopifnot(ncol(M) == nrow(M))
 
   # NOTE: no differences are necessary from the sparse
   # adaptive_initialize since M just has more zeros
 
-  # s <- sparse_adaptive_initialize(M, r)  # line 1
+  message(Sys.time(), " Beginning AdaptiveInitialize step.")
 
-  # start from a standard SVD
   s <- svds(M, r)
+  # s <- sparse_adaptive_initialize(M, r, additional)  # line 1
+
+  message(Sys.time(), " AdaptiveInitialize step complete.")
+
   delta <- Inf
   d <- ncol(M)
   f_norm_M <- sum(M@x^2)
@@ -54,10 +60,14 @@ citation_adaptive_impute <- function(M, r, epsilon = 1e-7) {
   # coerce M to sparse matrix such that we use sparse operations
   M <- as(M, "CsparseMatrix")
 
+  iter <- 0
+
   while (delta > epsilon) {
 
     # update s: lines 4 and 5
     # take the SVD of M-tilde
+
+    message(Sys.time(), " Taking SVD.")
 
     args <- list(u = s$u, d = s$d, v = s$v, M = M)
 
@@ -69,16 +79,10 @@ citation_adaptive_impute <- function(M, r, epsilon = 1e-7) {
       args = args
     )
 
-    # browser()
-
-    # TODO: negative alpha is clearly incorrect
+    message(Sys.time(), " Finding singular values.")
 
     M_tilde_f_norm <- f_norm_M + sum(s$d^2) -
       p_omega_f_norm_ut(s_new, M)
-
-    # print(glue("M_tilde_f_norm: {M_tilde_f_norm}\n"))
-    # print(glue("sum(s_new$d^2): {sum(s_new$d^2)}\n"))
-    # print(glue("(d - r):        {(d - r)}"))
 
     alpha <- (M_tilde_f_norm - sum(s_new$d^2)) / (d - r)  # line 6
 
@@ -86,11 +90,29 @@ citation_adaptive_impute <- function(M, r, epsilon = 1e-7) {
 
     # NOTE: skip explicit computation of line 8
 
+    message(Sys.time(), " Finding relative change in Frobenius norm.")
+
     delta <- relative_f_norm_change(s_new, s)
 
     s <- s_new
 
-    print(glue::glue("delta: {round(delta, 8)}, alpha: {round(alpha, 3)}"))
+    iter <- iter + 1
+
+    message(
+      glue::glue(
+        "Iter {iter}: ",
+        "delta = {round(delta, 8)}, ",
+        "alpha = {round(alpha, 3)}"
+      )
+    )
+
+    if (iter > max_iter) {
+      warning(
+        "\nReached maximum allowed iterations. Returning early.",
+        call. = FALSE
+      )
+      break
+    }
   }
 
   s

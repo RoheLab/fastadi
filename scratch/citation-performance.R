@@ -18,7 +18,7 @@ s <- svd(M, 10)
 sum(s$d^2)
 
 profvis({
-  lra <- citation_adaptive_impute(M, 10, epsilon = 1e-2)
+  lra <- citation_adaptive_impute(M, 10, max_iter = 20, epsilon = 1e-2)
 })
 
 n2 <- 100000
