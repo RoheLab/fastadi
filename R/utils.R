@@ -11,5 +11,15 @@ masked_svd_times_x <- function(s, mask, x) {
 }
 
 relative_f_norm_change <- function(s_new, s) {
-  relative_f_norm_change_impl(s_new$u, s_new$d, s_new$v, s$u, s$d, s$v)
+
+  # expressed into terms of frobenius inner products of low rank
+  # SVDs
+
+  num <- svd_frob_inner_prod_impl(s_new$u, s_new$d, s_new$v, s_new$u, s_new$d, s_new$v) +
+    svd_frob_inner_prod_impl(s$u, s$d, s$v, s$u, s$d, s$v) - 2 *
+    svd_frob_inner_prod_impl(s_new$u, s_new$d, s_new$v, s$u, s$d, s$v)
+
+  denom <- sum(s$d^2)
+
+  num / denom
 }

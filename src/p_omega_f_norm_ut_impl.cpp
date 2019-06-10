@@ -14,7 +14,8 @@ double p_omega_f_norm_ut_impl(
   // first add the observed elements on the lower triangle and diagonal
 
   int i, j;
-  double z_ij, total = 0;
+  double z_ij, f_norm_sq = 0;
+
   arma::mat DVt = diagmat(d) * V.t();
 
   for (int idx = 0; idx < row.n_elem; idx++) {
@@ -25,20 +26,28 @@ double p_omega_f_norm_ut_impl(
     // only elements of the lower triangle
     // KEY: include the diagonal, but only *explicitly* observed elements
     if (i >= j) {
-      z_ij = arma::dot(U.row(i), DVt.col(j));
-      total += pow(z_ij, 2);
+      z_ij = dot(U.row(i), DVt.col(j));
+      f_norm_sq += pow(z_ij, 2);
     }
   }
 
   // second add all the elements of the upper triangle
-  int n = U.n_rows;
 
-  arma::rowvec Z_i_trunc;
+  int r = U.n_cols;
 
-  for (int i = 0; i < n - 1; i++) {
-    Z_i_trunc = U.row(i) * DVt.cols(i + 1, n - 1);
-    total += dot(Z_i_trunc, Z_i_trunc);
+  arma::vec U_lq;
+  arma::rowvec V_lq, V_lq_tri;
+
+  for (int l = 0; l < r; l++) {
+    for (int q = 0; q < r; q++) {
+
+      U_lq = U.col(l) % U.col(q);
+      V_lq = DVt.row(l) % DVt.row(q);
+      V_lq_tri = sum(V_lq) - cumsum(V_lq);
+
+      f_norm_sq += dot(U_lq, V_lq_tri);
+    }
   }
 
-  return total;
+  return f_norm_sq;
 }

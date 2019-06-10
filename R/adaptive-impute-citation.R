@@ -79,10 +79,14 @@ citation_adaptive_impute <- function(M, r, epsilon = 1e-7, max_iter = 200,
       args = args
     )
 
-    message(Sys.time(), " Finding singular values.")
+    force(s_new)
+
+    message(Sys.time(), " Finding average of remaining singular values.")
 
     M_tilde_f_norm <- f_norm_M + sum(s$d^2) -
       p_omega_f_norm_ut(s_new, M)
+
+    force(M_tilde_f_norm)
 
     alpha <- (M_tilde_f_norm - sum(s_new$d^2)) / (d - r)  # line 6
 
@@ -94,13 +98,16 @@ citation_adaptive_impute <- function(M, r, epsilon = 1e-7, max_iter = 200,
 
     delta <- relative_f_norm_change(s_new, s)
 
+    force(delta)
+
     s <- s_new
 
     iter <- iter + 1
 
     message(
+      Sys.time(),
       glue::glue(
-        "Iter {iter}: ",
+        " Iter {iter} complete. ",
         "delta = {round(delta, 8)}, ",
         "alpha = {round(alpha, 3)}"
       )

@@ -184,6 +184,22 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// svd_frob_inner_prod_impl
+double svd_frob_inner_prod_impl(const arma::mat& new_U, const arma::rowvec& new_d, const arma::mat& new_V, const arma::mat& U, const arma::rowvec& d, const arma::mat& V);
+RcppExport SEXP _fastadi_svd_frob_inner_prod_impl(SEXP new_USEXP, SEXP new_dSEXP, SEXP new_VSEXP, SEXP USEXP, SEXP dSEXP, SEXP VSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat& >::type new_U(new_USEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type new_d(new_dSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type new_V(new_VSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type U(USEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type d(dSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type V(VSEXP);
+    rcpp_result_gen = Rcpp::wrap(svd_frob_inner_prod_impl(new_U, new_d, new_V, U, d, V));
+    return rcpp_result_gen;
+END_RCPP
+}
 // masked_svd_times_x_impl
 arma::vec masked_svd_times_x_impl(const arma::mat& U, const arma::rowvec& d, const arma::mat& V, const arma::vec& row, const arma::vec& col, const arma::vec& x);
 RcppExport SEXP _fastadi_masked_svd_times_x_impl(SEXP USEXP, SEXP dSEXP, SEXP VSEXP, SEXP rowSEXP, SEXP colSEXP, SEXP xSEXP) {
@@ -214,6 +230,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_fastadi_p_u_ztx_impl", (DL_FUNC) &_fastadi_p_u_ztx_impl, 4},
     {"_fastadi_p_u_zx_impl", (DL_FUNC) &_fastadi_p_u_zx_impl, 4},
     {"_fastadi_relative_f_norm_change_impl", (DL_FUNC) &_fastadi_relative_f_norm_change_impl, 6},
+    {"_fastadi_svd_frob_inner_prod_impl", (DL_FUNC) &_fastadi_svd_frob_inner_prod_impl, 6},
     {"_fastadi_masked_svd_times_x_impl", (DL_FUNC) &_fastadi_masked_svd_times_x_impl, 6},
     {NULL, NULL, 0}
 };

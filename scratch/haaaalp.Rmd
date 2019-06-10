@@ -1,0 +1,90 @@
+---
+title: "Low-rank upper triangular norm"
+author: "Alex Hayes"
+date: "6/5/2019"
+output: 
+  html_document:
+    theme: paper
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+I'm stuck making some math go fast, and I'd like some help. Here's the problem. I start off with some $n \times n$ matrix $X$. Then I take a rank $k$ partial SVD and obtain matrices $U, D, V$. Then we obtain a low-rank approximation $Z = U D V^T$. 
+
+The problem: calculating the squared Frobenius norm of $Z$ restricted to the upper triangle. That is, letting $Y$ be a $n \times n$ matrix such that $Y_ij = 1$ if $i < j$ and zero otherwise, I want
+
+\[
+\Vert Z \odot Y \Vert_F^2 = \sum_{i < j} Z_{ij}^2
+\]
+
+where $\odot$ stands for an elementwise matrix product here. The catch is that in practice *$Z$ will be too large to fit into memory*.
+
+Here's some R code to illustrate the problem:
+
+```{r}
+library(Matrix)
+library(RSpectra)
+library(testthat)
+
+set.seed(27)
+
+n   <- 10000
+nnz <- 10000
+r   <- 20
+
+M <- rsparsematrix(nrow = n, ncol = n, nnz = nnz)
+s <- RSpectra::svds(M, r)
+
+Z <- s$u %*% diag(s$d) %*% t(s$v)
+
+# exclude the diagonal!
+Z_ut <- Z * upper.tri(Z, diag = FALSE)
+
+expected <- sum(Z_ut^2)
+```
+
+Currently I'm using `RcppArmadillo` to calculate this, like so:
+
+```{Rcpp}
+#include <RcppArmadillo.h>
+
+using namespace arma;
+
+// [[Rcpp::depends(RcppArmadillo)]]
+// [[Rcpp::export]]
+double p_u_f_norm_sq_impl(
+    const arma::mat& U,
+    const arma::rowvec& d,
+    const arma::mat& V) {
+  
+  int n = U.n_rows;
+  double total = 0;
+
+  arma::mat DVt = diagmat(d) * V.t();
+  
+  // i^th row of Z = U D V^T truncated to the portion
+  // in the upper triangle
+  arma::rowvec Z_i_trunc;
+  
+  // norm of the upper triangle excluding diagonal
+  for (int i = 0; i < n - 1; i++) {
+    Z_i_trunc = U.row(i) * DVt.cols(i + 1, n - 1);
+    total += dot(Z_i_trunc, Z_i_trunc);
+  }
+
+  return total;
+}
+```
+
+Then we can test that this implementation is current:
+
+```{r}
+out <- p_u_f_norm_sq_impl(s$u, s$d, s$v)
+expect_equal(out, expected)
+```
+
+In the end, I'm going to need to repeat this operation ~200 times, where the original data matrix $X$ is a sparse 200,000 by 200,000 matrix with around a million entries, taking as large $k$ as possible while still fitting into memory on my laptop.
+
+Ideally this step would be much faster than it currently is.

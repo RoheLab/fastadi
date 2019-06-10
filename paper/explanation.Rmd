@@ -11,6 +11,7 @@ header-includes:
   \DeclareMathOperator{\diag}{diag}
   \DeclareMathOperator{\trace}{trace}
   \DeclareMathOperator{\sign}{sign}
+  \DeclareMathOperator{\cumsum}{cumsum}
   \linespread{1.25}
   \usepackage{helvet}
   \renewcommand{\familydefault}{\sfdefault}
@@ -86,7 +87,7 @@ Next up is `AdaptiveImpute`:
 
 $Z^{(1)} \gets \texttt{AdaptiveInitialize}(M, Y, r)$ \;
 
-\Repeat{$\| Z_{t+1} - Z_t \|^2_F / \| Z_{t+1} \|_F$}{
+\Repeat{$\| Z_{t+1} - Z_t \|^2_F / \| Z_{t+1} \|^2_F$}{
   
   $\tilde M^{(t)} \gets P_\Omega (M) + P_\Omega^\perp (Z_t)$ \;
   $\hat V_i^{(t)} \gets \bv_i(\tilde M^{(t)})$ for $i = 1, ..., r$ \;
@@ -1663,7 +1664,7 @@ all.equal(
 )
 ```
 
-### Citation graphs
+## Citation graphs
 
 Now it turns out that if we have a generally sparse mask of additional zeros, what we've done so far works out pretty nicely. When we have lots and lots of additional zeros, then we end up redoing the same computations over and over when we expand $Z^{(t)}$ in the $\tilde M^{(t)}x$ multiplication steps.
 
@@ -2170,9 +2171,289 @@ expected_wo_diag <- sum(Z_ut_wo_diag^2)
 expect_equal(out, expected_wo_diag)
 ```
 
+Now we speed up the matrix norm calculation
+
+\begin{align}
+||\tilde M^{(t)}||_F^2 
+&= \left \Vert P_\Omega(M) \right \Vert_F^2 
+  + \left \Vert P_\Omega^\perp (Z_t) \right \Vert_F^2 \\
+&= \left \Vert M \right \Vert_F^2 
+  + \left \Vert Z_t \right \Vert_F^2 
+  - \left \Vert P_\Omega (Z_t) \right \Vert_F^2 \\
+&= \left \Vert M \right \Vert_F^2 
+  + \left \Vert Z_t \right \Vert_F^2 
+  - \left \Vert P_U (Z_t) \right \Vert_F^2 
+  - \left \Vert P_{\tilde U} (Z_t) \right \Vert_F^2 
+\end{align}
+
+Now the critical step is calculating $\left \Vert P_U (Z_t) \right \Vert_F^2$. If $M$ is $n \times n$ and we take a rank $r$ SVD, the naive matrix expansion is $\mathcal O(n^2 k)$. For large citation matrices, the $n^2$ term is prohibitive[^eighth_day].
+
+[^eighth_day]: And on the $8^{th}$ day the Lord gathered together a smattering of social eccentricities, tweed jackets with elbow patches, and deep mathematical wisdom, creating the first of what would later on become known as Ph.D advisors. Thus he spake: "That you might go out into the world and discover $\mathcal O(n k^2)$ algorithms wheretohence your students have only seen the $\mathcal O(n^2 k)$ implementation". Thanks Karl!
+
+\begin{align}
+\left \Vert P_U (Z_t) \right \Vert_F^2 
+&= \sum_{i=1}^n \sum_{j=1}^n \langle U_{i \cdot}, DV^T_j \rangle^2 \,
+  \mathbf 1 (i < j) \\
+&= \sum_{i=1}^n \sum_{j=1}^n 
+  \left( \sum_{\ell=1}^r U_{i \ell} DV^T_{\ell j} \right)^2 \mathbf 1 (i < j) \\
+&= \sum_{i=1}^n \sum_{j=1}^n  \left(
+  \sum_{\ell=1}^r \sum_{q=1}^r U_{i \ell} DV^T_{\ell j} U_{i q} DV^T_{q j}
+  \right) \mathbf 1 (i < j) \\
+&= \sum_{\ell=1}^r \sum_{q=1}^r \left( 
+  \sum_{i=1}^n \sum_{j=1}^n U_{i \ell} DV^T_{\ell j} U_{i q} DV^T_{q j}
+  \right) \mathbf 1 (i < j) \\
+&= \sum_{\ell=1}^r \sum_{q=1}^r \left( 
+  \sum_{i=1}^n U_{i \ell} U_{i q} \sum_{j=1}^n  DV^T_{\ell j} DV^T_{q j}
+  \right) \mathbf 1 (i < j) \\
+&= \sum_{\ell=1}^r \sum_{q=1}^r \left( 
+  \sum_{i=1}^n U_{i \ell} U_{i q} \sum_{j=i+1}^n DV^T_{\ell j} DV^T_{q j}
+  \right)
+\end{align}
+
+We now want to express the inner two sums as an inner product of some $U$-term with a cumulative summation. Let $U^{\ell q} \in \mathbb{R}^n$, and $V^{\ell q \triangle} \in \mathbb{R}^n$. So we want something like:
+
+\begin{align}
+U^{\ell q} &= U_{\ell} \odot U_{q}
+  &\text{elementwise product of column vectors} \\
+U^{\ell q}_i &= U_{i \ell} U_{i q} \\
+V^{\ell q \triangle}_i &=\sum_{j=i+1}^n DV^T_{\ell j} DV^T_{q j}
+\end{align}
+
+and then we get
+
+\begin{align}
+... 
+&= \sum_{\ell=1}^r \sum_{q=1}^r \left( 
+  \sum_{i=1}^n U_{i \ell} U_{i q} \sum_{j=i+1}^n DV^T_{\ell j} DV^T_{q j}
+  \right) \\
+&= \sum_{\ell=1}^r \sum_{q=1}^r \left( 
+  \sum_{i=1}^n U^{\ell q}_i V^{\ell q \triangle}_i
+  \right) \\
+&= \sum_{\ell=1}^r \sum_{q=1}^r 
+  \left \langle U^{\ell q}, V^{\ell q \triangle} \right \rangle
+\end{align}
+
+Now we play the implementation game
+
+```{r}
+library(Matrix)
+library(RSpectra)
+library(testthat)
+
+set.seed(27)
+
+n <- 11
+r <- 3
+
+M <- rsparsematrix(n, n, nnz = 20)
+s <- svds(M, r)
+
+Z <- s$u %*% diag(s$d) %*% t(s$v)
+Z_ut <- as(Z * upper.tri(Z), "CsparseMatrix")
+expected <- sum(Z_ut^2)
+
+U <- s$u
+DVt <- diag(s$d) %*% t(s$v)
+
+Z_ut_wo_diag <- as(Z * upper.tri(Z, diag = FALSE), "CsparseMatrix")
+
+expected_wo_diag <- sum(Z_ut_wo_diag^2)
+```
+
+```{r}
+total <- 0
+
+for (l in 1:r) {
+  for (q in 1:r) {
+    U_lq <- U[, l] * U[, q]
+    V_lq <- DVt[l, ] * DVt[q, ]
+    
+    # shifted inverse cumulative sum
+    V_lq_tri <- sum(V_lq) - cumsum(V_lq)
+    
+    total <- total + sum(U_lq * V_lq_tri)
+  }
+}
+
+expect_equal(total, expected_wo_diag)
+```
+
+Now let's do it in C++
+
+```{Rcpp}
+#include <RcppArmadillo.h>
+
+using namespace arma;
+
+// [[Rcpp::depends(RcppArmadillo)]]
+// [[Rcpp::export]]
+double p_u_f_norm_sq_impl(
+    const arma::mat& U,
+    const arma::rowvec& d,
+    const arma::mat& V) {
+  
+  int r = U.n_cols;
+  
+  double f_norm_sq = 0;
+
+  arma::mat DVt = diagmat(d) * V.t();
+  
+  arma::vec U_lq;
+  arma::rowvec V_lq, V_lq_tri;
+  
+  for (int l = 0; l < r; l++) {
+    for (int q = 0; q < r; q++) {
+      
+      U_lq = U.col(l) % U.col(q);
+      V_lq = DVt.row(l) % DVt.row(q);
+      V_lq_tri = sum(V_lq) - cumsum(V_lq);
+      
+      f_norm_sq += dot(U_lq, V_lq_tri);
+    }
+  }
+  
+  return f_norm_sq;
+}
+```
+
+Test that it works:
+
+```{r}
+out <- p_u_f_norm_sq_impl(s$u, s$d, s$v)
+expect_equal(out, expected_wo_diag)
+```
+
+Now there is one final thing to speed up (and I swear to god if things are still slow after this I will flip a table), which is the relative change in Frobenius norm
+
+\begin{align}
+\left \Vert Z_{t+1} - Z_t \right \Vert^2_F / \left \Vert Z_{t+1} \right \Vert^2_F
+\end{align}
+
+Recall that we have taken the SVD of both these matrices, and have $Z_{t+1} = U_{t+1} D_{t+1} V_{t+1}^T$ and $Z_t = U_t D_t V_t^T$. So we already have $\left \Vert Z_{t+1} \right \Vert^2_F = \sum_{i=1}^r D_{ii}$. Using a result about Frobenius norms from earlier we have
+
+\begin{align}
+\left \Vert Z_{t+1} - Z_t \right \Vert^2_F 
+&= \left \Vert Z_{t+1} \right \Vert^2_F +
+  \left \Vert Z_t \right \Vert^2_F -
+  2 \left \langle Z_{t+1}, Z_t \right \rangle 
+\end{align}
+
+To calculate all of these quickly need to do the same thing, which is to find a term of the form $\langle A, B \rangle$ given the rank $r$ partial SVD of both $A = U D V^T$ and $B = \tilde U \tilde D \tilde V^T$ (I'm switching notation here to a little bit more obvious).
+
+\begin{align}
+\left \langle A, B \right \rangle  
+&= \sum_{i=1}^n \sum_{j=1}^n A_{ij} B_{ij} \\
+&= \sum_{i=1}^n \sum_{j=1}^n  \left(
+  \sum_{\ell=1}^r \sum_{q=1}^r U_{i \ell} DV^T_{\ell j} 
+    \tilde U_{i q} \tilde D \tilde V^T_{q j}
+  \right) \\
+&= \sum_{i=1}^n \sum_{j=1}^n  \left(
+  \sum_{\ell=1}^r \sum_{q=1}^r U_{i \ell} DV^T_{\ell j} 
+    \tilde U_{i q} \tilde D \tilde V^T_{q j}
+  \right) \\
+&= \sum_{\ell=1}^r \sum_{q=1}^r 
+  \left( \sum_{i=1}^n U_{i \ell} \tilde U_{i q} \right)
+  \left( \sum_{j=1}^n DV^T_{\ell j} \tilde D \tilde V^T_{q j} \right)
+\end{align}
+
+In R this looks like:
+
+```{r}
+library(Matrix)
+library(RSpectra)
+library(testthat)
+
+set.seed(27)
+
+n <- 11
+r <- 3
+
+A <- rsparsematrix(n, n, nnz = 20)
+s_A <- svds(M, r)
+
+B <- rsparsematrix(n, n, nnz = 20)
+s_B <- svds(M, r)
+
+U_A <- s_A$u
+DVt_A <- diag(s_A$d) %*% t(s_A$v)
+
+U_B <- s_B$u
+DVt_B <- diag(s_B$d) %*% t(s_B$v)
 
 
-Next we do more a thorough sanity check and build a replacement for the older slower `Ax_citation()` function.
+f_inner_prod <- 0
+
+for (l in 1:r) {
+  for (q in 1:r) {
+    U_lq <- U_A[, l] * U_B[, q]
+    V_lq <- DVt_A[l, ] * DVt_B[q, ]
+    
+    f_inner_prod <- f_inner_prod + sum(U_lq) * sum(V_lq)
+  }
+}
+
+Z_A <- U_A %*% DVt_A
+Z_B <- U_B %*% DVt_B
+
+frob_expected <- sum(Z_A * Z_B)
+
+expect_equal(f_inner_prod, frob_expected)
+```
+
+Then we translate to C++
+
+```{Rcpp}
+#include <RcppArmadillo.h>
+
+using namespace arma;
+
+// [[Rcpp::depends(RcppArmadillo)]]
+// [[Rcpp::export]]
+double svd_frob_inner_prod(
+    const arma::mat& new_U,
+    const arma::rowvec& new_d,
+    const arma::mat& new_V,
+    const arma::mat& U,
+    const arma::rowvec& d,
+    const arma::mat& V) {
+  
+  // assumes dimensions of new and old SVD match up, both internally
+  // and between the SVDs
+  int r = new_U.n_cols;
+
+  arma::mat new_DVt = diagmat(new_d) * new_V.t();
+  arma::mat DVt = diagmat(d) * V.t();
+  
+  arma::vec U_lq;
+  arma::rowvec V_lq;
+  
+  double frob_inner_prod;
+  
+  for (int l = 0; l < r; l++) {
+    for (int q = 0; q < r; q++) {
+      U_lq = new_U.col(l) % U.col(q);
+      V_lq = new_DVt.row(l) % DVt.row(q);
+      
+      frob_inner_prod += sum(U_lq) * sum(V_lq);
+    }
+  }
+  
+  return frob_inner_prod;
+}
+```
+
+Now we sanity check the C++ version
+
+```{r}
+frob_cpp <- svd_frob_inner_prod(s_A$u, s_A$d, s_A$v, s_B$u, s_B$d, s_B$v)
+expect_equal(frob_cpp, frob_expected)
+```
+
+
+
+
+
+TODO: we probably want to do a fast norm calculation in general if possible? not strictly necessary but would let us use relative change in frobenius norm to assess convergence instead of something else
 
 ### A naive solution: the epsilon trick
 
