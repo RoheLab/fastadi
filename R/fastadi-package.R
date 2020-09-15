@@ -3,7 +3,6 @@
 #' @importFrom glue glue
 #' @import Matrix
 #' @importFrom methods as
-#' @importFrom RSpectra eigs_sym
 #' @importFrom RSpectra svds
 #' @importFrom stats sd
 #'

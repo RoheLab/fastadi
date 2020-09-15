@@ -21,6 +21,10 @@ p_omega_f_norm_ut_impl <- function(U, d, V, row, col) {
     .Call(`_fastadi_p_omega_f_norm_ut_impl`, U, d, V, row, col)
 }
 
+p_omega_f_norm_ut_stable_impl <- function(U, d, V, row, col) {
+    .Call(`_fastadi_p_omega_f_norm_ut_stable_impl`, U, d, V, row, col)
+}
+
 p_omega_ztx_impl <- function(U, d, V, row, col, x) {
     .Call(`_fastadi_p_omega_ztx_impl`, U, d, V, row, col, x)
 }
@@ -51,6 +55,10 @@ relative_f_norm_change_impl <- function(new_U, new_d, new_V, U, d, V) {
 
 svd_frob_inner_prod_impl <- function(new_U, new_d, new_V, U, d, V) {
     .Call(`_fastadi_svd_frob_inner_prod_impl`, new_U, new_d, new_V, U, d, V)
+}
+
+svd_frob_inner_prod_stable_impl <- function(new_U, new_d, new_V, U, d, V) {
+    .Call(`_fastadi_svd_frob_inner_prod_stable_impl`, new_U, new_d, new_V, U, d, V)
 }
 
 masked_svd_times_x_impl <- function(U, d, V, row, col, x) {

@@ -4,21 +4,26 @@
 \name{fastadi-package}
 \alias{fastadi}
 \alias{fastadi-package}
-\title{fastadi: Data Adaptive Matrix Imputation}
+\title{fastadi: Self-Tuning Data Adaptive Matrix Imputation}
 \description{
-More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Implements the AdaptiveImpute matrix completion
+    algorithm of 'Intelligent Initialization and Adaptive Thresholding for
+    Iterative Matrix Completion',
+    <https://amstat.tandfonline.com/doi/abs/10.1080/10618600.2018.1518238>.
+    AdaptiveImpute is useful for embedding sparsely observed matrices,
+    often out performs competing matrix completion algorithms, and
+    self-tunes its hyperparameter, making usage easy.
 }
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/alexpghayes/fastadi}
-  \item Report bugs at \url{https://github.com/alexpghayes/fastadi/issues}
+  \item \url{https://github.com/RoheLab/fastadi}
+  \item Report bugs at \url{https://github.com/RoheLab/fastadi/issues}
 }
 
 }
 \author{
-\strong{Maintainer}: Alex Hayes \email{alexpghayes@gmail.com} (0000-0002-4985-5160)
+\strong{Maintainer}: Alex Hayes \email{alexpghayes@gmail.com} (\href{https://orcid.org/0000-0002-4985-5160}{ORCID})
 
 Authors:
 \itemize{

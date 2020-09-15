@@ -1,193 +1,301 @@
-##### the following is from Adi_Rfunction (original) and Adi_manual (original)
-
-#####################
-## Adaptive-Impute ##
-#####################
-
-#' Adaptive-Impute
+#' AdaptiveImpute
 #'
-#' An iterative matrix completion algorithm based on the thresholded SVD.
-#' It differentially and adaptively penalizes the singular valuesin each
-#' iteration. Although Adaptive-Impute employs multiple thresholding
-#' parameters updated every iteration, there is no tuning problem since it
-#' automatically finds specific values of the thresholding parameters which
-#' are theoretically-justified and data-dependent.
+#' An implementation of the `AdaptiveImpute` algorithm for matrix completion
+#' for sparse matrices.
 #'
-#' For more details, please see “Intelligent Initialization and Adaptive
-#' Thresholding for Iterative Matrix Completion; Some Statistical and
-#' Algorithmic Theory for Adaptive-Impute”.
+#' @param X A sparse matrix of `sparseMatrix` class.
 #'
-#' @param M.p input matrix where the unobserved matrix are marked as zeros.
-#'  Can be  in sparse matrix format (inherit from class "sparseMatrix"
-#'  as in package Matrix)
-#' @param r rank of the resulting matrix. If no value is given, it
-#'  automatically chooses one with the biggest eigengap based on a scree plot
-#' @param sparse `TRUE` if only a few entries are observed and `FALSE` otherwise
-#' @param sign.choice we recommend to use “asympt”. It uses asymptotically
-#'  consistent signs when combining the estimates of singular values
-#'  and singular vectors to obtain the estimates of the low-rank matrix.
-#'  “lm” uses linear regression and “greedy” uses greedy search.
-#' @param min.value a constant. lower bound for the entries
-#' @param max.value a constant. upper bound for the entries
-#' @param tol tolerance for convergence
-#' @param itmax maximum number of iterations
+#' @param rank Desired rank (integer) to use in the low rank approximation.
 #'
-#' @return TODO
+#' @param epsilon Convergence criteria, measured in terms of relative change
+#'   in Frobenius norm of the full imputed matrix. Defaults to `1e-7`.
+#'
+#' @param max_iter Maximum number of iterations to perform (integer). Defaults
+#'   to `200L`. In practice 10 or so iterations will get you a decent
+#'   approximation to use in exploratory analysis, and and 50-100 will get
+#'   you most of the way to convergence.
+#'
+#' @return A `low_rank_matrix_factorization` object.
+#'
 #' @export
-#'
-#' @author Juhee Cho, Donggyu Kim, Karl Rohe
 #'
 #' @examples
 #'
-#' n <- 500
-#' d <- 100
-#' r <- 5
+#' library(Matrix)
 #'
-#' A <- matrix(runif(n * r, -5, 5), n, r)
-#' B <- matrix(runif(d * r, -5, 5), d, r)
-#' M0 <- A %*% t(B)
+#' mf <- adaptive_impute(ml100k, rank = 5L)
+#' mf
 #'
-#' err <- matrix(rnorm(n * d), n, d)
-#' Mf <- M0 + err
+#' # reconstruct a rank-5 approximation of M
+#' s$u %*% diag(s$d) %*% t(s$v)
 #'
-#' p <- 0.1
-#' y <- matrix(rbinom(n * d, 1, p), n, d)
-#' dat <- Mf * y
+#' # build a rank-5 approximation to M only for
+#' # observed elements of M
+#' masked_approximation(s, M)
 #'
-#' out <- adaptImpute(M.p = dat, r = r)
-adaptImpute <- function(M.p, r = NULL, sparse = c(TRUE, FALSE),
-                        sign.choice = c("asympt", "lm", "greedy"),
-                        min.value = NULL, max.value = NULL,
-                        tol = 1e-07, itmax = 200) {
-  n <- nrow(M.p)
-  d <- ncol(M.p)
-  ind <- !(M.p == 0)
-  if (is.null(r)) {
-    r.temp <- round(min(n, d) / 10)
-    sval <- svds(M.p, 94, nu = 0, nv = 0)$d
-    sval.ratio <- (sval[1:(r.temp - 1)] - sval[2:r.temp]) / sval[1:(r.temp - 1)]
-    r <- which.max(sval.ratio[-1]) + 1
-  }
-  p.hat <- mean(ind)
-  temp.M <- Initial(M.p, r, p.hat, n, d, ind, sign.choice)
-  if (sparse == TRUE | p.hat < 0.5) {
-    M.p <- Matrix(M.p, sparse = TRUE)
-    ifelse(is.null(max.value), max.value <- max(M.p@x), temp.M[temp.M > max.value] <- max.value)
-    ifelse(is.null(min.value), min.value <- min(M.p@x), temp.M[temp.M < min.value] <- min.value)
-  } else {
-    ifelse(is.null(max.value), max.value <- max(M.p[ind]), temp.M[temp.M > max.value] <- max.value)
-    ifelse(is.null(min.value), min.value <- min(M.p[ind]), temp.M[temp.M < min.value] <- min.value)
+adaptive_impute <- function(
+  X,
+  rank,
+  initialization = c("svd", "adaptive-initialize"),
+  epsilon = 1e-7,
+  max_iter = 200L,
+  verbose = FALSE
+) {
+
+  # TODO: use parallel matrix multiplications from rsparse
+  # where possible
+
+  ### INPUT VALIDATION
+
+  if (!inherits(X, "sparseMatrix")) {
+    stop(
+      glue("`X` must be a `sparseMatrix, not a {class(X)} object."),
+      call. = FALSE
+    )
   }
 
-  itr <- 0
-  error <- Inf
-  while (error > tol) {
-    M <- temp.M * (1 - ind) + M.p
-    temp <- SVD.F(M, r, M.p, d)
-    temp.M1 <- temp
-    error <- sum((temp.M1 - temp.M)^2) / sum(temp.M^2)
-    temp.M <- temp.M1
-    max.ind <- temp.M > max.value
-    temp.M <- temp.M * (1 - max.ind) + max.value * max.ind
-    min.ind <- temp.M < min.value
-    temp.M <- temp.M * (1 - min.ind) + min.value * min.ind
-    itr <- itr + 1
-    if (itr %% 10 == 0) cat(".")
-    if (itr > itmax) {
+  rank <- as.integer(rank)
+
+  if (rank <= 2)
+    stop("`rank` must be an integer >= 2L.", call. = FALSE)
+
+  initialization <- match.arg(initialization)
+
+  ### INITIALIZATION
+
+  if (initialization == "svd") {
+    s <- svds(X, rank)
+  } else if (initialization == "adaptive-initialize") {
+    s <- adaptive_initialize(X, rank)  # line 1
+  } else {
+    stop("This should not happen.", call. = FALSE)
+  }
+
+  ### ITERATION STAGE
+
+  # coerce M to sparse matrix such that we use sparse operations
+  M <- as(X, "dgCMatrix")
+
+  delta <- Inf
+  d <- ncol(X)
+  norm_M <- sum(X@x^2)
+
+  while (delta > epsilon) {
+
+    # update s: lines 4 and 5
+    # take the SVD of M-tilde
+
+    R <- X - masked_approximation(s, X)  # residual matrix
+    args <- list(u = s$u, d = s$d, v = s$v, R = R)
+
+    s_new <- svds(Ax, k = , Atrans = Atx, dim = dim(X), args = args)
+
+    MtM <- norm_M + sum(s_new$d^2) - sum(masked_approximation(s_new, X)^2)
+
+    alpha <- (sum(MtM) - sum(s_new$d^2)) / (d - rank)  # line 6
+
+    s_new$d <- sqrt(s_new$d^2 - alpha)  # line 7
+
+    # NOTE: skip explicit computation of line 8
+    delta <- relative_f_norm_change(s_new, s)
+
+    s <- s_new
+
+    if (verbose) {
+      glue("delta: {round(delta, 8)}, alpha: {round(alpha, 3)}")
+    }
+
+  }
+
+  new_low_rank_matrix_factorization(
+    U = s$u,
+    d = s$d,
+    V = s$v,
+    rank = rank,
+    alpha = alpha
+  )
+}
+
+### standard variant
+
+Ax <- function(x, args) {
+  drop(args$R %*% x + args$u %*% diag(args$d) %*% crossprod(args$v, x))
+}
+
+Atx <- function(x, args) {
+  drop(t(args$R) %*% x + args$v %*% diag(args$d) %*% crossprod(args$u, x))
+}
+
+### entirely observed upper triangle variant
+
+#' AdaptiveImpute (sparse)
+#'
+#' A reference implemention of the `AdaptiveImpute` algorithm using sparse
+#' matrix computations. For citation matrices where missing values in
+#' the upper triangle are taken to be *explicitly observed* observed
+#' zeros, as opposed to missing values.
+#'
+#' @param M A sparse Matrix created by one of the [Matrix] pkg
+#'   constructors.
+#' @param r Desired rank to use in the low rank approximation.
+#' @param epsilon Tolerance, measured in terms of relative change
+#'   in Frobenius norm of the full imputed matrix.
+#'
+#' @return A list with elements:
+#'
+#'   - `u`: Left singular-ish vectors
+#'   - `d`: Singular-ish values
+#'   - `v`: Right singular-ish vectors
+#'
+#' @export
+#'
+#' @examples
+#'
+#' library(Matrix)
+#'
+#' set.seed(27)
+#'
+#' M <- rsparsematrix(12, 12, nnz = 30)
+#'
+#' s <- citation_adaptive_impute(M, 5, max_iter = 20)
+#' s
+#'
+#' # reconstruct a rank-5 approximation of M
+#' s$u %*% diag(s$d) %*% t(s$v)
+#'
+#' # build a rank-5 approximation to M only for
+#' # observed elements of M
+#' masked_approximation(s, M)
+#'
+citation_adaptive_impute <- function(M, r, epsilon = 1e-7, max_iter = 200,
+                                     additional = 100, check_in = 50) {
+
+  # only works for square matrices
+  stopifnot(ncol(M) == nrow(M))
+
+  # NOTE: no differences are necessary from the sparse
+  # adaptive_initialize since M just has more zeros
+
+  message(Sys.time(), " Beginning AdaptiveInitialize step.")
+
+  # this line can run into class issues
+  # s <- svds(M, r)
+
+  s <- sparse_adaptive_initialize(M, r, additional)  # line 1
+
+  message(Sys.time(), " AdaptiveInitialize step complete.")
+
+  delta <- Inf
+  d <- ncol(M)
+  f_norm_M <- sum(M@x^2)
+
+  # coerce M to sparse matrix such that we use sparse operations
+  M <- as(M * 1, "CsparseMatrix")
+
+  iter <- 0
+
+  while (delta > epsilon) {
+
+    # update s: lines 4 and 5
+    # take the SVD of M-tilde
+
+    if (check_in == 1)
+      message(Sys.time(), " Taking SVD.")
+
+    args <- list(u = s$u, d = s$d, v = s$v, M = M)
+
+    s_new <- svds(
+      Ax_citation,
+      k = r,
+      Atrans = Atx_citation,
+      dim = dim(M),
+      args = args
+    )
+
+    if (check_in == 1)
+      message(Sys.time(), " Finding average of remaining singular values.")
+
+    M_tilde_f_norm <- f_norm_M + sum(s$d^2) -
+      p_omega_f_norm_ut(s_new, M)
+
+    alpha <- (M_tilde_f_norm - sum(s_new$d^2)) / (d - r)  # line 6
+
+    s_new$d <- sqrt(s_new$d^2 - alpha)  # line 7
+
+    # NOTE: skip explicit computation of line 8
+
+    if (check_in == 1)
+      message(Sys.time(), " Finding relative change in Frobenius norm.")
+
+    # save a little bit on computation
+    if (iter %% check_in == 0)
+      delta <- relative_f_norm_change(s_new, s)
+
+    s <- s_new
+
+    if (iter %% check_in == 0)
+      message(
+        Sys.time(),
+        glue::glue(
+          " Iter {iter} complete. ",
+          "delta = {round(delta, 8)}, ",
+          "alpha = {round(alpha, 3)}"
+        )
+      )
+
+    iter <- iter + 1
+
+    if (iter > max_iter) {
+      warning(
+        "\nReached maximum allowed iterations. Returning early.",
+        call. = FALSE
+      )
       break
     }
   }
-  return(temp.M)
+
+  s
 }
 
-#####################################
-## subfunctions for adaptiveImpute ##
-#####################################
-
-sign.lm <- function(M.p, lambda.hat, u.hat, v.hat, r, ind) {
-  nz <- which(ind)
-  X <- matrix(0, sum(ind), r)
-  for (i in 1:r) {
-    E <- lambda.hat[i] * u.hat[, i] %*% t(v.hat[, i])
-    X[, i] <- E[nz]
-  }
-  y <- M.p[nz]
-  XX.inv <- solve(crossprod(X))
-  XTY <- t(X) %*% y
-  coef <- XX.inv %*% XTY
-  lambda.hat.R <- diag(c(lambda.hat * coef))
-  out <- u.hat %*% lambda.hat.R %*% t(v.hat)
-  return(out)
+# mask needs to be a sparse matrix stored as triplets
+p_omega_f_norm_ut <- function(s, mask) {
+  mask <- as(mask, "TsparseMatrix")
+  p_omega_f_norm_ut_impl(s$u, s$d, s$v, mask@i, mask@j)
 }
 
-sign.asympt <- function(M.p, n, d, lambda.hat, u.hat, v.hat, r, ind) {
-  svd.Mp <- svds(M.p, r)
-  Vp.Vhat <- crossprod(rep(1, d), (svd.Mp$v * v.hat))
-  Up.Uhat <- crossprod(rep(1, n), (svd.Mp$u * u.hat))
-  coef <- sign(Vp.Vhat * Up.Uhat)
-  lambda.hat.R <- diag(c(lambda.hat * coef))
-  out <- u.hat %*% (lambda.hat.R %*% t(v.hat))
-  return(out)
+# KEY: must return a vector! test this otherwise you will be sad!
+Ax_citation <- function(x, args) {
+  mask <- as(args$M, "TsparseMatrix")
+
+  # out <- drop0(args$M) %*% x
+  # out <- out - p_omega_zx_impl(args$u, args$d, args$v, mask@i, mask@j, x)
+  # out <- out + args$u %*% diag(args$d) %*% crossprod(args$v, x)
+
+  out <- drop0(args$M) %*% x
+  out <- out - p_u_zx_impl(args$u, args$d, args$v, x)
+  out <- out - p_u_tilde_zx_impl(args$u, args$d, args$v, mask@i, mask@j, x)
+  out <- out + args$u %*% diag(args$d) %*% crossprod(args$v, x)
+
+  drop(out)
 }
 
-sign.greedy <- function(M.p, lambda.hat, u.hat, v.hat, r, ind) {
-  nr <- 2^r
-  coef.set <- matrix(0, nr, r)
-  for (i in 1:r) { # i=1
-    motiv <- c(rep(1, nr / (2^i)), rep(-1, nr / (2^i)))
-    coef.set[, i] <- rep(motiv, 2^(i - 1))
-  }
-  MSEs <- c()
-  for (j in 1:nr) { # j=1
-    coef <- coef.set[j, ]
-    lambda.hat.R <- diag(c(lambda.hat * coef))
-    Mhat <- u.hat %*% (lambda.hat.R %*% t(v.hat))
-    diff <- (M.p - Mhat)[ind]
-    MSEs[j] <- mean(diff^2)
-  }
-  pick <- which.min(MSEs)
-  coef <- coef.set[pick, ]
-  lambda.hat.R <- diag(c(lambda.hat * coef))
-  out <- u.hat %*% (lambda.hat.R %*% t(v.hat))
-  return(out)
+Atx_citation <- function(x, args) {
+
+  mask <- as(args$M, "TsparseMatrix")
+
+  # out <- t(drop0(args$M)) %*% x
+  # out <- out - p_omega_ztx_impl(args$u, args$d, args$v, mask@i, mask@j, x)
+  # out <- out + args$v %*% diag(args$d) %*% crossprod(args$u, x)
+
+  out <- t(drop0(args$M)) %*% x
+  out <- out - p_u_ztx_impl(args$u, args$d, args$v, x)
+  out <- out - p_u_tilde_ztx_impl(args$u, args$d, args$v, mask@i, mask@j, x)
+  out <- out + args$v %*% diag(args$d) %*% crossprod(args$u, x)
+
+  drop(out)
 }
 
-Initial <- function(M.p, r, p.hat, n, d, ind, sign.choice) {
-  SIG <- (t(M.p) %*% M.p) / p.hat^2
-  SIG.diag <- (p.hat - 1) * diag(SIG)
-  diag(SIG) <- diag(SIG) + SIG.diag
-  SIG2 <- (M.p %*% t(M.p)) / p.hat^2
-  SIG2.diag <- (p.hat - 1) * diag(SIG2)
-  diag(SIG2) <- diag(SIG2) + SIG2.diag
 
-  obj <- svds(SIG, r)
-  obj2 <- svds(SIG2, r)
 
-  tau <- (sum(diag(SIG)) - sum(obj$d)) / (d - r)
-  lambda.hat <- sqrt(obj$d - tau)
-  v.hat <- obj$v
-  u.hat <- obj2$v
 
-  if (sign.choice == "asympt") {
-    M.hat <- sign.asympt(M.p, n, d, lambda.hat, u.hat, v.hat, r, ind)
-  } else {
-    if (sign.choice == "greedy") {
-      M.hat <- sign.greedy(M.p, lambda.hat, u.hat, v.hat, r, ind)
-    } else {
-      M.hat <- sign.lm(M.p, lambda.hat, u.hat, v.hat, r, ind)
-    }
-  }
-  return(M.hat)
-}
 
-SVD.F <- function(M, r, M.p, d) {
-  obj <- svds(M, r)
-  M2 <- M^2
-  MTM <- colSums(M2)
-  tau <- (sum(MTM) - sum(obj$d^2)) / (d - r)
-  lambda.hat <- sqrt(obj$d^2 - tau)
-  v.hat <- obj$v
-  u.hat <- obj$u
-  M.hat <- u.hat %*% (diag(lambda.hat) %*% t(v.hat))
-  return(M.hat)
-}
