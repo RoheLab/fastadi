@@ -1,6 +1,7 @@
 
 # slightly nicer wrappers for the C++ implementations
 
+# TODO: issue u vs U and v vs V are causing a segfault here, liiiiiit
 masked_approximation <- function(s, mask) {
   mask <- as(mask, "TsparseMatrix")
   masked_approximation_impl(s$u, s$d, s$v, mask@i, mask@j)
