@@ -21,9 +21,7 @@ print.low_rank_matrix_factorization <- function(x, ...) {
   cat(glue("Rank: {x$rank}"), sep = "\n\n")
 
   cat(glue("Rows: {nrow(x$U)}"), sep = "\n")
-  cat(glue("Cols: {nrow(x$V)}"), sep = "\n")
-
-  cat("\nDiagnostics\n\n")
+  cat(glue("Cols: {nrow(x$V)}"), sep = "\n\n")
 
   cat(glue("d[rank]: {x$d[x$rank]}"), sep = "\n")
   cat(glue("alpha:   {x$alpha}"), sep = "\n")
@@ -31,7 +29,7 @@ print.low_rank_matrix_factorization <- function(x, ...) {
   cat("\nPre-Processing\n\n")
 
   cat(" - Centered: FALSE \n")
-  cat(" - Scaled:   FALSE \n")
+  cat(" - Scaled:   FALSE \n\n")
 
   cat("Components\n\n")
 
