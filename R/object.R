@@ -1,35 +1,32 @@
-new_low_rank_matrix_factorization <- function(
-  U, d, V, rank, alpha) {
+#' @export
+new_adaptive_imputation <- function(
+  u, d, v, rank, alpha, subclasses = NULL, ...) {
 
   object <- list(
-    U = U,
+    u = u,
     d = d,
-    V = V,
+    v = v,
     rank = rank,
-    alpha =  alpha
+    alpha = alpha,
+    ...
   )
 
-  class(object) <- "low_rank_matrix_factorization"
+  class(object) <- c(subclasses, "adaptive_imputation", "LRMF")
   object
 }
 
 #' @export
-print.low_rank_matrix_factorization <- function(x, ...) {
-  cat("Low Rank Matrix Factorization\n\n")
-
+print.adaptive_imputation <- function(x, ...) {
+  cat("Adaptively Imputed Low Rank Matrix Factorization\n")
+  cat("------------------------------------------------\n\n")
 
   cat(glue("Rank: {x$rank}"), sep = "\n\n")
 
-  cat(glue("Rows: {nrow(x$U)}"), sep = "\n")
-  cat(glue("Cols: {nrow(x$V)}"), sep = "\n\n")
+  cat(glue("Rows: {nrow(x$u)}"), sep = "\n")
+  cat(glue("Cols: {nrow(x$v)}"), sep = "\n\n")
 
   cat(glue("d[rank]: {x$d[x$rank]}"), sep = "\n")
-  cat(glue("alpha:   {x$alpha}"), sep = "\n")
-
-  cat("\nPre-Processing\n\n")
-
-  cat(" - Centered: FALSE \n")
-  cat(" - Scaled:   FALSE \n\n")
+  cat(glue("alpha:   {x$alpha}"), sep = "\n\n")
 
   cat("Components\n\n")
 
@@ -41,7 +38,7 @@ print.low_rank_matrix_factorization <- function(x, ...) {
       paste0(nrow(x), " x ", ncol(x), " [", class(x)[1], "]")
   }
 
-  cat("U:", dim_and_class(x$U), "\n")
+  cat("u:", dim_and_class(x$u), "\n")
   cat("d:", dim_and_class(x$d), "\n")
-  cat("V:", dim_and_class(x$V), "\n")
+  cat("v:", dim_and_class(x$v), "\n")
 }

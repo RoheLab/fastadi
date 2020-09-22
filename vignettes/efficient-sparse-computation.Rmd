@@ -120,6 +120,51 @@ out2 <- Mx(x, args = list(M = M, p = p))
 all.equal(as.matrix(out), as.matrix(out))
 ```
 
+# check the computation of alpha for p.s.d. matrices
+
+```{r}
+S <- toeplitz((10:1)/10)
+set.seed(11)
+R <- rWishart(1, 20, S)[, ,1]
+R
+
+sum(diag(R))
+sum(eigen(R)$values)
+sum(svd(R)$d)
+
+p <- 0.5
+
+X <- crossprod(R) - (1 - p) * diag(crossprod(R))
+
+
+sum(diag(X))
+sum(eigen(X)$values)
+sum(svd(X)$d)
+```
+
+
+```{r}
+M <- ml100k
+s <- svd(M)
+```
+
+```{r}
+# nuclear norm
+sum(s$d)
+norm(M, type = "F")
+
+r <- 5
+
+d <- ncol(M)
+n <- nrow(M)
+
+alpha <- (sum(s$d) - sum(s$d[1:r])) / (d - r)
+alpha
+
+s$d[1:r]
+```
+
+
 
 TODO: update alg description to divide by $p^2$ to get the right singular values
 

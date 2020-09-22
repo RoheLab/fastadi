@@ -1,7 +1,9 @@
 #' @keywords internal
 #'
 #' @importFrom glue glue
+#' @import LRMF3
 #' @import Matrix
+#' @importFrom logger log_info log_debug
 #' @importFrom methods as
 #' @importFrom RSpectra svds
 #' @importFrom stats sd

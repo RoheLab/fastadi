@@ -1,7 +1,6 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 reference
-paper
 ^LICENSE\.md$
 ^README\.Rmd$
 ^data-raw$

@@ -3,11 +3,28 @@
 #' An implementation of the `AdaptiveImpute` algorithm for matrix completion
 #' for sparse matrices.
 #'
-#' @param X A sparse matrix of `sparseMatrix` class.
+#' @param X A sparse matrix of [Matrix::sparseMatrix()] class.
 #'
 #' @param rank Desired rank (integer) to use in the low rank approximation.
 #'
-#' @param initialization TODO.
+#' @param ... Unused additional arguments.
+#'
+#' @param initialization How to initialize the low rank approximation.
+#'   Options are:
+#'
+#'   - `"svd"` (default). In the initialization step, this treats
+#'     unobserved values as zeroes.
+#'
+#'   - `"adaptive-initialize"`. In the initialization step, this treats
+#'     unobserved values as actually unobserved. However, the current
+#'     `AdaptiveInitialize` implementation relies on dense matrix
+#'     computations that are only suitable for relatively small matrices.
+#'
+#'   Note that initialization matters as `AdaptiveImpute` optimizes
+#'   a non-convex objective. The current theory shows that initializing
+#'   with `AdaptiveInitialize` leads to a consistent estimator, but it
+#'   isn't know if this is the case for SVD initialization. Empirically
+#'   we have found that SVD initialization works well nonetheless.
 #'
 #' @param epsilon Convergence criteria, measured in terms of relative change
 #'   in Frobenius norm of the full imputed matrix. Defaults to `1e-7`.
@@ -17,67 +34,132 @@
 #'   approximation to use in exploratory analysis, and and 50-100 will get
 #'   you most of the way to convergence.
 #'
-#' @param verbose TODO.
+#' @param check_interval Integer specifying how often to perform convergence
+#'   checks. Defaults to `1L`. In practice, check for convergence requires
+#'   a norm calculation that is expensive for large matrices and decreasing
+#'   the frequency of convergence checks will reduce computation time.
 #'
-#' @return A `low_rank_matrix_factorization` object.
+#' @return A low rank matrix factorization represented by an
+#'   `LRMF` object. See [LRMF3::mf()] for details.
 #'
 #' @export
 #'
 #' @examples
 #'
-#' mf <- adaptive_impute(ml100k, rank = 5L, max_iter = 10L, verbose = TRUE)
-#' mf
+#' mf <- adaptive_impute(ml100k, rank = 3L, max_iter = 20L)
+#' # mf
 #'
 #' # build a rank-5 approximation only for
 #' # observed elements of ml100k
-#' masked_approximation(mf, ml100k)
+#'
+#' predict(mf, ml100k)
+#'
+#'
+#' # estimate the in-sample reconstruction mse
+#'
+#' R <- resid(mf, ml100k)
+#' norm(R, type = "F") / nnzero(ml100k)
+#'
+#'
+#' mf2 <- adaptive_impute(
+#'   ml100k,
+#'   rank = 3L,
+#'   max_iter = 20L,
+#'   initialization = "adaptive-initialize"
+#' )
+#'
+#' # mf2
+#'
+#' R2 <- resid(mf2, ml100k)
+#' norm(R2, type = "F") / nnzero(ml100k)
 #'
 adaptive_impute <- function(
   X,
   rank,
+  ...,
   initialization = c("svd", "adaptive-initialize"),
-  epsilon = 1e-7,
   max_iter = 200L,
-  check_in = 1L,
-  verbose = FALSE
+  check_interval = 1L,
+  epsilon = 1e-7
 ) {
 
-  # TODO: use parallel matrix multiplications from rsparse
-  # where possible
+  ellipsis::check_dots_used()
 
-  ### INPUT VALIDATION
-
-  if (!inherits(X, "sparseMatrix")) {
-    stop(
-      glue("`X` must be a `sparseMatrix, not a {class(X)} object."),
-      call. = FALSE
-    )
-  }
+  # avoid issues with svds() not supporting strictly binary Matrix classes
+  X <- X * 1
 
   rank <- as.integer(rank)
 
   if (rank <= 2)
     stop("`rank` must be an integer >= 2L.", call. = FALSE)
 
+  UseMethod("adaptive_impute")
+}
+
+#' @export
+adaptive_impute.default <- function(
+  X,
+  rank,
+  ...,
+  initialization = c("svd", "adaptive-initialize"),
+  max_iter = 200L,
+  check_interval = 1L,
+  epsilon = 1e-7) {
+
+  stop(
+    glue("No `adaptive_impute` method for objects of class {class(X)}."),
+    call. = FALSE
+  )
+}
+
+#' @export
+#' @rdname adaptive_impute
+adaptive_impute.sparseMatrix <- function(
+  X,
+  rank,
+  initialization = c("svd", "adaptive-initialize"),
+  ...
+) {
+
   initialization <- match.arg(initialization)
 
-  ### INITIALIZATION
-
-  if (verbose) {
-    message(glue("Initialization with {initialization} strategy."))
-  }
+  log_info(glue("Use {initialization} initialization."))
 
   if (initialization == "svd") {
     s <- svds(X, rank)
+    mf <- as_mf(s)
   } else if (initialization == "adaptive-initialize") {
-    s <- adaptive_initialize(X, rank)  # line 1
+    mf <- adaptive_initialize(X, rank)
   } else {
     stop("This should not happen.", call. = FALSE)
   }
 
-  if (verbose) {
-    message("Done initializing, beginning iterations.")
-  }
+  log_info("Done initializing.")
+
+  adaptive_impute.LRMF(mf, X, ...)
+}
+
+#' @export
+#' @rdname adaptive_impute
+adaptive_impute.LRMF <- function(
+  mf,
+  X,
+  ...,
+  epsilon = 1e-7,
+  max_iter = 200L,
+  check_interval = 1L,
+  verbose = FALSE
+) {
+
+  log_info(
+    glue(
+      "Beginning AdaptiveImpute (max {max_iter} iterations). ",
+      "Checking for convergence every {check_interval} iteration(s)."
+    )
+  )
+
+  s <- mf
+  rank <- mf$rank
 
   ### ITERATION STAGE
 
@@ -96,33 +178,30 @@ adaptive_impute <- function(
 
     s_new <- svds(Ax, k = rank, Atrans = Atx, dim = dim(X), args = args)
 
-    MtM <- norm_M + sum(s_new$d^2) - sum(masked_approximation(s_new, X)^2)
+    MtM <- norm_M + sum(s$d^2) - sum(masked_approximation(s_new, X)^2)
+    alpha <- (MtM - sum(s_new$d^2)) / (d - rank)  # line 6
 
-    alpha <- (sum(MtM) - sum(s_new$d^2)) / (d - rank)  # line 6
+    assert_alpha_positive(alpha)
 
     s_new$d <- sqrt(s_new$d^2 - alpha)  # line 7
+
+    log_info(glue("lambda_hat = ", paste(s_new$d, collapse = ", ")))
 
     # NOTE: skip explicit computation of line 8
     delta <- relative_f_norm_change(s_new, s)
 
-    if (check_in == 1)
-      message(Sys.time(), " Finding relative change in Frobenius norm.")
-
     # save a little bit on computation
-    if (iter %% check_in == 0)
+    if (iter %% check_interval == 0) {
+      # log_info("Finding relative change in Frobenius norm.")
       delta <- relative_f_norm_change(s_new, s)
+    }
 
     s <- s_new
 
-    if (verbose) {
-      glue("delta: {round(delta, 8)}, alpha: {round(alpha, 3)}")
-    }
-
-    if (iter %% check_in == 0)
-      message(
-        Sys.time(),
-        glue::glue(
-          " Iter {iter} complete. ",
+    if (iter %% check_interval == 0)
+      log_info(
+        glue(
+          "Iter {iter} complete. ",
           "delta = {round(delta, 8)}, ",
           "alpha = {round(alpha, 3)}"
         )
@@ -140,24 +219,14 @@ adaptive_impute <- function(
 
   }
 
-  new_low_rank_matrix_factorization(
-    U = s$u,
+  new_adaptive_imputation(
+    u = s$u,
     d = s$d,
-    V = s$v,
+    v = s$v,
     rank = rank,
-    alpha = alpha
+    alpha = alpha,
+    ...
   )
+
 }
-
-Ax <- function(x, args) {
-  drop(args$R %*% x + args$u %*% diag(args$d) %*% crossprod(args$v, x))
-}
-
-Atx <- function(x, args) {
-  drop(t(args$R) %*% x + args$v %*% diag(args$d) %*% crossprod(args$u, x))
-}
-
-
-
-
 

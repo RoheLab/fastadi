@@ -5,6 +5,10 @@
 
 <!-- badges: start -->
 
+[![Lifecycle:
+maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/fastadi)](https://CRAN.R-project.org/package=fastadi)
 <!-- badges: end -->
 
 `fastadi` implements the `AdaptiveImpute` matrix completion algorithm of

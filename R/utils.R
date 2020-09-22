@@ -1,12 +1,3 @@
-
-# slightly nicer wrappers for the C++ implementations
-
-# TODO: issue u vs U and v vs V are causing a segfault here, liiiiiit
-masked_approximation <- function(s, mask) {
-  mask <- as(mask, "TsparseMatrix")
-  masked_approximation_impl(s$u, s$d, s$v, mask@i, mask@j)
-}
-
 masked_svd_times_x <- function(s, mask, x) {
   drop(masked_svd_times_x_impl(s$u, s$d, s$v, mask@i, mask@j, x))
 }
@@ -23,4 +14,14 @@ relative_f_norm_change <- function(s_new, s) {
   denom <- sum(s$d^2)
 
   num / denom
+}
+
+assert_alpha_positive <- function(alpha) {
+  if (alpha < 0)
+    stop(
+      "Negative alpha value. This should never happen. Please report ",
+      "this issue at https://github.com/RoheLab/fastadi/issues/, ideally ",
+      "as a reproducible example (see https://reprex.tidyverse.org/).",
+      call. = FALSE
+    )
 }
