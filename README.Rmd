@@ -24,8 +24,6 @@ knitr::opts_chunk$set(
 
 You may find `fastadi` useful if you are developing embeddings for sparsely observed data, if you are working in natural language processing, or building a recommendation system.
 
-At the moment `fastadi` is a relatively low-level package, performing matrix factorization and returning a low rank approximation `U D V'` of an original data matrix. It is up to you to manipulate the matrices `U`, `D` and `V` appropriately for your application; if you are interested in a higher level interface for a task you are working on, please file an issue!
-
 ## Installation
 
 You can install the development version from [GitHub](https://github.com/) with:

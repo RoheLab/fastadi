@@ -98,7 +98,6 @@
 
 <p><code>fastadi</code> implements the <code>AdaptiveImpute</code> matrix completion algorithm. <code>fastadi</code> is a self-tuning alternative to algorithms such as <code>SoftImpute</code> (implemented in the <a href="https://cran.r-project.org/package=softImpute"><code>softImpute</code></a> package), truncated SVD, maximum margin matrix factorization, and weighted regularized matrix factorization (implemented in the <a href="https://github.com/rexyai/rsparse"><code>rsparse</code></a> package). In simulations <code>fastadi</code> often outperforms <code>softImpute</code> by a small margin.</p>
 <p>You may find <code>fastadi</code> useful if you are developing embeddings for sparsely observed data, if you are working in natural language processing, or building a recommendation system.</p>
-<p>At the moment <code>fastadi</code> is a relatively low-level package, performing matrix factorization and returning a low rank approximation <code>U D V'</code> of an original data matrix. It is up to you to manipulate the matrices <code>U</code>, <code>D</code> and <code>V</code> appropriately for your application; if you are interested in a higher level interface for a task you are working on, please file an issue!</p>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
@@ -115,15 +114,15 @@
 <span class="co">#&gt; Loading required package: LRMF3</span>
 
 <span class="no">mf</span> <span class="kw">&lt;-</span> <span class="fu"><a href="reference/adaptive_impute.html">adaptive_impute</a></span>(<span class="no">ml100k</span>, <span class="kw">rank</span> <span class="kw">=</span> <span class="fl">3L</span>, <span class="kw">max_iter</span> <span class="kw">=</span> <span class="fl">5L</span>)
-<span class="co">#&gt; INFO [2020-09-22 17:07:15] Use svd initialization.</span>
-<span class="co">#&gt; INFO [2020-09-22 17:07:15] Done initializing.</span>
-<span class="co">#&gt; INFO [2020-09-22 17:07:15] Beginning AdaptiveImpute (max 5 iterations).</span>
-<span class="co">#&gt; INFO [2020-09-22 17:07:15] Checking convergence every 1 iteration(s).</span>
-<span class="co">#&gt; INFO [2020-09-22 17:07:15] Iter 1 complete. delta = 0.22312337, alpha = 184.71</span>
-<span class="co">#&gt; INFO [2020-09-22 17:07:16] Iter 2 complete. delta = 0.05159124, alpha = 154.411</span>
-<span class="co">#&gt; INFO [2020-09-22 17:07:16] Iter 3 complete. delta = 0.02125919, alpha = 135.61</span>
-<span class="co">#&gt; INFO [2020-09-22 17:07:17] Iter 4 complete. delta = 0.01114668, alpha = 122.308</span>
-<span class="co">#&gt; INFO [2020-09-22 17:07:17] Iter 5 complete. delta = 0.00669206, alpha = 112.354</span>
+<span class="co">#&gt; INFO [2020-09-22 17:14:30] Use svd initialization.</span>
+<span class="co">#&gt; INFO [2020-09-22 17:14:30] Done initializing.</span>
+<span class="co">#&gt; INFO [2020-09-22 17:14:30] Beginning AdaptiveImpute (max 5 iterations).</span>
+<span class="co">#&gt; INFO [2020-09-22 17:14:30] Checking convergence every 1 iteration(s).</span>
+<span class="co">#&gt; INFO [2020-09-22 17:14:31] Iter 1 complete. delta = 0.22312337, alpha = 184.71</span>
+<span class="co">#&gt; INFO [2020-09-22 17:14:31] Iter 2 complete. delta = 0.05159124, alpha = 154.411</span>
+<span class="co">#&gt; INFO [2020-09-22 17:14:31] Iter 3 complete. delta = 0.02125919, alpha = 135.61</span>
+<span class="co">#&gt; INFO [2020-09-22 17:14:32] Iter 4 complete. delta = 0.01114668, alpha = 122.308</span>
+<span class="co">#&gt; INFO [2020-09-22 17:14:32] Iter 5 complete. delta = 0.00669206, alpha = 112.354</span>
 <span class="co">#&gt; Warning: </span>
 <span class="co">#&gt; Reached maximum allowed iterations. Returning early.</span></pre></div>
 <div class="sourceCode" id="cb3"><pre class="r"><span class="no">mf</span>
