@@ -28,7 +28,7 @@
 #'
 #' # build a rank-5 approximation only for
 #' # observed elements of ml100k
-#' predict(mf, ml100k)
+#' preds <- predict(mf, ml100k)
 #'
 adaptive_initialize <- function(
   X,

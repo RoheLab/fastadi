@@ -1,5 +1,3 @@
-context("citation cumsum methods")
-
 library(Matrix)
 library(RSpectra)
 library(testthat)

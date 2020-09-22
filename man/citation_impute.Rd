@@ -2,6 +2,8 @@
 % Please edit documentation in R/citation-impute.R
 \name{citation_impute}
 \alias{citation_impute}
+\alias{citation_impute.sparseMatrix}
+\alias{citation_impute.LRMF}
 \title{CitationImpute}
 \usage{
 citation_impute(
@@ -12,6 +14,18 @@ citation_impute(
   max_iter = 200L,
   check_interval = 1L,
   epsilon = 1e-07
+)
+
+\method{citation_impute}{sparseMatrix}(X, rank, initialization = c("svd", "adaptive-initialize"), ...)
+
+\method{citation_impute}{LRMF}(
+  mf,
+  X,
+  ...,
+  epsilon = 1e-07,
+  max_iter = 200L,
+  check_interval = 1L,
+  verbose = FALSE
 )
 }
 \arguments{

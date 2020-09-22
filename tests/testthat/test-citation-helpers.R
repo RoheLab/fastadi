@@ -1,5 +1,3 @@
-context("citation helpers")
-
 library(Matrix)
 library(RSpectra)
 

@@ -15,18 +15,19 @@ new_adaptive_imputation <- function(
   object
 }
 
+#' @method print adaptive_imputation
 #' @export
 print.adaptive_imputation <- function(x, ...) {
-  cat("Adaptively Imputed Low Rank Matrix Factorization\n")
+  cat("\nAdaptively Imputed Low Rank Matrix Factorization\n")
   cat("------------------------------------------------\n\n")
 
-  cat(glue("Rank: {x$rank}"), sep = "\n\n")
+  cat(glue("Rank: {x$rank}\n\n", .trim = FALSE))
 
-  cat(glue("Rows: {nrow(x$u)}"), sep = "\n")
-  cat(glue("Cols: {nrow(x$v)}"), sep = "\n\n")
+  cat(glue("Rows: {nrow(x$u)}\n", .trim = FALSE))
+  cat(glue("Cols: {nrow(x$v)}\n\n", .trim = FALSE))
 
-  cat(glue("d[rank]: {x$d[x$rank]}"), sep = "\n")
-  cat(glue("alpha:   {x$alpha}"), sep = "\n\n")
+  cat(glue("d[rank]: {round(x$d[x$rank], 3)}\n", .trim = FALSE))
+  cat(glue("alpha:   {round(x$alpha, 3)}\n\n", .trim = FALSE))
 
   cat("Components\n\n")
 

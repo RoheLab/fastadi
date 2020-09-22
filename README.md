@@ -11,8 +11,8 @@ maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www
 status](https://www.r-pkg.org/badges/version/fastadi)](https://CRAN.R-project.org/package=fastadi)
 <!-- badges: end -->
 
-`fastadi` implements the `AdaptiveImpute` matrix completion algorithm of
-\[2, 1\]. `fastadi` is a self-tuning alternative to algorithms such as
+`fastadi` implements the `AdaptiveImpute` matrix completion algorithm.
+`fastadi` is a self-tuning alternative to algorithms such as
 `SoftImpute` (implemented in the
 [`softImpute`](https://cran.r-project.org/package=softImpute) package),
 truncated SVD, maximum margin matrix factorization, and weighted
@@ -43,7 +43,47 @@ devtools::install_github("RoheLab/fastadi")
 
 ## Example usage
 
-TODO
+Here we embed users and items in the MovieLens 100K dataset.
+
+``` r
+library(fastadi)
+#> Loading required package: Matrix
+#> Loading required package: LRMF3
+
+mf <- adaptive_impute(ml100k, rank = 3L, max_iter = 5L)
+#> INFO [2020-09-22 17:07:15] Use svd initialization.
+#> INFO [2020-09-22 17:07:15] Done initializing.
+#> INFO [2020-09-22 17:07:15] Beginning AdaptiveImpute (max 5 iterations).
+#> INFO [2020-09-22 17:07:15] Checking convergence every 1 iteration(s).
+#> INFO [2020-09-22 17:07:15] Iter 1 complete. delta = 0.22312337, alpha = 184.71
+#> INFO [2020-09-22 17:07:16] Iter 2 complete. delta = 0.05159124, alpha = 154.411
+#> INFO [2020-09-22 17:07:16] Iter 3 complete. delta = 0.02125919, alpha = 135.61
+#> INFO [2020-09-22 17:07:17] Iter 4 complete. delta = 0.01114668, alpha = 122.308
+#> INFO [2020-09-22 17:07:17] Iter 5 complete. delta = 0.00669206, alpha = 112.354
+#> Warning: 
+#> Reached maximum allowed iterations. Returning early.
+```
+
+``` r
+mf
+#> 
+#> Adaptively Imputed Low Rank Matrix Factorization
+#> ------------------------------------------------
+#> 
+#> Rank: 3
+#> 
+#> Rows: 943
+#> Cols: 1682
+#> 
+#> d[rank]: 467.762
+#> alpha:   112.354
+#> 
+#> Components
+#> 
+#> u: 943 x 3 [matrix] 
+#> d: 3      [numeric] 
+#> v: 1682 x 3 [matrix]
+```
 
 ## References
 

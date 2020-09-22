@@ -52,8 +52,7 @@
 #' # build a rank-5 approximation only for
 #' # observed elements of ml100k
 #'
-#' predict(mf, ml100k)
-#'
+#' preds <- predict(mf, ml100k)
 #'
 #' # estimate the in-sample reconstruction mse
 #'
@@ -151,12 +150,8 @@ adaptive_impute.LRMF <- function(
   verbose = FALSE
 ) {
 
-  log_info(
-    glue(
-      "Beginning AdaptiveImpute (max {max_iter} iterations). ",
-      "Checking for convergence every {check_interval} iteration(s)."
-    )
-  )
+  log_info(glue("Beginning AdaptiveImpute (max {max_iter} iterations)."))
+  log_info(glue("Checking convergence every {check_interval} iteration(s)."))
 
   s <- mf
   rank <- mf$rank
@@ -166,7 +161,7 @@ adaptive_impute.LRMF <- function(
   delta <- Inf
   d <- ncol(X)
   norm_M <- norm(X, type = "F")^2
-  iter <- 0L
+  iter <- 1L
 
   while (delta > epsilon) {
 
@@ -185,7 +180,7 @@ adaptive_impute.LRMF <- function(
 
     s_new$d <- sqrt(s_new$d^2 - alpha)  # line 7
 
-    log_info(glue("lambda_hat = ", paste(s_new$d, collapse = ", ")))
+    log_debug(glue("lambda_hat = ", paste(s_new$d, collapse = ", ")))
 
     # NOTE: skip explicit computation of line 8
     delta <- relative_f_norm_change(s_new, s)
@@ -211,7 +206,7 @@ adaptive_impute.LRMF <- function(
 
     if (iter > max_iter) {
       warning(
-        "\nReached maximum allowed iterations. Returning early.",
+        "\nReached maximum allowed iterations. Returning early.\n",
         call. = FALSE
       )
       break

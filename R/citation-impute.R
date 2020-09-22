@@ -71,7 +71,7 @@ citation_impute.default <- function(
 }
 
 #' @export
-#' @rdname adaptive_impute
+#' @rdname citation_impute
 citation_impute.sparseMatrix <- function(
   X,
   rank,
@@ -122,7 +122,7 @@ citation_impute.sparseMatrix <- function(
 }
 
 #' @export
-#' @rdname adaptive_impute
+#' @rdname citation_impute
 citation_impute.LRMF <- function(
   mf,
   X,
@@ -133,12 +133,8 @@ citation_impute.LRMF <- function(
   verbose = FALSE
 ) {
 
-  log_info(
-    glue(
-      "Beginning AdaptiveImpute (max {max_iter} iterations). ",
-      "Checking for convergence every {check_interval} iteration(s)."
-    )
-  )
+  log_info(glue("Beginning AdaptiveImpute (max {max_iter} iterations)."))
+  log_info(glue("Checking convergence every {check_interval} iteration(s)."))
 
   s <- mf
   rank <- mf$rank
@@ -148,7 +144,7 @@ citation_impute.LRMF <- function(
   delta <- Inf
   d <- ncol(X)
   norm_X <- norm(X, type = "F")^2
-  iter <- 0L
+  iter <- 1L
 
   while (delta > epsilon) {
 
@@ -198,7 +194,7 @@ citation_impute.LRMF <- function(
 
     if (iter > max_iter) {
       warning(
-        "\nReached maximum allowed iterations. Returning early.",
+        "\nReached maximum allowed iterations. Returning early.\n",
         call. = FALSE
       )
       break

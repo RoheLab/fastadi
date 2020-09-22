@@ -1,5 +1,3 @@
-context("test-svd_frob_inner_prod")
-
 test_that("svd_frob_inner_prod", {
 
   library(Matrix)

@@ -13,10 +13,6 @@ atx_citation_impl <- function(U, d, V, x) {
     .Call(`_fastadi_atx_citation_impl`, U, d, V, x)
 }
 
-masked_approximation_impl <- function(U, d, V, row, col) {
-    .Call(`_fastadi_masked_approximation_impl`, U, d, V, row, col)
-}
-
 p_omega_f_norm_ut_impl <- function(U, d, V, row, col) {
     .Call(`_fastadi_p_omega_f_norm_ut_impl`, U, d, V, row, col)
 }

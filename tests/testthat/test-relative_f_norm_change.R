@@ -1,5 +1,3 @@
-context("relative f norm change")
-
 test_that("relative_f_norm_change", {
 
   library(Matrix)
