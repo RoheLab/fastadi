@@ -45,12 +45,6 @@ devtools::install_github("RoheLab/fastadi")
 
 TODO
 
-## Related work
-
-  - vsp
-  - <https://dataslingers.github.io/MoMA/>
-  - sparse PCA
-
 ## References
 
 1.  Cho, J., Kim, D. & Rohe, K. Asymptotic Theory for Estimating the
@@ -64,3 +58,6 @@ TODO
     Graphical Statistics 1–26 (2018)
     <doi:10.1080/10618600.2018.1518238>.
     <https://amstat.tandfonline.com/doi/abs/10.1080/10618600.2018.1518238>
+
+You can find the original implementation accompanying these papers
+[here](https://github.com/chojuhee/hello-world).
