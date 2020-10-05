@@ -31,7 +31,7 @@ adaptive_imputation <- function(u, d, v, alpha, ...) {
 }
 
 new_adaptive_imputation <- function(u, d, v, rank, alpha, ...) {
-  new_svd_like(
+  svd_like(
     u = u,
     d = d,
     v = v,
@@ -43,8 +43,6 @@ new_adaptive_imputation <- function(u, d, v, rank, alpha, ...) {
 }
 
 validate_adaptive_imputation <- function(ai) {
-
-  validate_svd_like(ai)
 
   if (is.null(ai$alpha)) {
     stop(
