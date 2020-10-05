@@ -49,6 +49,8 @@ mf <- adaptive_impute(ml100k, rank = 3L, max_iter = 5L)
 mf
 ```
 
+Note that the vignettes are currently scratch work for reference by the developers and are not yet ready for general consumption.
+
 ## References
 
 1. Cho, J., Kim, D. & Rohe, K. Asymptotic Theory for Estimating the Singular Vectors and Values of a Partially-observed Low Rank Matrix with Noise. arXiv:1508.05431 [stat] (2015). http://arxiv.org/abs/1508.05431

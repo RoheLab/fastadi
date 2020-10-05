@@ -48,15 +48,15 @@ library(fastadi)
 #> Loading required package: LRMF3
 
 mf <- adaptive_impute(ml100k, rank = 3L, max_iter = 5L)
-#> INFO [2020-10-05 11:15:25] Use svd initialization.
-#> INFO [2020-10-05 11:15:25] Done initializing.
-#> INFO [2020-10-05 11:15:25] Beginning AdaptiveImpute (max 5 iterations).
-#> INFO [2020-10-05 11:15:25] Checking convergence every 1 iteration(s).
-#> INFO [2020-10-05 11:15:26] Iter 1 complete. delta = 0.22312337, alpha = 184.71
-#> INFO [2020-10-05 11:15:26] Iter 2 complete. delta = 0.05159124, alpha = 154.411
-#> INFO [2020-10-05 11:15:26] Iter 3 complete. delta = 0.02125919, alpha = 135.61
-#> INFO [2020-10-05 11:15:27] Iter 4 complete. delta = 0.01114668, alpha = 122.308
-#> INFO [2020-10-05 11:15:27] Iter 5 complete. delta = 0.00669206, alpha = 112.354
+#> INFO [2020-10-05 11:27:08] Use svd initialization.
+#> INFO [2020-10-05 11:27:08] Done initializing.
+#> INFO [2020-10-05 11:27:08] Beginning AdaptiveImpute (max 5 iterations).
+#> INFO [2020-10-05 11:27:08] Checking convergence every 1 iteration(s).
+#> INFO [2020-10-05 11:27:09] Iter 1 complete. delta = 0.22312337, alpha = 184.71
+#> INFO [2020-10-05 11:27:09] Iter 2 complete. delta = 0.05159124, alpha = 154.411
+#> INFO [2020-10-05 11:27:10] Iter 3 complete. delta = 0.02125919, alpha = 135.61
+#> INFO [2020-10-05 11:27:10] Iter 4 complete. delta = 0.01114668, alpha = 122.308
+#> INFO [2020-10-05 11:27:11] Iter 5 complete. delta = 0.00669206, alpha = 112.354
 #> Warning: 
 #> Reached maximum allowed iterations. Returning early.
 ```
@@ -81,6 +81,9 @@ mf
 #> d: 3      [numeric] 
 #> v: 1682 x 3 [matrix]
 ```
+
+Note that the vignettes are currently scratch work for reference by the
+developers and are not yet ready for general consumption.
 
 ## References
 
