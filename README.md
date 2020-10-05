@@ -9,6 +9,10 @@
 maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/fastadi)](https://CRAN.R-project.org/package=fastadi)
+[![Codecov test
+coverage](https://codecov.io/gh/RoheLab/fastadi/branch/master/graph/badge.svg)](https://codecov.io/gh/RoheLab/fastadi?branch=master)
+[![R build
+status](https://github.com/RoheLab/fastadi/workflows/R-CMD-check/badge.svg)](https://github.com/RoheLab/fastadi/actions)
 <!-- badges: end -->
 
 `fastadi` implements the `AdaptiveImpute` matrix completion algorithm.
@@ -44,15 +48,15 @@ library(fastadi)
 #> Loading required package: LRMF3
 
 mf <- adaptive_impute(ml100k, rank = 3L, max_iter = 5L)
-#> INFO [2020-10-05 10:06:19] Use svd initialization.
-#> INFO [2020-10-05 10:06:19] Done initializing.
-#> INFO [2020-10-05 10:06:19] Beginning AdaptiveImpute (max 5 iterations).
-#> INFO [2020-10-05 10:06:19] Checking convergence every 1 iteration(s).
-#> INFO [2020-10-05 10:06:20] Iter 1 complete. delta = 0.22312337, alpha = 184.71
-#> INFO [2020-10-05 10:06:21] Iter 2 complete. delta = 0.05159124, alpha = 154.411
-#> INFO [2020-10-05 10:06:22] Iter 3 complete. delta = 0.02125919, alpha = 135.61
-#> INFO [2020-10-05 10:06:22] Iter 4 complete. delta = 0.01114668, alpha = 122.308
-#> INFO [2020-10-05 10:06:23] Iter 5 complete. delta = 0.00669206, alpha = 112.354
+#> INFO [2020-10-05 11:15:25] Use svd initialization.
+#> INFO [2020-10-05 11:15:25] Done initializing.
+#> INFO [2020-10-05 11:15:25] Beginning AdaptiveImpute (max 5 iterations).
+#> INFO [2020-10-05 11:15:25] Checking convergence every 1 iteration(s).
+#> INFO [2020-10-05 11:15:26] Iter 1 complete. delta = 0.22312337, alpha = 184.71
+#> INFO [2020-10-05 11:15:26] Iter 2 complete. delta = 0.05159124, alpha = 154.411
+#> INFO [2020-10-05 11:15:26] Iter 3 complete. delta = 0.02125919, alpha = 135.61
+#> INFO [2020-10-05 11:15:27] Iter 4 complete. delta = 0.01114668, alpha = 122.308
+#> INFO [2020-10-05 11:15:27] Iter 5 complete. delta = 0.00669206, alpha = 112.354
 #> Warning: 
 #> Reached maximum allowed iterations. Returning early.
 ```
