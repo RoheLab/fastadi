@@ -1,18 +1,66 @@
+#' Create an Adaptive Imputation object
+#'
+#' `adaptive_imputation` objects are a subclass of
+#' [LRMF3::svd_like()], with an additional field `alpha`.
+#'
+#' @param u A *matrix* "left singular-ish" vectors.
+#'
+#' @param d A *vector* of "singular-ish" values.
+#'
+#' @param v A *matrix* of "right singular-ish" vectors.
+#'
+#' @param alpha Value of `alpha` after final iteration.
+#'
+#' @param ... Optional additional items to pass to the constructor.
+#'
+#' @return An `adaptive_imputation` object.
+#'
 #' @export
-new_adaptive_imputation <- function(
-  u, d, v, rank, alpha, subclasses = NULL, ...) {
+adaptive_imputation <- function(u, d, v, alpha, ...) {
 
-  object <- list(
+  ai <- svd_like(
     u = u,
     d = d,
     v = v,
-    rank = rank,
+    subclasses = "adaptive_imputation",
     alpha = alpha,
     ...
   )
 
-  class(object) <- c(subclasses, "adaptive_imputation", "LRMF")
-  object
+  validate_adaptive_imputation(ai)
+}
+
+new_adaptive_imputation <- function(u, d, v, rank, alpha, ...) {
+  new_svd_like(
+    u = u,
+    d = d,
+    v = v,
+    rank = rank,
+    subclasses = "adaptive_imputation",
+    alpha = alpha,
+    ...
+  )
+}
+
+validate_adaptive_imputation <- function(ai) {
+
+  validate_svd_like(ai)
+
+  if (is.null(ai$alpha)) {
+    stop(
+      "Must have `alpha` field in adaptive imputation object.",
+      call. = FALSE
+      )
+  }
+
+  if (!is.numeric(ai$alpha) || length(ai$alpha) != 1) {
+    stop(
+      "`alpha` must be a numeric vector of length 1.",
+      call. = FALSE
+    )
+  }
+
+  ai
 }
 
 #' @method print adaptive_imputation

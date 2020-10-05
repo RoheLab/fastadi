@@ -1,4 +1,4 @@
-context("set up helpers")
+library(RSpectra)
 
 equal_svds <- function(s, s2) {
 

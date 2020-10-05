@@ -43,9 +43,6 @@ citation_impute <- function(
 
   ellipsis::check_dots_used()
 
-  # avoid issues with svds() not supporting strictly binary Matrix classes
-  X <- X * 1
-
   rank <- as.integer(rank)
 
   if (rank <= 2)
@@ -100,7 +97,7 @@ citation_impute.sparseMatrix <- function(
   if (initialization == "svd") {
     # multiply by one to coerce to type that svds can handle,
     # svds doesn't like binary matrices
-    s <- svds(X, rank)
+    s <- svds(X * 1, rank)
     mf <- as_mf(s)
   } else if (initialization == "adaptive-initialize") {
 

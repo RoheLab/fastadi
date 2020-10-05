@@ -40,7 +40,7 @@
 #'   the frequency of convergence checks will reduce computation time.
 #'
 #' @return A low rank matrix factorization represented by an
-#'   `LRMF` object. See [LRMF3::mf()] for details.
+#'   `LRMF` object. See [LRMF3::svd_like()] for details.
 #'
 #' @export
 #'
@@ -84,9 +84,6 @@ adaptive_impute <- function(
 
   ellipsis::check_dots_used()
 
-  # avoid issues with svds() not supporting strictly binary Matrix classes
-  X <- X * 1
-
   rank <- as.integer(rank)
 
   if (rank <= 2)
@@ -126,7 +123,7 @@ adaptive_impute.sparseMatrix <- function(
 
   if (initialization == "svd") {
     s <- svds(X, rank)
-    mf <- as_mf(s)
+    mf <- as_svd_like(s)
   } else if (initialization == "adaptive-initialize") {
     mf <- adaptive_initialize(X, rank)
   } else {
@@ -141,20 +138,25 @@ adaptive_impute.sparseMatrix <- function(
 #' @export
 #' @rdname adaptive_impute
 adaptive_impute.LRMF <- function(
-  mf,
   X,
+  rank,
   ...,
   epsilon = 1e-7,
   max_iter = 200L,
   check_interval = 1L,
-  verbose = FALSE
+  verbose = FALSE,
+  p_hat = NULL
 ) {
 
   log_info(glue("Beginning AdaptiveImpute (max {max_iter} iterations)."))
   log_info(glue("Checking convergence every {check_interval} iteration(s)."))
 
-  s <- mf
-  rank <- mf$rank
+  # first argument is the svd_like object, second is the data
+  # do some renaming here
+
+  s <- X
+  X <- rank
+  rank <- s$rank
 
   ### ITERATION STAGE
 
@@ -214,14 +216,11 @@ adaptive_impute.LRMF <- function(
 
   }
 
-  new_adaptive_imputation(
+  adaptive_imputation(
     u = s$u,
     d = s$d,
     v = s$v,
-    rank = rank,
-    alpha = alpha,
-    ...
+    alpha = alpha
   )
-
 }
 

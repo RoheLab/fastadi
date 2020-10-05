@@ -70,7 +70,7 @@ in Frobenius norm of the full imputed matrix. Defaults to \code{1e-7}.}
 }
 \value{
 A low rank matrix factorization represented by an
-\code{LRMF} object. See \code{\link[LRMF3:mf]{LRMF3::mf()}} for details.
+\code{LRMF} object. See \code{\link[LRMF3:svd_like]{LRMF3::svd_like()}} for details.
 }
 \description{
 An implementation of the \code{AdaptiveImpute} algorithm using efficient

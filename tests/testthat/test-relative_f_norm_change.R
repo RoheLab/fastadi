@@ -1,7 +1,7 @@
-test_that("relative_f_norm_change", {
+library(Matrix)
+library(RSpectra)
 
-  library(Matrix)
-  library(RSpectra)
+test_that("relative_f_norm_change", {
 
   set.seed(27)
 

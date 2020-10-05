@@ -13,16 +13,6 @@ Atx <- function(x, args) {
 
 ### citation impute svd variant
 
-citation_svds <- function(X, rank) {
-  svds(
-    Ax_citation_svds,
-    k = rank,
-    Atrans = Atx_citation_svds,
-    dim = dim(X),
-    args = args
-  )
-}
-
 # mask needs to be a sparse matrix stored as triplets
 p_omega_f_norm_ut <- function(s, mask) {
   mask <- as(mask, "TsparseMatrix")

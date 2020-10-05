@@ -20,13 +20,14 @@ adaptive_impute(
 \method{adaptive_impute}{sparseMatrix}(X, rank, initialization = c("svd", "adaptive-initialize"), ...)
 
 \method{adaptive_impute}{LRMF}(
-  mf,
   X,
+  rank,
   ...,
   epsilon = 1e-07,
   max_iter = 200L,
   check_interval = 1L,
-  verbose = FALSE
+  verbose = FALSE,
+  p_hat = NULL
 )
 
 \method{adaptive_initialize}{sparseMatrix}(X, rank, p_hat = NULL, ...)
@@ -70,7 +71,7 @@ in Frobenius norm of the full imputed matrix. Defaults to \code{1e-7}.}
 }
 \value{
 A low rank matrix factorization represented by an
-\code{LRMF} object. See \code{\link[LRMF3:mf]{LRMF3::mf()}} for details.
+\code{LRMF} object. See \code{\link[LRMF3:svd_like]{LRMF3::svd_like()}} for details.
 }
 \description{
 An implementation of the \code{AdaptiveImpute} algorithm for matrix completion

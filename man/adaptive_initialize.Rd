@@ -20,7 +20,7 @@ in which case \code{p_hat} is set to the number of observed elements of
 }
 \value{
 A low rank matrix factorization represented by an
-\code{LRMF} object. See \code{\link[LRMF3:mf]{LRMF3::mf()}} for details.
+\code{LRMF} object. See \code{\link[LRMF3:svd_like]{LRMF3::svd_like()}} for details.
 }
 \description{
 An implementation of the \code{AdaptiveInitialize} algorithm for

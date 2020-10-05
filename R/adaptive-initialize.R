@@ -17,7 +17,7 @@
 #' @param ... Ignored.
 #'
 #' @return A low rank matrix factorization represented by an
-#'   `LRMF` object. See [LRMF3::mf()] for details.
+#'   `LRMF` object. See [LRMF3::svd_like()] for details.
 #'
 #' @export
 #'
@@ -97,6 +97,7 @@ adaptive_initialize.sparseMatrix <- function(
   sigma_p <- XtX - (1 - p_hat) * diag(diag(XtX))  # line 2
   sigma_t <- XXt - (1 - p_hat) * diag(diag(XXt))  # line 3
 
+  # these computations are dense
   svd_p <- svds(sigma_p, rank)
   svd_t <- svds(sigma_t, rank)
 
@@ -131,7 +132,7 @@ adaptive_initialize.sparseMatrix <- function(
   # element of s_hat
   v_hat <- sweep(v_hat, 2, s_hat, "*")
 
-  new_adaptive_imputation(
+  adaptive_imputation(
     u = u_hat,
     d = lambda_hat,
     v = v_hat,
