@@ -98,7 +98,7 @@ citation_impute.sparseMatrix <- function(
     # multiply by one to coerce to type that svds can handle,
     # svds doesn't like binary matrices
     s <- svds(X * 1, rank)
-    mf <- as_mf(s)
+    mf <- as_svd_like(s)
   } else if (initialization == "adaptive-initialize") {
 
     # *total* observed elements of X, including entries in the
@@ -121,8 +121,8 @@ citation_impute.sparseMatrix <- function(
 #' @export
 #' @rdname citation_impute
 citation_impute.LRMF <- function(
-  mf,
   X,
+  rank,
   ...,
   epsilon = 1e-7,
   max_iter = 200L,
@@ -133,8 +133,12 @@ citation_impute.LRMF <- function(
   log_info(glue("Beginning AdaptiveImpute (max {max_iter} iterations)."))
   log_info(glue("Checking convergence every {check_interval} iteration(s)."))
 
-  s <- mf
-  rank <- mf$rank
+  # first argument is the svd_like object, second is the data
+  # do some renaming here
+
+  s <- X
+  X <- rank
+  rank <- s$rank
 
   ### ITERATION STAGE
 
@@ -199,11 +203,10 @@ citation_impute.LRMF <- function(
 
   }
 
-  new_adaptive_imputation(
+  adaptive_imputation(
     u = s$u,
     d = s$d,
     v = s$v,
-    rank = rank,
     alpha = alpha,
     ...
   )

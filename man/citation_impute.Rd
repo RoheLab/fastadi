@@ -19,8 +19,8 @@ citation_impute(
 \method{citation_impute}{sparseMatrix}(X, rank, initialization = c("svd", "adaptive-initialize"), ...)
 
 \method{citation_impute}{LRMF}(
-  mf,
   X,
+  rank,
   ...,
   epsilon = 1e-07,
   max_iter = 200L,

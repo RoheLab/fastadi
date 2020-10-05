@@ -136,7 +136,6 @@ adaptive_initialize.sparseMatrix <- function(
     u = u_hat,
     d = lambda_hat,
     v = v_hat,
-    rank = rank,
     alpha = alpha,
     ...
   )
