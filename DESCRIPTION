@@ -1,7 +1,7 @@
 Type: Package
 Package: fastadi
 Title: Self-Tuning Data Adaptive Matrix Imputation
-Version: 0.1.0.9005
+Version: 0.1.0.9006
 Authors@R: 
     c(person(given = "Alex",
              family = "Hayes",
@@ -41,7 +41,8 @@ Imports:
 Suggests: 
     knitr,
     rmarkdown,
-    testthat
+    testthat,
+    covr
 LinkingTo: 
     Rcpp,
     RcppArmadillo
