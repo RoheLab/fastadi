@@ -41,7 +41,3 @@ relative_f_norm_change_impl <- function(new_U, new_d, new_V, U, d, V) {
     .Call(`_fastadi_relative_f_norm_change_impl`, new_U, new_d, new_V, U, d, V)
 }
 
-svd_frob_inner_prod_impl <- function(new_U, new_d, new_V, U, d, V) {
-    .Call(`_fastadi_svd_frob_inner_prod_impl`, new_U, new_d, new_V, U, d, V)
-}
-
