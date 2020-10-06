@@ -2,18 +2,13 @@
 title: "An introduction to AdaptiveInitialize and AdaptiveImpute"
 author: "Alex Hayes"
 date: "`r Sys.Date()`"
-output: pdf_document
+output: 
+  pdf_document:
+    extra_dependencies:
+      algorithm2e: ["linesnumbered", "ruled", "vlined"]
 bibliography: references.bib
 link-citations: true
 urlcolor: blue
-header-includes:
-  \usepackage[linesnumbered,ruled,vlined]{algorithm2e}
-  \DeclareMathOperator{\diag}{diag}
-  \DeclareMathOperator{\trace}{trace}
-  \DeclareMathOperator{\sign}{sign}
-  \linespread{1.25}
-  \usepackage{helvet}
-  \renewcommand{\familydefault}{\sfdefault}
 vignette: >
   %\VignetteIndexEntry{An introduction to AdaptiveInitialize and AdaptiveImpute}
   %\VignetteEngine{knitr::rmarkdown}
@@ -21,8 +16,12 @@ vignette: >
 ---
 
 ```{r setup, include = FALSE}
-knitr::opts_chunk$set(echo = TRUE, eval = FALSE, error = TRUE)
+knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
 ```
+
+\newcommand \diag {\mathrm{diag}}
+\newcommand \trace {\mathrm{trace}}
+\newcommand \sign {\mathrm{sign}}
 
 \newcommand \bv {\mathbf{v}}
 \newcommand \bu {\mathbf{u}}
@@ -306,7 +305,7 @@ adaptive_impute <- function(M, r, epsilon = 1e-7) {
 
 Finally we can do a minimal sanity check and see if this code even runs, and see if we are recovering something close-ish to implanted low-rank structure.
 
-```{r eval = FALSE}
+```{r}
 n <- 500
 d <- 100
 r <- 5

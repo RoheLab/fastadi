@@ -10,3 +10,5 @@ reference
 ^\.travis\.yml$
 ^codecov\.yml$
 ^\.github$
+^doc$
+vignetttes
