@@ -240,31 +240,49 @@ in Frobenius norm of the full imputed matrix. Defaults to <code>1e-7</code>.</p>
 <span class='va'>A</span> <span class='op'>&lt;-</span> <span class='fu'>rsparsematrix</span><span class='op'>(</span><span class='va'>n</span>, <span class='va'>n</span>, <span class='fl'>0.1</span>, rand.x <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
 
 <span class='va'>mf</span> <span class='op'>&lt;-</span> <span class='fu'>citation_impute</span><span class='op'>(</span><span class='va'>A</span>, rank <span class='op'>=</span> <span class='fl'>3L</span>, max_iter <span class='op'>=</span> <span class='fl'>10L</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; INFO [2020-10-06 22:10:55] Matrix has 1000 non-zero elements, 510 in the upper triangle (including the diagonal), and 490 in the strict lower triangle.
-#&gt; INFO [2020-10-06 22:10:55] Use svd initialization.
-#&gt; INFO [2020-10-06 22:10:55] Done initializing.
-#&gt; INFO [2020-10-06 22:10:55] Beginning AdaptiveImpute (max 10 iterations).
-#&gt; INFO [2020-10-06 22:10:55] Checking convergence every 1 iteration(s).
-#&gt; INFO [2020-10-06 22:10:56] Finding relative change in Frobenius norm.
-#&gt; INFO [2020-10-06 22:10:56] Iter 1 complete. delta = -2.41899581, alpha = 7.199</div><div class='input'>
+</div><div class='output co'>#&gt; INFO [2020-10-06 23:00:10] Matrix has 1000 non-zero elements, 510 in the upper triangle (including the diagonal), and 490 in the strict lower triangle.
+#&gt; INFO [2020-10-06 23:00:10] Use svd initialization.
+#&gt; INFO [2020-10-06 23:00:10] Done initializing.
+#&gt; INFO [2020-10-06 23:00:10] Beginning AdaptiveImpute (max 10 iterations).
+#&gt; INFO [2020-10-06 23:00:10] Checking convergence every 1 iteration(s).
+#&gt; INFO [2020-10-06 23:00:11] Iter 1 complete. delta = 0.21445584, alpha = 7.199
+#&gt; INFO [2020-10-06 23:00:11] Iter 2 complete. delta = 0.06558166, alpha = 6.645
+#&gt; INFO [2020-10-06 23:00:11] Iter 3 complete. delta = 0.02828285, alpha = 6.298
+#&gt; INFO [2020-10-06 23:00:11] Iter 4 complete. delta = 0.01491319, alpha = 6.064
+#&gt; INFO [2020-10-06 23:00:12] Iter 5 complete. delta = 0.00890971, alpha = 5.895
+#&gt; INFO [2020-10-06 23:00:12] Iter 6 complete. delta = 0.00579959, alpha = 5.77
+#&gt; INFO [2020-10-06 23:00:12] Iter 7 complete. delta = 0.00402229, alpha = 5.672
+#&gt; INFO [2020-10-06 23:00:12] Iter 8 complete. delta = 0.00293049, alpha = 5.594
+#&gt; INFO [2020-10-06 23:00:12] Iter 9 complete. delta = 0.00222093, alpha = 5.531
+#&gt; INFO [2020-10-06 23:00:13] Iter 10 complete. delta = 0.00173823, alpha = 5.478</div><div class='output co'>#&gt; <span class='warning'>Warning: </span>
+#&gt; <span class='warning'>Reached maximum allowed iterations. Returning early.</span></div><div class='input'>
 <span class='va'>mf2</span> <span class='op'>&lt;-</span> <span class='fu'>citation_impute</span><span class='op'>(</span>
   <span class='va'>A</span>,
   rank <span class='op'>=</span> <span class='fl'>3L</span>,
   max_iter <span class='op'>=</span> <span class='fl'>10L</span>,
   initialization <span class='op'>=</span> <span class='st'>"adaptive-initialize"</span>
 <span class='op'>)</span>
-</div><div class='output co'>#&gt; INFO [2020-10-06 22:10:56] Matrix has 1000 non-zero elements, 510 in the upper triangle (including the diagonal), and 490 in the strict lower triangle.
-#&gt; INFO [2020-10-06 22:10:56] Use adaptive-initialize initialization.
-#&gt; INFO [2020-10-06 22:10:56] Beginning AdaptiveInitialize.
-#&gt; INFO [2020-10-06 22:10:56] p_hat = 0.544, non-zero entries = 1000, total entries = 10000
-#&gt; INFO [2020-10-06 22:10:56] Starting nuclear norm computation (slow step).
-#&gt; INFO [2020-10-06 22:10:56] Computation complete, alpha = 6.4427109386095
-#&gt; INFO [2020-10-06 22:10:56] lambda_hat = 19.2079062593066, 8.72651482536611, 8.54369445256108
-#&gt; INFO [2020-10-06 22:10:56] Done initializing.
-#&gt; INFO [2020-10-06 22:10:56] Beginning AdaptiveImpute (max 10 iterations).
-#&gt; INFO [2020-10-06 22:10:56] Checking convergence every 1 iteration(s).
-#&gt; INFO [2020-10-06 22:10:56] Finding relative change in Frobenius norm.
-#&gt; INFO [2020-10-06 22:10:56] Iter 1 complete. delta = -1.80234684, alpha = 6.687</div><div class='input'>
+</div><div class='output co'>#&gt; INFO [2020-10-06 23:00:13] Matrix has 1000 non-zero elements, 510 in the upper triangle (including the diagonal), and 490 in the strict lower triangle.
+#&gt; INFO [2020-10-06 23:00:13] Use adaptive-initialize initialization.
+#&gt; INFO [2020-10-06 23:00:13] Beginning AdaptiveInitialize.
+#&gt; INFO [2020-10-06 23:00:13] p_hat = 0.544, non-zero entries = 1000, total entries = 10000
+#&gt; INFO [2020-10-06 23:00:13] Starting nuclear norm computation (slow step).
+#&gt; INFO [2020-10-06 23:00:13] Computation complete, alpha = 6.4427109386095
+#&gt; INFO [2020-10-06 23:00:13] lambda_hat = 19.2079062593066, 8.72651482536611, 8.54369445256108
+#&gt; INFO [2020-10-06 23:00:13] Done initializing.
+#&gt; INFO [2020-10-06 23:00:13] Beginning AdaptiveImpute (max 10 iterations).
+#&gt; INFO [2020-10-06 23:00:13] Checking convergence every 1 iteration(s).
+#&gt; INFO [2020-10-06 23:00:13] Iter 1 complete. delta = 0.1062724, alpha = 6.687
+#&gt; INFO [2020-10-06 23:00:13] Iter 2 complete. delta = 0.02886683, alpha = 6.316
+#&gt; INFO [2020-10-06 23:00:13] Iter 3 complete. delta = 0.01545274, alpha = 6.074
+#&gt; INFO [2020-10-06 23:00:13] Iter 4 complete. delta = 0.0092418, alpha = 5.901
+#&gt; INFO [2020-10-06 23:00:14] Iter 5 complete. delta = 0.00599351, alpha = 5.772
+#&gt; INFO [2020-10-06 23:00:14] Iter 6 complete. delta = 0.00413691, alpha = 5.672
+#&gt; INFO [2020-10-06 23:00:14] Iter 7 complete. delta = 0.00299993, alpha = 5.592
+#&gt; INFO [2020-10-06 23:00:14] Iter 8 complete. delta = 0.00226415, alpha = 5.527
+#&gt; INFO [2020-10-06 23:00:14] Iter 9 complete. delta = 0.00176591, alpha = 5.473
+#&gt; INFO [2020-10-06 23:00:15] Iter 10 complete. delta = 0.0014154, alpha = 5.428</div><div class='output co'>#&gt; <span class='warning'>Warning: </span>
+#&gt; <span class='warning'>Reached maximum allowed iterations. Returning early.</span></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
