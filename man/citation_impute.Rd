@@ -34,7 +34,8 @@ Implicit zeros in the upper triangle of this matrix are considered
 observed and predictions on these elements contribute to the
 objective function minimized by \code{AdaptiveImpute}.}
 
-\item{rank}{Desired rank (integer) to use in the low rank approximation.}
+\item{rank}{Desired rank (integer) to use in the low rank approximation.
+Must be at least \code{2L} and at most the rank of \code{X}.}
 
 \item{...}{Unused additional arguments.}
 
@@ -58,7 +59,7 @@ we have found that SVD initialization works well nonetheless.}
 \item{max_iter}{Maximum number of iterations to perform (integer). Defaults
 to \code{200L}. In practice 10 or so iterations will get you a decent
 approximation to use in exploratory analysis, and and 50-100 will get
-you most of the way to convergence.}
+you most of the way to convergence. Must be at least \code{2L}.}
 
 \item{check_interval}{Integer specifying how often to perform convergence
 checks. Defaults to \code{1L}. In practice, check for convergence requires

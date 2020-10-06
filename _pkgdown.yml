@@ -6,3 +6,7 @@ authors:
 
 development:
   mode: auto
+
+template:
+  params:
+    bootswatch: paper

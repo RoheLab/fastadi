@@ -9,6 +9,7 @@
 #'   zeroes in `X` can be dropped for
 #'
 #' @param rank Desired rank (integer) to use in the low rank approximation.
+#'   Must be at least `2L` and at most the rank of `X`.
 #'
 #' @param p_hat The portion of `X` that is observed. Defaults to `NULL`,
 #'   in which case `p_hat` is set to the number of observed elements of
@@ -64,7 +65,7 @@ adaptive_initialize.default <- function(
 }
 
 #' @export
-#' @rdname adaptive_impute
+#' @rdname adaptive_initialize
 adaptive_initialize.sparseMatrix <- function(
   X,
   rank,

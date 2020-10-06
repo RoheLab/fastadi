@@ -15,7 +15,6 @@
 #'
 #' @return An `adaptive_imputation` object.
 #'
-#' @export
 adaptive_imputation <- function(u, d, v, alpha, ...) {
 
   ai <- svd_like(
@@ -61,6 +60,7 @@ validate_adaptive_imputation <- function(ai) {
   ai
 }
 
+#' @importFrom LRMF3 dim_and_class
 #' @method print adaptive_imputation
 #' @export
 print.adaptive_imputation <- function(x, ...) {
@@ -76,14 +76,6 @@ print.adaptive_imputation <- function(x, ...) {
   cat(glue("alpha:   {round(x$alpha, 3)}\n\n", .trim = FALSE))
 
   cat("Components\n\n")
-
-  dim_and_class <- function(x) {
-    if (is.vector(x))
-      paste0(length(x), "      [", class(x)[1], "]")
-    else
-      # is a matrix
-      paste0(nrow(x), " x ", ncol(x), " [", class(x)[1], "]")
-  }
 
   cat("u:", dim_and_class(x$u), "\n")
   cat("d:", dim_and_class(x$d), "\n")

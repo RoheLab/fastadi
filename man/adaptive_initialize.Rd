@@ -2,15 +2,19 @@
 % Please edit documentation in R/adaptive-initialize.R
 \name{adaptive_initialize}
 \alias{adaptive_initialize}
+\alias{adaptive_initialize.sparseMatrix}
 \title{AdaptiveInitialize}
 \usage{
 adaptive_initialize(X, rank, p_hat = NULL, ...)
+
+\method{adaptive_initialize}{sparseMatrix}(X, rank, p_hat = NULL, ...)
 }
 \arguments{
 \item{X}{A sparse matrix of \code{sparseMatrix} class. Explicit (observed)
 zeroes in \code{X} can be dropped for}
 
-\item{rank}{Desired rank (integer) to use in the low rank approximation.}
+\item{rank}{Desired rank (integer) to use in the low rank approximation.
+Must be at least \code{2L} and at most the rank of \code{X}.}
 
 \item{p_hat}{The portion of \code{X} that is observed. Defaults to \code{NULL},
 in which case \code{p_hat} is set to the number of observed elements of

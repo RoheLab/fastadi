@@ -45,8 +45,32 @@ citation_impute <- function(
 
   rank <- as.integer(rank)
 
+  if (length(rank) > 1)
+    stop(
+      "`rank` must be an integer vector with a single element.",
+      call. = FALSE
+    )
+
+  if (length(max_iter) > 1)
+    stop(
+      "`max_iter` must be an integer vector with a single element.",
+      call. = FALSE
+    )
+
+  if (length(check_interval) > 1)
+    stop(
+      "`check_interval` must be an integer vector with a single element.",
+      call. = FALSE
+    )
+
   if (rank <= 2)
     stop("`rank` must be an integer >= 2L.", call. = FALSE)
+
+  if (max_iter <= 2)
+    stop("`max_iter` must be an integer >= 2L.", call. = FALSE)
+
+  if (check_interval < 1)
+    stop("`check_interval` must be an integer >= 1L.", call. = FALSE)
 
   UseMethod("citation_impute")
 }
