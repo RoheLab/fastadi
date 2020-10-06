@@ -63,11 +63,11 @@ citation_impute <- function(
       call. = FALSE
     )
 
-  if (rank <= 2)
+  if (rank <= 1)
     stop("`rank` must be an integer >= 2L.", call. = FALSE)
 
-  if (max_iter <= 2)
-    stop("`max_iter` must be an integer >= 2L.", call. = FALSE)
+  if (max_iter < 1)
+    stop("`max_iter` must be an integer >= 1L.", call. = FALSE)
 
   if (check_interval < 1)
     stop("`check_interval` must be an integer >= 1L.", call. = FALSE)

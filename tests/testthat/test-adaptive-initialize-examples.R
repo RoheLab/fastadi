@@ -1,10 +1,13 @@
 
 test_that("adaptive initialization example", {
 
-  adaptive_initialize(ml100k, rank = 3L)
-
-  expect_true(
-    TRUE
+  expect_error(
+    adaptive_initialize(ml100k, rank = 2L),
+    regexp = NA
   )
 
+  expect_error(
+    adaptive_initialize(ml100k, rank = 5L),
+    regexp = NA
+  )
 })

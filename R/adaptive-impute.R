@@ -33,7 +33,7 @@
 #' @param max_iter Maximum number of iterations to perform (integer). Defaults
 #'   to `200L`. In practice 10 or so iterations will get you a decent
 #'   approximation to use in exploratory analysis, and and 50-100 will get
-#'   you most of the way to convergence. Must be at least `2L`.
+#'   you most of the way to convergence. Must be at least `1L`.
 #'
 #' @param check_interval Integer specifying how often to perform convergence
 #'   checks. Defaults to `1L`. In practice, check for convergence requires
@@ -41,7 +41,7 @@
 #'   the frequency of convergence checks will reduce computation time.
 #'
 #' @return A low rank matrix factorization represented by an
-#'   `LRMF` object. See [LRMF3::svd_like()] for details.
+#'   [adaptive_imputation()] object.
 #'
 #' @export
 #'
@@ -105,11 +105,11 @@ adaptive_impute <- function(
       call. = FALSE
     )
 
-  if (rank <= 2)
+  if (rank <= 1)
     stop("`rank` must be an integer >= 2L.", call. = FALSE)
 
-  if (max_iter <= 2)
-    stop("`max_iter` must be an integer >= 2L.", call. = FALSE)
+  if (max_iter < 1)
+    stop("`max_iter` must be an integer >= 1L.", call. = FALSE)
 
   if (check_interval < 1)
     stop("`check_interval` must be an integer >= 1L.", call. = FALSE)

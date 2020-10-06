@@ -18,7 +18,7 @@
 #' @param ... Ignored.
 #'
 #' @return A low rank matrix factorization represented by an
-#'   `LRMF` object. See [LRMF3::svd_like()] for details.
+#'   [adaptive_imputation()] object.
 #'
 #' @export
 #'
@@ -45,7 +45,7 @@ adaptive_initialize <- function(
 
   rank <- as.integer(rank)
 
-  if (rank <= 2)
+  if (rank <= 1)
     stop("`rank` must be an integer >= 2L.", call. = FALSE)
 
   UseMethod("adaptive_initialize")

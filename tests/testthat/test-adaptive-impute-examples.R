@@ -1,6 +1,10 @@
 test_that("adaptive impute svd initialization", {
 
   expect_warning(
+    mf <- adaptive_impute(ml100k, rank = 2L, max_iter = 1L)
+  )
+
+  expect_warning(
     mf <- adaptive_impute(ml100k, rank = 3L, max_iter = 3L)
   )
 
