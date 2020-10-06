@@ -77,7 +77,7 @@ with (near) tree structure, such as citation networks." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fastadi</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9008</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9009</span>
       </span>
     </div>
 
@@ -240,31 +240,31 @@ in Frobenius norm of the full imputed matrix. Defaults to <code>1e-7</code>.</p>
 <span class='va'>A</span> <span class='op'>&lt;-</span> <span class='fu'>rsparsematrix</span><span class='op'>(</span><span class='va'>n</span>, <span class='va'>n</span>, <span class='fl'>0.1</span>, rand.x <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
 
 <span class='va'>mf</span> <span class='op'>&lt;-</span> <span class='fu'>citation_impute</span><span class='op'>(</span><span class='va'>A</span>, rank <span class='op'>=</span> <span class='fl'>3L</span>, max_iter <span class='op'>=</span> <span class='fl'>10L</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; INFO [2020-10-06 21:07:53] Matrix has 1000 non-zero elements, 510 in the upper triangle (including the diagonal), and 490 in the strict lower triangle.
-#&gt; INFO [2020-10-06 21:07:53] Use svd initialization.
-#&gt; INFO [2020-10-06 21:07:53] Done initializing.
-#&gt; INFO [2020-10-06 21:07:53] Beginning AdaptiveImpute (max 10 iterations).
-#&gt; INFO [2020-10-06 21:07:53] Checking convergence every 1 iteration(s).
-#&gt; INFO [2020-10-06 21:07:54] Finding relative change in Frobenius norm.
-#&gt; INFO [2020-10-06 21:07:54] Iter 1 complete. delta = -3.64092654, alpha = 6.568</div><div class='input'>
+</div><div class='output co'>#&gt; INFO [2020-10-06 21:41:44] Matrix has 1000 non-zero elements, 510 in the upper triangle (including the diagonal), and 490 in the strict lower triangle.
+#&gt; INFO [2020-10-06 21:41:44] Use svd initialization.
+#&gt; INFO [2020-10-06 21:41:44] Done initializing.
+#&gt; INFO [2020-10-06 21:41:44] Beginning AdaptiveImpute (max 10 iterations).
+#&gt; INFO [2020-10-06 21:41:44] Checking convergence every 1 iteration(s).
+#&gt; INFO [2020-10-06 21:41:44] Finding relative change in Frobenius norm.
+#&gt; INFO [2020-10-06 21:41:44] Iter 1 complete. delta = -3.63345166, alpha = 7.199</div><div class='input'>
 <span class='va'>mf2</span> <span class='op'>&lt;-</span> <span class='fu'>citation_impute</span><span class='op'>(</span>
   <span class='va'>A</span>,
   rank <span class='op'>=</span> <span class='fl'>3L</span>,
   max_iter <span class='op'>=</span> <span class='fl'>10L</span>,
   initialization <span class='op'>=</span> <span class='st'>"adaptive-initialize"</span>
 <span class='op'>)</span>
-</div><div class='output co'>#&gt; INFO [2020-10-06 21:07:54] Matrix has 1000 non-zero elements, 510 in the upper triangle (including the diagonal), and 490 in the strict lower triangle.
-#&gt; INFO [2020-10-06 21:07:54] Use adaptive-initialize initialization.
-#&gt; INFO [2020-10-06 21:07:54] Beginning AdaptiveInitialize.
-#&gt; INFO [2020-10-06 21:07:54] p_hat = 0.544, non-zero entries = 1000, total entries = 10000
-#&gt; INFO [2020-10-06 21:07:54] Starting nuclear norm computation (slow step).
-#&gt; INFO [2020-10-06 21:07:54] Computation complete, alpha = 6.4427109386095
-#&gt; INFO [2020-10-06 21:07:54] lambda_hat = 19.2079062593066, 8.72651482536611, 8.54369445256108
-#&gt; INFO [2020-10-06 21:07:54] Done initializing.
-#&gt; INFO [2020-10-06 21:07:54] Beginning AdaptiveImpute (max 10 iterations).
-#&gt; INFO [2020-10-06 21:07:54] Checking convergence every 1 iteration(s).
-#&gt; INFO [2020-10-06 21:07:54] Finding relative change in Frobenius norm.
-#&gt; INFO [2020-10-06 21:07:54] Iter 1 complete. delta = -2.90356816, alpha = 7.586</div><div class='input'>
+</div><div class='output co'>#&gt; INFO [2020-10-06 21:41:44] Matrix has 1000 non-zero elements, 510 in the upper triangle (including the diagonal), and 490 in the strict lower triangle.
+#&gt; INFO [2020-10-06 21:41:44] Use adaptive-initialize initialization.
+#&gt; INFO [2020-10-06 21:41:44] Beginning AdaptiveInitialize.
+#&gt; INFO [2020-10-06 21:41:44] p_hat = 0.544, non-zero entries = 1000, total entries = 10000
+#&gt; INFO [2020-10-06 21:41:44] Starting nuclear norm computation (slow step).
+#&gt; INFO [2020-10-06 21:41:44] Computation complete, alpha = 6.4427109386095
+#&gt; INFO [2020-10-06 21:41:44] lambda_hat = 19.2079062593066, 8.72651482536611, 8.54369445256108
+#&gt; INFO [2020-10-06 21:41:44] Done initializing.
+#&gt; INFO [2020-10-06 21:41:44] Beginning AdaptiveImpute (max 10 iterations).
+#&gt; INFO [2020-10-06 21:41:44] Checking convergence every 1 iteration(s).
+#&gt; INFO [2020-10-06 21:41:45] Finding relative change in Frobenius norm.
+#&gt; INFO [2020-10-06 21:41:45] Iter 1 complete. delta = -2.90861924, alpha = 6.687</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
