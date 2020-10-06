@@ -7,9 +7,8 @@ relative_f_norm_change <- function(s_new, s) {
   # expressed into terms of frobenius inner products of low rank
   # SVDs
 
-  num <- svd_frob_inner_prod_impl(s_new$u, s_new$d, s_new$v, s_new$u, s_new$d, s_new$v) +
-    svd_frob_inner_prod_impl(s$u, s$d, s$v, s$u, s$d, s$v) - 2 *
-    svd_frob_inner_prod_impl(s_new$u, s_new$d, s_new$v, s$u, s$d, s$v)
+  num <- sum(s_new$d^2) + sum(s$d^2) -
+    2 * svd_frob_inner_prod_impl(s_new$u, s_new$d, s_new$v, s$u, s$d, s$v)
 
   denom <- sum(s$d^2)
 
