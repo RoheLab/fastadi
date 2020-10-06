@@ -225,11 +225,11 @@ in Frobenius norm of the full imputed matrix. Defaults to <code>1e-7</code>.</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
 <span class='va'>mf</span> <span class='op'>&lt;-</span> <span class='fu'>adaptive_impute</span><span class='op'>(</span><span class='va'>ml100k</span>, rank <span class='op'>=</span> <span class='fl'>3L</span>, max_iter <span class='op'>=</span> <span class='fl'>20L</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; INFO [2020-10-06 20:16:52] Use svd initialization.
-#&gt; INFO [2020-10-06 20:16:52] Done initializing.
-#&gt; INFO [2020-10-06 20:16:52] Beginning AdaptiveImpute (max 20 iterations).
-#&gt; INFO [2020-10-06 20:16:52] Checking convergence every 1 iteration(s).
-#&gt; INFO [2020-10-06 20:16:52] Iter 1 complete. delta = -3.80432499, alpha = 184.71</div><div class='input'><span class='co'># mf</span>
+</div><div class='output co'>#&gt; INFO [2020-10-06 21:07:18] Use svd initialization.
+#&gt; INFO [2020-10-06 21:07:18] Done initializing.
+#&gt; INFO [2020-10-06 21:07:18] Beginning AdaptiveImpute (max 20 iterations).
+#&gt; INFO [2020-10-06 21:07:18] Checking convergence every 1 iteration(s).
+#&gt; INFO [2020-10-06 21:07:18] Iter 1 complete. delta = -3.80432499, alpha = 184.71</div><div class='input'><span class='co'># mf</span>
 
 <span class='co'># build a rank-5 approximation only for</span>
 <span class='co'># observed elements of ml100k</span>
@@ -248,16 +248,16 @@ in Frobenius norm of the full imputed matrix. Defaults to <code>1e-7</code>.</p>
   max_iter <span class='op'>=</span> <span class='fl'>20L</span>,
   initialization <span class='op'>=</span> <span class='st'>"adaptive-initialize"</span>
 <span class='op'>)</span>
-</div><div class='output co'>#&gt; INFO [2020-10-06 20:16:52] Use adaptive-initialize initialization.
-#&gt; INFO [2020-10-06 20:16:52] Beginning AdaptiveInitialize.
-#&gt; INFO [2020-10-06 20:16:52] p_hat = 0.0630466936422453, non-zero entries = 100000, total entries = 1586126
-#&gt; INFO [2020-10-06 20:16:53] Starting nuclear norm computation (slow step).
-#&gt; INFO [2020-10-06 20:17:10] Computation complete, alpha = 684.44830777862
-#&gt; INFO [2020-10-06 20:17:10] lambda_hat = 10108.0189264858, 3763.72941447119, 3334.41923001022
-#&gt; INFO [2020-10-06 20:17:10] Done initializing.
-#&gt; INFO [2020-10-06 20:17:10] Beginning AdaptiveImpute (max 20 iterations).
-#&gt; INFO [2020-10-06 20:17:10] Checking convergence every 1 iteration(s).
-#&gt; INFO [2020-10-06 20:17:10] Iter 1 complete. delta = -1.95819456, alpha = 47012.206</div><div class='input'>
+</div><div class='output co'>#&gt; INFO [2020-10-06 21:07:18] Use adaptive-initialize initialization.
+#&gt; INFO [2020-10-06 21:07:18] Beginning AdaptiveInitialize.
+#&gt; INFO [2020-10-06 21:07:18] p_hat = 0.0630466936422453, non-zero entries = 100000, total entries = 1586126
+#&gt; INFO [2020-10-06 21:07:20] Starting nuclear norm computation (slow step).
+#&gt; INFO [2020-10-06 21:07:36] Computation complete, alpha = 684.44830777862
+#&gt; INFO [2020-10-06 21:07:36] lambda_hat = 10108.0189264858, 3763.72941447119, 3334.41923001022
+#&gt; INFO [2020-10-06 21:07:36] Done initializing.
+#&gt; INFO [2020-10-06 21:07:36] Beginning AdaptiveImpute (max 20 iterations).
+#&gt; INFO [2020-10-06 21:07:36] Checking convergence every 1 iteration(s).
+#&gt; INFO [2020-10-06 21:07:36] Iter 1 complete. delta = -1.95819456, alpha = 47012.206</div><div class='input'>
 <span class='co'># mf2</span>
 
 <span class='va'>R2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/residuals.html'>resid</a></span><span class='op'>(</span><span class='va'>mf2</span>, <span class='va'>ml100k</span><span class='op'>)</span>
