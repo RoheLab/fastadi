@@ -150,8 +150,7 @@ citation_impute.LRMF <- function(
   ...,
   epsilon = 1e-7,
   max_iter = 200L,
-  check_interval = 1L,
-  verbose = FALSE
+  check_interval = 1L
 ) {
 
   log_info(glue("Beginning AdaptiveImpute (max {max_iter} iterations)."))

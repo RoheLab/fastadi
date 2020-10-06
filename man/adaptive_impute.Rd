@@ -24,9 +24,7 @@ adaptive_impute(
   ...,
   epsilon = 1e-07,
   max_iter = 200L,
-  check_interval = 1L,
-  verbose = FALSE,
-  p_hat = NULL
+  check_interval = 1L
 )
 }
 \arguments{
@@ -57,7 +55,7 @@ we have found that SVD initialization works well nonetheless.}
 \item{max_iter}{Maximum number of iterations to perform (integer). Defaults
 to \code{200L}. In practice 10 or so iterations will get you a decent
 approximation to use in exploratory analysis, and and 50-100 will get
-you most of the way to convergence. Must be at least \code{2L}.}
+you most of the way to convergence. Must be at least \code{1L}.}
 
 \item{check_interval}{Integer specifying how often to perform convergence
 checks. Defaults to \code{1L}. In practice, check for convergence requires
@@ -69,7 +67,7 @@ in Frobenius norm of the full imputed matrix. Defaults to \code{1e-7}.}
 }
 \value{
 A low rank matrix factorization represented by an
-\code{LRMF} object. See \code{\link[LRMF3:svd_like]{LRMF3::svd_like()}} for details.
+\code{\link[=adaptive_imputation]{adaptive_imputation()}} object.
 }
 \description{
 An implementation of the \code{AdaptiveImpute} algorithm for matrix completion
