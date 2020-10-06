@@ -12,8 +12,8 @@
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/paper/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
@@ -73,7 +73,7 @@ for sparse matrices." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fastadi</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9007</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9008</span>
       </span>
     </div>
 
@@ -128,7 +128,7 @@ for sparse matrices." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>AdaptiveImpute</h1>
-    <small class="dont-index">Source: <a href='https://github.com/RoheLab/fastadi/blob/master/R/adaptive-impute.R'><code>R/adaptive-impute.R</code></a>, <a href='https://github.com/RoheLab/fastadi/blob/master/R/adaptive-initialize.R'><code>R/adaptive-initialize.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/RoheLab/fastadi/blob/master/R/adaptive-impute.R'><code>R/adaptive-impute.R</code></a></small>
     <div class="hidden name"><code>adaptive_impute.Rd</code></div>
     </div>
 
@@ -160,10 +160,7 @@ for sparse matrices.</p>
   check_interval <span class='op'>=</span> <span class='fl'>1L</span>,
   verbose <span class='op'>=</span> <span class='cn'>FALSE</span>,
   p_hat <span class='op'>=</span> <span class='cn'>NULL</span>
-<span class='op'>)</span>
-
-<span class='co'># S3 method for sparseMatrix</span>
-<span class='fu'><a href='adaptive_initialize.html'>adaptive_initialize</a></span><span class='op'>(</span><span class='va'>X</span>, <span class='va'>rank</span>, p_hat <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -174,7 +171,8 @@ for sparse matrices.</p>
     </tr>
     <tr>
       <th>rank</th>
-      <td><p>Desired rank (integer) to use in the low rank approximation.</p></td>
+      <td><p>Desired rank (integer) to use in the low rank approximation.
+Must be at least <code>2L</code> and at most the rank of <code>X</code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -203,7 +201,7 @@ we have found that SVD initialization works well nonetheless.</p></td>
       <td><p>Maximum number of iterations to perform (integer). Defaults
 to <code>200L</code>. In practice 10 or so iterations will get you a decent
 approximation to use in exploratory analysis, and and 50-100 will get
-you most of the way to convergence.</p></td>
+you most of the way to convergence. Must be at least <code>2L</code>.</p></td>
     </tr>
     <tr>
       <th>check_interval</th>
@@ -227,11 +225,11 @@ in Frobenius norm of the full imputed matrix. Defaults to <code>1e-7</code>.</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
 <span class='va'>mf</span> <span class='op'>&lt;-</span> <span class='fu'>adaptive_impute</span><span class='op'>(</span><span class='va'>ml100k</span>, rank <span class='op'>=</span> <span class='fl'>3L</span>, max_iter <span class='op'>=</span> <span class='fl'>20L</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; INFO [2020-10-05 16:39:19] Use svd initialization.
-#&gt; INFO [2020-10-05 16:39:19] Done initializing.
-#&gt; INFO [2020-10-05 16:39:19] Beginning AdaptiveImpute (max 20 iterations).
-#&gt; INFO [2020-10-05 16:39:19] Checking convergence every 1 iteration(s).
-#&gt; INFO [2020-10-05 16:39:19] Iter 1 complete. delta = -3.80432499, alpha = 184.71</div><div class='input'><span class='co'># mf</span>
+</div><div class='output co'>#&gt; INFO [2020-10-06 20:16:52] Use svd initialization.
+#&gt; INFO [2020-10-06 20:16:52] Done initializing.
+#&gt; INFO [2020-10-06 20:16:52] Beginning AdaptiveImpute (max 20 iterations).
+#&gt; INFO [2020-10-06 20:16:52] Checking convergence every 1 iteration(s).
+#&gt; INFO [2020-10-06 20:16:52] Iter 1 complete. delta = -3.80432499, alpha = 184.71</div><div class='input'><span class='co'># mf</span>
 
 <span class='co'># build a rank-5 approximation only for</span>
 <span class='co'># observed elements of ml100k</span>
@@ -250,16 +248,16 @@ in Frobenius norm of the full imputed matrix. Defaults to <code>1e-7</code>.</p>
   max_iter <span class='op'>=</span> <span class='fl'>20L</span>,
   initialization <span class='op'>=</span> <span class='st'>"adaptive-initialize"</span>
 <span class='op'>)</span>
-</div><div class='output co'>#&gt; INFO [2020-10-05 16:39:19] Use adaptive-initialize initialization.
-#&gt; INFO [2020-10-05 16:39:19] Beginning AdaptiveInitialize.
-#&gt; INFO [2020-10-05 16:39:19] p_hat = 0.0630466936422453, non-zero entries = 100000, total entries = 1586126
-#&gt; INFO [2020-10-05 16:39:21] Starting nuclear norm computation (slow step).
-#&gt; INFO [2020-10-05 16:39:38] Computation complete, alpha = 684.44830777862
-#&gt; INFO [2020-10-05 16:39:38] lambda_hat = 10108.0189264858, 3763.72941447119, 3334.41923001022
-#&gt; INFO [2020-10-05 16:39:38] Done initializing.
-#&gt; INFO [2020-10-05 16:39:38] Beginning AdaptiveImpute (max 20 iterations).
-#&gt; INFO [2020-10-05 16:39:38] Checking convergence every 1 iteration(s).
-#&gt; INFO [2020-10-05 16:39:38] Iter 1 complete. delta = -1.95819456, alpha = 47012.206</div><div class='input'>
+</div><div class='output co'>#&gt; INFO [2020-10-06 20:16:52] Use adaptive-initialize initialization.
+#&gt; INFO [2020-10-06 20:16:52] Beginning AdaptiveInitialize.
+#&gt; INFO [2020-10-06 20:16:52] p_hat = 0.0630466936422453, non-zero entries = 100000, total entries = 1586126
+#&gt; INFO [2020-10-06 20:16:53] Starting nuclear norm computation (slow step).
+#&gt; INFO [2020-10-06 20:17:10] Computation complete, alpha = 684.44830777862
+#&gt; INFO [2020-10-06 20:17:10] lambda_hat = 10108.0189264858, 3763.72941447119, 3334.41923001022
+#&gt; INFO [2020-10-06 20:17:10] Done initializing.
+#&gt; INFO [2020-10-06 20:17:10] Beginning AdaptiveImpute (max 20 iterations).
+#&gt; INFO [2020-10-06 20:17:10] Checking convergence every 1 iteration(s).
+#&gt; INFO [2020-10-06 20:17:10] Iter 1 complete. delta = -1.95819456, alpha = 47012.206</div><div class='input'>
 <span class='co'># mf2</span>
 
 <span class='va'>R2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/residuals.html'>resid</a></span><span class='op'>(</span><span class='va'>mf2</span>, <span class='va'>ml100k</span><span class='op'>)</span>

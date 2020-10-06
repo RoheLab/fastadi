@@ -12,8 +12,8 @@
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/paper/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
@@ -77,7 +77,7 @@ with (near) tree structure, such as citation networks." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fastadi</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9007</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9008</span>
       </span>
     </div>
 
@@ -181,7 +181,8 @@ objective function minimized by <code>AdaptiveImpute</code>.</p></td>
     </tr>
     <tr>
       <th>rank</th>
-      <td><p>Desired rank (integer) to use in the low rank approximation.</p></td>
+      <td><p>Desired rank (integer) to use in the low rank approximation.
+Must be at least <code>2L</code> and at most the rank of <code>X</code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -210,7 +211,7 @@ we have found that SVD initialization works well nonetheless.</p></td>
       <td><p>Maximum number of iterations to perform (integer). Defaults
 to <code>200L</code>. In practice 10 or so iterations will get you a decent
 approximation to use in exploratory analysis, and and 50-100 will get
-you most of the way to convergence.</p></td>
+you most of the way to convergence. Must be at least <code>2L</code>.</p></td>
     </tr>
     <tr>
       <th>check_interval</th>
@@ -239,31 +240,31 @@ in Frobenius norm of the full imputed matrix. Defaults to <code>1e-7</code>.</p>
 <span class='va'>A</span> <span class='op'>&lt;-</span> <span class='fu'>rsparsematrix</span><span class='op'>(</span><span class='va'>n</span>, <span class='va'>n</span>, <span class='fl'>0.1</span>, rand.x <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
 
 <span class='va'>mf</span> <span class='op'>&lt;-</span> <span class='fu'>citation_impute</span><span class='op'>(</span><span class='va'>A</span>, rank <span class='op'>=</span> <span class='fl'>3L</span>, max_iter <span class='op'>=</span> <span class='fl'>10L</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; INFO [2020-10-05 16:39:57] Matrix has 1000 non-zero elements, 510 in the upper triangle (including the diagonal), and 490 in the strict lower triangle.
-#&gt; INFO [2020-10-05 16:39:57] Use svd initialization.
-#&gt; INFO [2020-10-05 16:39:57] Done initializing.
-#&gt; INFO [2020-10-05 16:39:57] Beginning AdaptiveImpute (max 10 iterations).
-#&gt; INFO [2020-10-05 16:39:57] Checking convergence every 1 iteration(s).
-#&gt; INFO [2020-10-05 16:39:58] Finding relative change in Frobenius norm.
-#&gt; INFO [2020-10-05 16:39:58] Iter 1 complete. delta = -3.64092654, alpha = 6.568</div><div class='input'>
+</div><div class='output co'>#&gt; INFO [2020-10-06 20:17:29] Matrix has 1000 non-zero elements, 510 in the upper triangle (including the diagonal), and 490 in the strict lower triangle.
+#&gt; INFO [2020-10-06 20:17:29] Use svd initialization.
+#&gt; INFO [2020-10-06 20:17:29] Done initializing.
+#&gt; INFO [2020-10-06 20:17:29] Beginning AdaptiveImpute (max 10 iterations).
+#&gt; INFO [2020-10-06 20:17:29] Checking convergence every 1 iteration(s).
+#&gt; INFO [2020-10-06 20:17:29] Finding relative change in Frobenius norm.
+#&gt; INFO [2020-10-06 20:17:29] Iter 1 complete. delta = -3.64092654, alpha = 6.568</div><div class='input'>
 <span class='va'>mf2</span> <span class='op'>&lt;-</span> <span class='fu'>citation_impute</span><span class='op'>(</span>
   <span class='va'>A</span>,
   rank <span class='op'>=</span> <span class='fl'>3L</span>,
   max_iter <span class='op'>=</span> <span class='fl'>10L</span>,
   initialization <span class='op'>=</span> <span class='st'>"adaptive-initialize"</span>
 <span class='op'>)</span>
-</div><div class='output co'>#&gt; INFO [2020-10-05 16:39:58] Matrix has 1000 non-zero elements, 510 in the upper triangle (including the diagonal), and 490 in the strict lower triangle.
-#&gt; INFO [2020-10-05 16:39:58] Use adaptive-initialize initialization.
-#&gt; INFO [2020-10-05 16:39:58] Beginning AdaptiveInitialize.
-#&gt; INFO [2020-10-05 16:39:58] p_hat = 0.544, non-zero entries = 1000, total entries = 10000
-#&gt; INFO [2020-10-05 16:39:58] Starting nuclear norm computation (slow step).
-#&gt; INFO [2020-10-05 16:39:58] Computation complete, alpha = 6.4427109386095
-#&gt; INFO [2020-10-05 16:39:58] lambda_hat = 19.2079062593066, 8.72651482536611, 8.54369445256108
-#&gt; INFO [2020-10-05 16:39:58] Done initializing.
-#&gt; INFO [2020-10-05 16:39:58] Beginning AdaptiveImpute (max 10 iterations).
-#&gt; INFO [2020-10-05 16:39:58] Checking convergence every 1 iteration(s).
-#&gt; INFO [2020-10-05 16:39:58] Finding relative change in Frobenius norm.
-#&gt; INFO [2020-10-05 16:39:58] Iter 1 complete. delta = -2.90356816, alpha = 7.586</div><div class='input'>
+</div><div class='output co'>#&gt; INFO [2020-10-06 20:17:29] Matrix has 1000 non-zero elements, 510 in the upper triangle (including the diagonal), and 490 in the strict lower triangle.
+#&gt; INFO [2020-10-06 20:17:29] Use adaptive-initialize initialization.
+#&gt; INFO [2020-10-06 20:17:29] Beginning AdaptiveInitialize.
+#&gt; INFO [2020-10-06 20:17:29] p_hat = 0.544, non-zero entries = 1000, total entries = 10000
+#&gt; INFO [2020-10-06 20:17:29] Starting nuclear norm computation (slow step).
+#&gt; INFO [2020-10-06 20:17:29] Computation complete, alpha = 6.4427109386095
+#&gt; INFO [2020-10-06 20:17:29] lambda_hat = 19.2079062593066, 8.72651482536611, 8.54369445256108
+#&gt; INFO [2020-10-06 20:17:29] Done initializing.
+#&gt; INFO [2020-10-06 20:17:29] Beginning AdaptiveImpute (max 10 iterations).
+#&gt; INFO [2020-10-06 20:17:29] Checking convergence every 1 iteration(s).
+#&gt; INFO [2020-10-06 20:17:29] Finding relative change in Frobenius norm.
+#&gt; INFO [2020-10-06 20:17:29] Iter 1 complete. delta = -2.90356816, alpha = 7.586</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

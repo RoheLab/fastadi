@@ -12,8 +12,8 @@
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/paper/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
@@ -75,7 +75,7 @@ of rows and columns at most." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fastadi</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9007</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9008</span>
       </span>
     </div>
 
@@ -141,7 +141,10 @@ is only suitable for small matrices with on the order of thousands
 of rows and columns at most.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>adaptive_initialize</span><span class='op'>(</span><span class='va'>X</span>, <span class='va'>rank</span>, p_hat <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>adaptive_initialize</span><span class='op'>(</span><span class='va'>X</span>, <span class='va'>rank</span>, p_hat <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span>
+
+<span class='co'># S3 method for sparseMatrix</span>
+<span class='fu'>adaptive_initialize</span><span class='op'>(</span><span class='va'>X</span>, <span class='va'>rank</span>, p_hat <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -153,7 +156,8 @@ zeroes in <code>X</code> can be dropped for</p></td>
     </tr>
     <tr>
       <th>rank</th>
-      <td><p>Desired rank (integer) to use in the low rank approximation.</p></td>
+      <td><p>Desired rank (integer) to use in the low rank approximation.
+Must be at least <code>2L</code> and at most the rank of <code>X</code>.</p></td>
     </tr>
     <tr>
       <th>p_hat</th>
@@ -175,11 +179,11 @@ in which case <code>p_hat</code> is set to the number of observed elements of
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
 <span class='va'>mf</span> <span class='op'>&lt;-</span> <span class='fu'>adaptive_initialize</span><span class='op'>(</span><span class='va'>ml100k</span>, rank <span class='op'>=</span> <span class='fl'>3L</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; INFO [2020-10-05 16:39:38] Beginning AdaptiveInitialize.
-#&gt; INFO [2020-10-05 16:39:38] p_hat = 0.0630466936422453, non-zero entries = 100000, total entries = 1586126
-#&gt; INFO [2020-10-05 16:39:40] Starting nuclear norm computation (slow step).
-#&gt; INFO [2020-10-05 16:39:57] Computation complete, alpha = 684.44830777862
-#&gt; INFO [2020-10-05 16:39:57] lambda_hat = 10108.0189264858, 3763.72941447119, 3334.41923001022</div><div class='input'><span class='va'>mf</span>
+</div><div class='output co'>#&gt; INFO [2020-10-06 20:17:11] Beginning AdaptiveInitialize.
+#&gt; INFO [2020-10-06 20:17:11] p_hat = 0.0630466936422453, non-zero entries = 100000, total entries = 1586126
+#&gt; INFO [2020-10-06 20:17:12] Starting nuclear norm computation (slow step).
+#&gt; INFO [2020-10-06 20:17:28] Computation complete, alpha = 684.44830777862
+#&gt; INFO [2020-10-06 20:17:28] lambda_hat = 10108.0189264858, 3763.72941447119, 3334.41923001022</div><div class='input'><span class='va'>mf</span>
 </div><div class='output co'>#&gt; 
 #&gt; Adaptively Imputed Low Rank Matrix Factorization
 #&gt; ------------------------------------------------
