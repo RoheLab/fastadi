@@ -193,12 +193,10 @@ citation_impute.LRMF <- function(
 
     s_new$d <- sqrt(s_new$d^2 - alpha)  # line 7
 
-    # NOTE: skip explicit computation of line 8
-    delta <- relative_f_norm_change(s_new, s)
-
-    # save a little bit on computation
+    # save a little bit on computation and only check for
+    # # convergence intermittently
     if (iter %% check_interval == 0) {
-      log_info("Finding relative change in Frobenius norm.")
+      log_debug("Computing relative change in Frobenius norm.")
       delta <- relative_f_norm_change(s_new, s)
     }
 

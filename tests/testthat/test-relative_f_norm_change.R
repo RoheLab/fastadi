@@ -15,7 +15,7 @@ test_that("relative_f_norm_change", {
   Z_A <- s_new$u %*% diag(s_new$d) %*% t(s_new$v)
   Z_B <- s$u %*% diag(s$d) %*% t(s$v)
 
-  expected_result <- sum((Z_A - Z_B)^2) / sum(Z_B^2)
+  expected_result <- norm(Z_A - Z_B, type = "F")^2 / norm(Z_B, type = "F")^2
 
   # Armadillo calculation
   impl_result <- relative_f_norm_change_impl(s_new$u, s_new$d, s_new$v,

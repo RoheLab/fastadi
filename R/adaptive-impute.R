@@ -209,12 +209,10 @@ adaptive_impute.LRMF <- function(
 
     log_debug(glue("lambda_hat = ", paste(s_new$d, collapse = ", ")))
 
-    # NOTE: skip explicit computation of line 8
-    delta <- relative_f_norm_change(s_new, s)
-
-    # save a little bit on computation
+    # save a little bit on computation and only check for
+    # # convergence intermittently
     if (iter %% check_interval == 0) {
-      # log_info("Finding relative change in Frobenius norm.")
+      log_debug("Computing relative change in Frobenius norm.")
       delta <- relative_f_norm_change(s_new, s)
     }
 
