@@ -187,11 +187,9 @@ citation_impute.LRMF <- function(
     )
 
     X_tilde_f_norm <- norm_X + sum(s$d^2) -
-      p_omega_f_norm_ut(s_new, X)
+      p_omega_f_norm_ut(s, X)
 
     alpha <- (X_tilde_f_norm - sum(s_new$d^2)) / (d - rank)  # line 6
-
-    assert_alpha_positive(alpha)
 
     s_new$d <- sqrt(s_new$d^2 - alpha)  # line 7
 
@@ -214,6 +212,8 @@ citation_impute.LRMF <- function(
           "alpha = {round(alpha, 3)}"
         )
       )
+
+    assert_alpha_positive(alpha)
 
     iter <- iter + 1
 

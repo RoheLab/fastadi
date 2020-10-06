@@ -200,10 +200,10 @@ adaptive_impute.LRMF <- function(
 
     s_new <- svds(Ax, k = rank, Atrans = Atx, dim = dim(X), args = args)
 
-    MtM <- norm_M + sum(s$d^2) - sum(masked_approximation(s_new, X)^2)
+    # if there's an alpha < 0 bug it almost certainly comes from these
+    # next two lines of code
+    MtM <- norm_M + sum(s$d^2) - sum(masked_approximation(s, X)^2)
     alpha <- (MtM - sum(s_new$d^2)) / (d - rank)  # line 6
-
-    assert_alpha_positive(alpha)
 
     s_new$d <- sqrt(s_new$d^2 - alpha)  # line 7
 
@@ -228,6 +228,8 @@ adaptive_impute.LRMF <- function(
           "alpha = {round(alpha, 3)}"
         )
       )
+
+    assert_alpha_positive(alpha)
 
     iter <- iter + 1
 

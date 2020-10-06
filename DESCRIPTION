@@ -1,7 +1,7 @@
 Type: Package
 Package: fastadi
 Title: Self-Tuning Data Adaptive Matrix Imputation
-Version: 0.0.0.9008
+Version: 0.0.0.9009
 Authors@R: 
     c(person(given = "Alex",
              family = "Hayes",
@@ -28,27 +28,27 @@ License: MIT + file LICENSE
 URL: https://github.com/RoheLab/fastadi
 BugReports: https://github.com/RoheLab/fastadi/issues
 Depends: 
+    LRMF3 (>= 0.0.0.9003),
     Matrix,
-    R (>= 3.1),
-    LRMF3 (>= 0.0.0.9003)
+    R (>= 3.1)
 Imports: 
+    ellipsis,
     glue,
+    logger,
     methods,
     Rcpp,
-    RSpectra,
-    logger,
-    ellipsis
+    RSpectra
 Suggests: 
+    covr,
     knitr,
     rmarkdown,
-    testthat,
-    covr
+    testthat
 LinkingTo: 
     Rcpp,
     RcppArmadillo
+Remotes: 
+    RoheLab/LRMF3
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1.9000
-Remotes: 
-    RoheLab/LRMF3
