@@ -225,30 +225,30 @@ in Frobenius norm of the full imputed matrix. Defaults to <code>1e-7</code>.</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
 <span class='va'>mf</span> <span class='op'>&lt;-</span> <span class='fu'>adaptive_impute</span><span class='op'>(</span><span class='va'>ml100k</span>, rank <span class='op'>=</span> <span class='fl'>3L</span>, max_iter <span class='op'>=</span> <span class='fl'>20L</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; INFO [2020-10-06 22:59:26] Use svd initialization.
-#&gt; INFO [2020-10-06 22:59:26] Done initializing.
-#&gt; INFO [2020-10-06 22:59:26] Beginning AdaptiveImpute (max 20 iterations).
-#&gt; INFO [2020-10-06 22:59:26] Checking convergence every 1 iteration(s).
-#&gt; INFO [2020-10-06 22:59:27] Iter 1 complete. delta = 0.22288585, alpha = 315.499
-#&gt; INFO [2020-10-06 22:59:27] Iter 2 complete. delta = 0.05159571, alpha = 236.478
-#&gt; INFO [2020-10-06 22:59:27] Iter 3 complete. delta = 0.02126528, alpha = 192.408
-#&gt; INFO [2020-10-06 22:59:27] Iter 4 complete. delta = 0.01115042, alpha = 164.221
-#&gt; INFO [2020-10-06 22:59:27] Iter 5 complete. delta = 0.00669436, alpha = 144.663
-#&gt; INFO [2020-10-06 22:59:28] Iter 6 complete. delta = 0.00438783, alpha = 130.322
-#&gt; INFO [2020-10-06 22:59:28] Iter 7 complete. delta = 0.00305971, alpha = 119.373
-#&gt; INFO [2020-10-06 22:59:28] Iter 8 complete. delta = 0.00223439, alpha = 110.752
-#&gt; INFO [2020-10-06 22:59:28] Iter 9 complete. delta = 0.00169113, alpha = 103.794
-#&gt; INFO [2020-10-06 22:59:29] Iter 10 complete. delta = 0.00131705, alpha = 98.067
-#&gt; INFO [2020-10-06 22:59:29] Iter 11 complete. delta = 0.0010499, alpha = 93.272
-#&gt; INFO [2020-10-06 22:59:29] Iter 12 complete. delta = 0.00085333, alpha = 89.203
-#&gt; INFO [2020-10-06 22:59:29] Iter 13 complete. delta = 0.00070499, alpha = 85.708
-#&gt; INFO [2020-10-06 22:59:30] Iter 14 complete. delta = 0.00059064, alpha = 82.675
-#&gt; INFO [2020-10-06 22:59:30] Iter 15 complete. delta = 0.00050085, alpha = 80.019
-#&gt; INFO [2020-10-06 22:59:30] Iter 16 complete. delta = 0.00042921, alpha = 77.676
-#&gt; INFO [2020-10-06 22:59:30] Iter 17 complete. delta = 0.00037125, alpha = 75.593
-#&gt; INFO [2020-10-06 22:59:31] Iter 18 complete. delta = 0.00032377, alpha = 73.73
-#&gt; INFO [2020-10-06 22:59:31] Iter 19 complete. delta = 0.00028444, alpha = 72.055
-#&gt; INFO [2020-10-06 22:59:31] Iter 20 complete. delta = 0.00025155, alpha = 70.541</div><div class='output co'>#&gt; <span class='warning'>Warning: </span>
+</div><div class='output co'>#&gt; INFO [2020-10-06 23:12:34] Use svd initialization.
+#&gt; INFO [2020-10-06 23:12:34] Done initializing.
+#&gt; INFO [2020-10-06 23:12:34] Beginning AdaptiveImpute (max 20 iterations).
+#&gt; INFO [2020-10-06 23:12:34] Checking convergence every 1 iteration(s).
+#&gt; INFO [2020-10-06 23:12:35] Iter 1 complete. delta = 0.22288585, alpha = 315.499
+#&gt; INFO [2020-10-06 23:12:35] Iter 2 complete. delta = 0.05159571, alpha = 236.478
+#&gt; INFO [2020-10-06 23:12:35] Iter 3 complete. delta = 0.02126528, alpha = 192.408
+#&gt; INFO [2020-10-06 23:12:35] Iter 4 complete. delta = 0.01115042, alpha = 164.221
+#&gt; INFO [2020-10-06 23:12:36] Iter 5 complete. delta = 0.00669436, alpha = 144.663
+#&gt; INFO [2020-10-06 23:12:36] Iter 6 complete. delta = 0.00438783, alpha = 130.322
+#&gt; INFO [2020-10-06 23:12:36] Iter 7 complete. delta = 0.00305971, alpha = 119.373
+#&gt; INFO [2020-10-06 23:12:36] Iter 8 complete. delta = 0.00223439, alpha = 110.752
+#&gt; INFO [2020-10-06 23:12:37] Iter 9 complete. delta = 0.00169113, alpha = 103.794
+#&gt; INFO [2020-10-06 23:12:37] Iter 10 complete. delta = 0.00131705, alpha = 98.067
+#&gt; INFO [2020-10-06 23:12:37] Iter 11 complete. delta = 0.0010499, alpha = 93.272
+#&gt; INFO [2020-10-06 23:12:38] Iter 12 complete. delta = 0.00085333, alpha = 89.203
+#&gt; INFO [2020-10-06 23:12:38] Iter 13 complete. delta = 0.00070499, alpha = 85.708
+#&gt; INFO [2020-10-06 23:12:38] Iter 14 complete. delta = 0.00059064, alpha = 82.675
+#&gt; INFO [2020-10-06 23:12:38] Iter 15 complete. delta = 0.00050085, alpha = 80.019
+#&gt; INFO [2020-10-06 23:12:39] Iter 16 complete. delta = 0.00042921, alpha = 77.676
+#&gt; INFO [2020-10-06 23:12:39] Iter 17 complete. delta = 0.00037125, alpha = 75.593
+#&gt; INFO [2020-10-06 23:12:39] Iter 18 complete. delta = 0.00032377, alpha = 73.73
+#&gt; INFO [2020-10-06 23:12:39] Iter 19 complete. delta = 0.00028444, alpha = 72.055
+#&gt; INFO [2020-10-06 23:12:40] Iter 20 complete. delta = 0.00025155, alpha = 70.541</div><div class='output co'>#&gt; <span class='warning'>Warning: </span>
 #&gt; <span class='warning'>Reached maximum allowed iterations. Returning early.</span></div><div class='input'><span class='co'># mf</span>
 
 <span class='co'># build a rank-5 approximation only for</span>
@@ -268,35 +268,35 @@ in Frobenius norm of the full imputed matrix. Defaults to <code>1e-7</code>.</p>
   max_iter <span class='op'>=</span> <span class='fl'>20L</span>,
   initialization <span class='op'>=</span> <span class='st'>"adaptive-initialize"</span>
 <span class='op'>)</span>
-</div><div class='output co'>#&gt; INFO [2020-10-06 22:59:31] Use adaptive-initialize initialization.
-#&gt; INFO [2020-10-06 22:59:31] Beginning AdaptiveInitialize.
-#&gt; INFO [2020-10-06 22:59:31] p_hat = 0.0630466936422453, non-zero entries = 100000, total entries = 1586126
-#&gt; INFO [2020-10-06 22:59:33] Starting nuclear norm computation (slow step).
-#&gt; INFO [2020-10-06 22:59:49] Computation complete, alpha = 684.44830777862
-#&gt; INFO [2020-10-06 22:59:49] lambda_hat = 10108.0189264858, 3763.72941447119, 3334.41923001022
-#&gt; INFO [2020-10-06 22:59:49] Done initializing.
-#&gt; INFO [2020-10-06 22:59:49] Beginning AdaptiveImpute (max 20 iterations).
-#&gt; INFO [2020-10-06 22:59:49] Checking convergence every 1 iteration(s).
-#&gt; INFO [2020-10-06 22:59:49] Iter 1 complete. delta = 0.33172901, alpha = 9739.228
-#&gt; INFO [2020-10-06 22:59:49] Iter 2 complete. delta = 0.08622204, alpha = 1935.701
-#&gt; INFO [2020-10-06 22:59:49] Iter 3 complete. delta = 0.02945569, alpha = 714.201
-#&gt; INFO [2020-10-06 22:59:50] Iter 4 complete. delta = 0.01256702, alpha = 365.346
-#&gt; INFO [2020-10-06 22:59:50] Iter 5 complete. delta = 0.00626716, alpha = 229.111
-#&gt; INFO [2020-10-06 22:59:50] Iter 6 complete. delta = 0.00350124, alpha = 164.521
-#&gt; INFO [2020-10-06 22:59:50] Iter 7 complete. delta = 0.00213132, alpha = 129.547
-#&gt; INFO [2020-10-06 22:59:51] Iter 8 complete. delta = 0.00138674, alpha = 108.689
-#&gt; INFO [2020-10-06 22:59:51] Iter 9 complete. delta = 0.00095111, alpha = 95.307
-#&gt; INFO [2020-10-06 22:59:51] Iter 10 complete. delta = 0.00068066, alpha = 86.219
-#&gt; INFO [2020-10-06 22:59:51] Iter 11 complete. delta = 0.0005044, alpha = 79.761
-#&gt; INFO [2020-10-06 22:59:51] Iter 12 complete. delta = 0.00038483, alpha = 75
-#&gt; INFO [2020-10-06 22:59:52] Iter 13 complete. delta = 0.00030094, alpha = 71.379
-#&gt; INFO [2020-10-06 22:59:52] Iter 14 complete. delta = 0.0002404, alpha = 68.553
-#&gt; INFO [2020-10-06 22:59:52] Iter 15 complete. delta = 0.00019563, alpha = 66.298
-#&gt; INFO [2020-10-06 22:59:52] Iter 16 complete. delta = 0.00016182, alpha = 64.463
-#&gt; INFO [2020-10-06 22:59:52] Iter 17 complete. delta = 0.00013581, alpha = 62.945
-#&gt; INFO [2020-10-06 22:59:53] Iter 18 complete. delta = 0.00011546, alpha = 61.67
-#&gt; INFO [2020-10-06 22:59:53] Iter 19 complete. delta = 9.931e-05, alpha = 60.584
-#&gt; INFO [2020-10-06 22:59:53] Iter 20 complete. delta = 8.632e-05, alpha = 59.649</div><div class='output co'>#&gt; <span class='warning'>Warning: </span>
+</div><div class='output co'>#&gt; INFO [2020-10-06 23:12:40] Use adaptive-initialize initialization.
+#&gt; INFO [2020-10-06 23:12:40] Beginning AdaptiveInitialize.
+#&gt; INFO [2020-10-06 23:12:40] p_hat = 0.0630466936422453, non-zero entries = 100000, total entries = 1586126
+#&gt; INFO [2020-10-06 23:12:41] Starting nuclear norm computation (slow step).
+#&gt; INFO [2020-10-06 23:13:00] Computation complete, alpha = 684.44830777862
+#&gt; INFO [2020-10-06 23:13:00] lambda_hat = 10108.0189264858, 3763.72941447119, 3334.41923001022
+#&gt; INFO [2020-10-06 23:13:00] Done initializing.
+#&gt; INFO [2020-10-06 23:13:00] Beginning AdaptiveImpute (max 20 iterations).
+#&gt; INFO [2020-10-06 23:13:00] Checking convergence every 1 iteration(s).
+#&gt; INFO [2020-10-06 23:13:01] Iter 1 complete. delta = 0.33172901, alpha = 9739.228
+#&gt; INFO [2020-10-06 23:13:01] Iter 2 complete. delta = 0.08622204, alpha = 1935.701
+#&gt; INFO [2020-10-06 23:13:01] Iter 3 complete. delta = 0.02945569, alpha = 714.201
+#&gt; INFO [2020-10-06 23:13:02] Iter 4 complete. delta = 0.01256702, alpha = 365.346
+#&gt; INFO [2020-10-06 23:13:02] Iter 5 complete. delta = 0.00626716, alpha = 229.111
+#&gt; INFO [2020-10-06 23:13:02] Iter 6 complete. delta = 0.00350124, alpha = 164.521
+#&gt; INFO [2020-10-06 23:13:03] Iter 7 complete. delta = 0.00213132, alpha = 129.547
+#&gt; INFO [2020-10-06 23:13:03] Iter 8 complete. delta = 0.00138674, alpha = 108.689
+#&gt; INFO [2020-10-06 23:13:03] Iter 9 complete. delta = 0.00095111, alpha = 95.307
+#&gt; INFO [2020-10-06 23:13:03] Iter 10 complete. delta = 0.00068066, alpha = 86.219
+#&gt; INFO [2020-10-06 23:13:04] Iter 11 complete. delta = 0.0005044, alpha = 79.761
+#&gt; INFO [2020-10-06 23:13:04] Iter 12 complete. delta = 0.00038483, alpha = 75
+#&gt; INFO [2020-10-06 23:13:04] Iter 13 complete. delta = 0.00030094, alpha = 71.379
+#&gt; INFO [2020-10-06 23:13:05] Iter 14 complete. delta = 0.0002404, alpha = 68.553
+#&gt; INFO [2020-10-06 23:13:05] Iter 15 complete. delta = 0.00019563, alpha = 66.298
+#&gt; INFO [2020-10-06 23:13:06] Iter 16 complete. delta = 0.00016182, alpha = 64.463
+#&gt; INFO [2020-10-06 23:13:06] Iter 17 complete. delta = 0.00013581, alpha = 62.945
+#&gt; INFO [2020-10-06 23:13:06] Iter 18 complete. delta = 0.00011546, alpha = 61.67
+#&gt; INFO [2020-10-06 23:13:06] Iter 19 complete. delta = 9.931e-05, alpha = 60.584
+#&gt; INFO [2020-10-06 23:13:07] Iter 20 complete. delta = 8.632e-05, alpha = 59.649</div><div class='output co'>#&gt; <span class='warning'>Warning: </span>
 #&gt; <span class='warning'>Reached maximum allowed iterations. Returning early.</span></div><div class='input'>
 <span class='co'># mf2</span>
 
