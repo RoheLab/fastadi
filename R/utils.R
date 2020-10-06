@@ -1,21 +1,8 @@
-masked_svd_times_x <- function(s, mask, x) {
-  drop(masked_svd_times_x_impl(s$u, s$d, s$v, mask@i, mask@j, x))
-}
-
 relative_f_norm_change <- function(s_new, s) {
-
-  relative_f_norm_change_impl(s_new$u, s_new$d, s_new$v,
-                              s$u, s$d, s$v)
-
-  # # expressed into terms of frobenius inner products of low rank
-  # # SVDs
-  #
-  # num <- sum(s_new$d^2) + sum(s$d^2) -
-  #   2 * svd_frob_inner_prod_impl(s_new$u, s_new$d, s_new$v, s$u, s$d, s$v)
-  #
-  # denom <- sum(s$d^2)
-  #
-  # num / denom
+  relative_f_norm_change_impl(
+    s_new$u, s_new$d, s_new$v,
+    s$u, s$d, s$v
+  )
 }
 
 assert_alpha_positive <- function(alpha) {
@@ -26,4 +13,49 @@ assert_alpha_positive <- function(alpha) {
       "as a reproducible example (see https://reprex.tidyverse.org/).",
       call. = FALSE
     )
+}
+
+
+### adaptive impute svd variant
+
+Ax <- function(x, args) {
+  drop(args$R %*% x + args$u %*% diag(args$d) %*% crossprod(args$v, x))
+}
+
+Atx <- function(x, args) {
+  drop(t(args$R) %*% x + args$v %*% diag(args$d) %*% crossprod(args$u, x))
+}
+
+### citation svd variant
+
+### citation impute svd variant
+
+# mask needs to be a sparse matrix stored as triplets
+p_omega_f_norm_ut <- function(s, mask) {
+  mask <- as(mask, "TsparseMatrix")
+  p_omega_f_norm_ut_impl(s$u, s$d, s$v, mask@i, mask@j)
+}
+
+# KEY: must return a vector! test this otherwise you will be sad!
+Ax_citation <- function(x, args) {
+  mask <- as(args$M, "TsparseMatrix")
+
+  out <- drop0(args$M) %*% x
+  out <- out - p_u_zx_impl(args$u, args$d, args$v, x)
+  out <- out - p_u_tilde_zx_impl(args$u, args$d, args$v, mask@i, mask@j, x)
+  out <- out + args$u %*% diag(args$d) %*% crossprod(args$v, x)
+
+  drop(out)
+}
+
+Atx_citation <- function(x, args) {
+
+  mask <- as(args$M, "TsparseMatrix")
+
+  out <- t(drop0(args$M)) %*% x
+  out <- out - p_u_ztx_impl(args$u, args$d, args$v, x)
+  out <- out - p_u_tilde_ztx_impl(args$u, args$d, args$v, mask@i, mask@j, x)
+  out <- out + args$v %*% diag(args$d) %*% crossprod(args$u, x)
+
+  drop(out)
 }

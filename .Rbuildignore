@@ -11,4 +11,4 @@ reference
 ^codecov\.yml$
 ^\.github$
 ^doc$
-vignetttes
+vignettes
