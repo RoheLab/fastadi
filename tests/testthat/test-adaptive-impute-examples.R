@@ -1,11 +1,13 @@
 test_that("adaptive impute svd initialization", {
 
   expect_warning(
-    mf <- adaptive_impute(ml100k, rank = 2L, max_iter = 1L)
+    mf <- adaptive_impute(ml100k, rank = 2L, max_iter = 1L),
+    regexp = "Reached maximum allowed iterations. Returning early."
   )
 
   expect_warning(
-    mf <- adaptive_impute(ml100k, rank = 3L, max_iter = 3L)
+    mf <- adaptive_impute(ml100k, rank = 3L, max_iter = 3L),
+    regexp = "Reached maximum allowed iterations. Returning early."
   )
 
   preds <- predict(mf, ml100k)
@@ -22,7 +24,8 @@ test_that("adaptive impute adaptive initialization example", {
       rank = 3L,
       max_iter = 3L,
       initialization = "adaptive-initialize"
-    )
+    ),
+    regexp = "Reached maximum allowed iterations. Returning early."
   )
 
 

@@ -6,7 +6,9 @@
 #' @param X A sparse matrix of [Matrix::sparseMatrix()] class.
 #'
 #' @param rank Desired rank (integer) to use in the low rank approximation.
-#'   Must be at least `2L` and at most the rank of `X`.
+#'   Must be at least `2L` and at most the rank of `X`. Note that the rank
+#'   of `X` is typically unobserved and computations may be unstable or
+#'   even fail when `rank` is near or exceeds this threshold.
 #'
 #' @param ... Unused additional arguments.
 #'
@@ -38,7 +40,10 @@
 #' @param check_interval Integer specifying how often to perform convergence
 #'   checks. Defaults to `1L`. In practice, check for convergence requires
 #'   a norm calculation that is expensive for large matrices and decreasing
-#'   the frequency of convergence checks will reduce computation time.
+#'   the frequency of convergence checks will reduce computation time. Can
+#'   also be set to `NULL`, which case `max_iter` iterations of the algorithm
+#'   will occur with no possibility of stopping due to small relative change
+#'   in the imputed matrix. In this case `delta` will be reported as `Inf`.
 #'
 #' @return A low rank matrix factorization represented by an
 #'   [adaptive_imputation()] object.
@@ -99,20 +104,23 @@ adaptive_impute <- function(
       call. = FALSE
     )
 
-  if (length(check_interval) > 1)
+  if (!is.null(check_interval) && length(check_interval) > 1)
     stop(
-      "`check_interval` must be an integer vector with a single element.",
+      "`check_interval` must be a single integer, or NULL.",
       call. = FALSE
     )
 
-  if (rank <= 1)
-    stop("`rank` must be an integer >= 2L.", call. = FALSE)
+  if (rank <= 1 || rank >= min(nrow(X), ncol(X)))
+    stop(
+      "rank must satisfy 1 < rank < min(nrow(X), ncol(X)).",
+      call. = FALSE
+    )
 
   if (max_iter < 1)
     stop("`max_iter` must be an integer >= 1L.", call. = FALSE)
 
-  if (check_interval < 1)
-    stop("`check_interval` must be an integer >= 1L.", call. = FALSE)
+  if (!is.null(check_interval) && check_interval < 1)
+    stop("`check_interval` must be an integer >= 1L, or NULL.", call. = FALSE)
 
   UseMethod("adaptive_impute")
 }
@@ -209,21 +217,20 @@ adaptive_impute.LRMF <- function(
 
     # save a little bit on computation and only check for
     # # convergence intermittently
-    if (iter %% check_interval == 0) {
+    if (!is.null(check_interval) && iter %% check_interval == 0) {
       log_debug("Computing relative change in Frobenius norm.")
       delta <- relative_f_norm_change(s_new, s)
     }
 
     s <- s_new
 
-    if (iter %% check_interval == 0)
-      log_info(
-        glue(
-          "Iter {iter} complete. ",
-          "delta = {round(delta, 8)}, ",
-          "alpha = {round(alpha, 3)}"
-        )
+    log_info(
+      glue(
+        "Iter {iter} complete. ",
+        "delta = {if (!is.null(check_interval)) round(delta, 8) else Inf}, ",
+        "alpha = {round(alpha, 3)}"
       )
+    )
 
     assert_alpha_positive(alpha)
 

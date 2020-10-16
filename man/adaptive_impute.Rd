@@ -31,7 +31,9 @@ adaptive_impute(
 \item{X}{A sparse matrix of \code{\link[Matrix:sparseMatrix]{Matrix::sparseMatrix()}} class.}
 
 \item{rank}{Desired rank (integer) to use in the low rank approximation.
-Must be at least \code{2L} and at most the rank of \code{X}.}
+Must be at least \code{2L} and at most the rank of \code{X}. Note that the rank
+of \code{X} is typically unobserved and computations may be unstable or
+even fail when \code{rank} is near or exceeds this threshold.}
 
 \item{...}{Unused additional arguments.}
 
@@ -60,7 +62,10 @@ you most of the way to convergence. Must be at least \code{1L}.}
 \item{check_interval}{Integer specifying how often to perform convergence
 checks. Defaults to \code{1L}. In practice, check for convergence requires
 a norm calculation that is expensive for large matrices and decreasing
-the frequency of convergence checks will reduce computation time.}
+the frequency of convergence checks will reduce computation time. Can
+also be set to \code{NULL}, which case \code{max_iter} iterations of the algorithm
+will occur with no possibility of stopping due to small relative change
+in the imputed matrix. In this case \code{delta} will be reported as \code{Inf}.}
 
 \item{epsilon}{Convergence criteria, measured in terms of relative change
 in Frobenius norm of the full imputed matrix. Defaults to \code{1e-7}.}

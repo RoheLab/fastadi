@@ -57,20 +57,23 @@ citation_impute <- function(
       call. = FALSE
     )
 
-  if (length(check_interval) > 1)
+  if (!is.null(check_interval) && length(check_interval) > 1)
     stop(
-      "`check_interval` must be an integer vector with a single element.",
+      "`check_interval` must be a single integer, or NULL.",
       call. = FALSE
     )
 
-  if (rank <= 1)
-    stop("`rank` must be an integer >= 2L.", call. = FALSE)
+  if (rank <= 1 || rank >= min(nrow(X), ncol(X)))
+    stop(
+      "rank must satisfy 1 < rank < min(nrow(X), ncol(X)).",
+      call. = FALSE
+    )
 
   if (max_iter < 1)
     stop("`max_iter` must be an integer >= 1L.", call. = FALSE)
 
-  if (check_interval < 1)
-    stop("`check_interval` must be an integer >= 1L.", call. = FALSE)
+  if (!is.null(check_interval) && check_interval < 1)
+    stop("`check_interval` must be an integer >= 1L, or NULL.", call. = FALSE)
 
   UseMethod("citation_impute")
 }
@@ -194,21 +197,20 @@ citation_impute.LRMF <- function(
 
     # save a little bit on computation and only check for
     # # convergence intermittently
-    if (iter %% check_interval == 0) {
+    if (!is.null(check_interval) && iter %% check_interval == 0) {
       log_debug("Computing relative change in Frobenius norm.")
       delta <- relative_f_norm_change(s_new, s)
     }
 
     s <- s_new
 
-    if (iter %% check_interval == 0)
-      log_info(
-        glue(
-          "Iter {iter} complete. ",
-          "delta = {round(delta, 8)}, ",
-          "alpha = {round(alpha, 3)}"
-        )
+    log_info(
+      glue(
+        "Iter {iter} complete. ",
+        "delta = {if (!is.null(check_interval)) round(delta, 8) else Inf}, ",
+        "alpha = {round(alpha, 3)}"
       )
+    )
 
     assert_alpha_positive(alpha)
 
