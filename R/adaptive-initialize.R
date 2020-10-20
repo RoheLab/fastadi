@@ -120,11 +120,11 @@ adaptive_initialize.sparseMatrix <- function(
   # both of these matrices are symmetric, but not necessarily positive
   # this has important implications for the SVD / eigendecomp relationship
 
-  sigma_p <- XtX - (1 - p_hat) * diag(diag(XtX))  # line 2
-  sigma_t <- XXt - (1 - p_hat) * diag(diag(XXt))  # line 3
-
   n <- nrow(X)
   d <- ncol(X)
+
+  sigma_p <- XtX - (1 - p_hat) * Diagonal(n = d, x = diag(XtX))  # line 2
+  sigma_t <- XXt - (1 - p_hat) * Diagonal(n = n, x = diag(XXt))  # line 3
 
   # (near) dense computation, but truncated
   svd_t <- svds(sigma_t, rank)

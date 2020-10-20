@@ -1,7 +1,7 @@
 Type: Package
 Package: fastadi
 Title: Self-Tuning Data Adaptive Matrix Imputation
-Version: 0.0.0.9014
+Version: 0.0.0.9015
 Authors@R: 
     c(person(given = "Alex",
              family = "Hayes",
