@@ -10,13 +10,20 @@ adaptive_impute(
   X,
   rank,
   ...,
-  initialization = c("svd", "adaptive-initialize"),
+  initialization = c("svd", "adaptive-initialize", "approximate"),
   max_iter = 200L,
   check_interval = 1L,
-  epsilon = 1e-07
+  epsilon = 1e-07,
+  additional = NULL
 )
 
-\method{adaptive_impute}{sparseMatrix}(X, rank, initialization = c("svd", "adaptive-initialize"), ...)
+\method{adaptive_impute}{sparseMatrix}(
+  X,
+  rank,
+  ...,
+  initialization = c("svd", "adaptive-initialize", "approximate"),
+  additional = NULL
+)
 
 \method{adaptive_impute}{LRMF}(
   X,
@@ -46,6 +53,9 @@ unobserved values as zeroes.
 unobserved values as actually unobserved. However, the current
 \code{AdaptiveInitialize} implementation relies on dense matrix
 computations that are only suitable for relatively small matrices.
+\item \code{"approximate"}. An approximate variant of \code{AdaptiveInitialize}
+that is less computationally expensive. See \code{adaptive_initialize}
+for details.
 }
 
 Note that initialization matters as \code{AdaptiveImpute} optimizes
@@ -69,6 +79,12 @@ in the imputed matrix. In this case \code{delta} will be reported as \code{Inf}.
 
 \item{epsilon}{Convergence criteria, measured in terms of relative change
 in Frobenius norm of the full imputed matrix. Defaults to \code{1e-7}.}
+
+\item{additional}{Ignored except when \code{alpha_method = "approximate"}
+in which case it controls the precise of the approximation to \code{alpha}.
+The approximate computation of \code{alpha} will always understand \code{alpha},
+but the approximation will be better for larger values of \code{additional}.
+We recommend making \code{additional} as large as computationally tolerable.}
 }
 \value{
 A low rank matrix factorization represented by an
@@ -80,8 +96,9 @@ for sparse matrices.
 }
 \examples{
 
+### SVD initialization (default) --------------------------------------------
+
 mf <- adaptive_impute(ml100k, rank = 3L, max_iter = 20L)
-# mf
 
 # build a rank-5 approximation only for
 # observed elements of ml100k
@@ -93,6 +110,7 @@ preds <- predict(mf, ml100k)
 R <- resid(mf, ml100k)
 norm(R, type = "F") / nnzero(ml100k)
 
+### Exact AdaptiveInitialize initialization ---------------------------------
 
 mf2 <- adaptive_impute(
   ml100k,
@@ -101,9 +119,20 @@ mf2 <- adaptive_impute(
   initialization = "adaptive-initialize"
 )
 
-# mf2
-
 R2 <- resid(mf2, ml100k)
 norm(R2, type = "F") / nnzero(ml100k)
+
+### Approximate AdaptiveInitialize initialization ---------------------------
+
+mf3 <- adaptive_impute(
+  ml100k,
+  rank = 3L,
+  max_iter = 20L,
+  initialization = "approximate",
+  additional = 25
+)
+
+R3 <- resid(mf3, ml100k)
+norm(R3, type = "F") / nnzero(ml100k)
 
 }

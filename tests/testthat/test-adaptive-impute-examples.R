@@ -32,3 +32,27 @@ test_that("adaptive impute adaptive initialization example", {
   R2 <- resid(mf2, ml100k)
   norm(R2, type = "F") / nnzero(ml100k)
 })
+
+test_that("adaptive impute approximate initialization example", {
+
+  expect_error(
+    adaptive_impute(
+      ml100k,
+      rank = 3L,
+      max_iter = 3L,
+      initialization = "approximate"
+    ),
+    regexp = "Must specify `additional` when using approximate initialization."
+  )
+
+  expect_warning(
+    adaptive_impute(
+      ml100k,
+      rank = 3L,
+      max_iter = 3L,
+      initialization = "approximate",
+      additional = 10
+    ),
+    regexp = "Reached maximum allowed iterations. Returning early."
+  )
+})

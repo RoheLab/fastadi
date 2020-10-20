@@ -5,9 +5,23 @@
 \alias{adaptive_initialize.sparseMatrix}
 \title{AdaptiveInitialize}
 \usage{
-adaptive_initialize(X, rank, p_hat = NULL, ...)
+adaptive_initialize(
+  X,
+  rank,
+  ...,
+  p_hat = NULL,
+  alpha_method = c("exact", "approximate"),
+  additional = NULL
+)
 
-\method{adaptive_initialize}{sparseMatrix}(X, rank, p_hat = NULL, ...)
+\method{adaptive_initialize}{sparseMatrix}(
+  X,
+  rank,
+  ...,
+  p_hat = NULL,
+  alpha_method = c("exact", "approximate"),
+  additional = NULL
+)
 }
 \arguments{
 \item{X}{A sparse matrix of \code{sparseMatrix} class. Explicit (observed)
@@ -16,11 +30,28 @@ zeroes in \code{X} can be dropped for}
 \item{rank}{Desired rank (integer) to use in the low rank approximation.
 Must be at least \code{2L} and at most the rank of \code{X}.}
 
+\item{...}{Ignored.}
+
 \item{p_hat}{The portion of \code{X} that is observed. Defaults to \code{NULL},
 in which case \code{p_hat} is set to the number of observed elements of
-\code{X}. Useful when you have many explicit zeros that w}
+\code{X}. Primarily for internal use in \code{\link[=citation_impute]{citation_impute()}} or
+advanced users.}
 
-\item{...}{Ignored.}
+\item{alpha_method}{Either \code{"exact"} or \code{"approximate"}, defaulting to
+\code{"exact"}. \code{"exact"} is computationally expensive and requires taking
+a complete SVD of matrix of size \code{nrow(X)} x \code{nrow(X)}, and matches
+the \code{AdaptiveInitialize} algorithm exactly. \code{"approximate"}
+departs from the \code{AdaptiveInitialization} algorithm to compute
+a truncated SVD of rank \code{rank} + \code{additional} instead of a complete
+SVD. This reduces computational burden, but the resulting estimates
+of singular-ish values will not be penalized as much as in the
+\code{AdaptiveInitialize} algorithm.}
+
+\item{additional}{Ignored except when \code{alpha_method = "approximate"}
+in which case it controls the precise of the approximation to \code{alpha}.
+The approximate computation of \code{alpha} will always understand \code{alpha},
+but the approximation will be better for larger values of \code{additional}.
+We recommend making \code{additional} as large as computationally tolerable.}
 }
 \value{
 A low rank matrix factorization represented by an

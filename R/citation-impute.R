@@ -22,7 +22,11 @@
 #' n <- 100
 #' A <- rsparsematrix(n, n, 0.1, rand.x = NULL)
 #'
+#' ### SVD initialization (default) --------------------------------------------
+#'
 #' mf <- citation_impute(A, rank = 3L, max_iter = 10L)
+#'
+#' ### Exact AdaptiveInitialize initialization ---------------------------------
 #'
 #' mf2 <- citation_impute(
 #'   A,
@@ -31,14 +35,25 @@
 #'   initialization = "adaptive-initialize"
 #' )
 #'
+#' ### Approximate AdaptiveInitialize initialization ---------------------------
+#'
+#' mf3 <- citation_impute(
+#'   A,
+#'   rank = 3L,
+#'   max_iter = 10L,
+#'   initialization = "approximate",
+#'   additional = 5L
+#' )
+#'
 citation_impute <- function(
   X,
   rank,
   ...,
-  initialization = c("svd", "adaptive-initialize"),
+  initialization = c("svd", "adaptive-initialize", "approximate"),
   max_iter = 200L,
   check_interval = 1L,
-  epsilon = 1e-7
+  epsilon = 1e-7,
+  additional = NULL
 ) {
 
   ellipsis::check_dots_used()
@@ -83,10 +98,11 @@ citation_impute.default <- function(
   X,
   rank,
   ...,
-  initialization = c("svd", "adaptive-initialize"),
+  initialization = c("svd", "adaptive-initialize", "approximate"),
   max_iter = 200L,
   check_interval = 1L,
-  epsilon = 1e-7) {
+  epsilon = 1e-7,
+  additional = NULL) {
 
   stop(
     glue("No `citation_impute` method for objects of class {class(X)}."),
@@ -99,8 +115,9 @@ citation_impute.default <- function(
 citation_impute.sparseMatrix <- function(
   X,
   rank,
-  initialization = c("svd", "adaptive-initialize"),
-  ...
+  ...,
+  initialization = c("svd", "adaptive-initialize", "approximate"),
+  additional = NULL
 ) {
 
   initialization <- match.arg(initialization)
@@ -119,7 +136,7 @@ citation_impute.sparseMatrix <- function(
     )
   )
 
-  log_info(glue("Use {initialization} initialization."))
+  log_info(glue("Using {initialization} initialization."))
 
   if (initialization == "svd") {
     # multiply by one to coerce to type that svds can handle,
@@ -132,10 +149,32 @@ citation_impute.sparseMatrix <- function(
     # upper triangle that are implicitly observed
 
     n <- ncol(X)  # recall that X is square
-    implicit_total <- n * (n - 1) / 2 + obs_lower
+    implicit_total <- (n - 1) * (n - 2) / 2 + obs_lower
     p_hat <- implicit_total / prod(dim(X))
 
     mf <- adaptive_initialize(X * 1, rank, p_hat = p_hat)
+  } else if (initialization == "approximate") {
+
+    if (is.null(additional))
+      stop(
+        "Must specify `additional` when using approximate initialization.",
+        call. = FALSE
+      )
+
+    # *total* observed elements of X, including entries in the
+    # upper triangle that are implicitly observed
+
+    n <- ncol(X)  # recall that X is square
+    implicit_total <- (n - 1) * (n - 2) / 2 + obs_lower
+    p_hat <- implicit_total / prod(dim(X))
+
+    mf <- adaptive_initialize(
+      X * 1, rank = rank,
+      p_hat = p_hat,
+      alpha_method = "approximate",
+      additional = additional
+    )
+
   } else {
     stop("This should not happen.", call. = FALSE)
   }
@@ -157,7 +196,9 @@ citation_impute.LRMF <- function(
 ) {
 
   log_info(glue("Beginning AdaptiveImpute (max {max_iter} iterations)."))
-  log_info(glue("Checking convergence every {check_interval} iteration(s)."))
+
+  if (!is.null(check_interval))
+    log_info(glue("Checking convergence every {check_interval} iteration(s)."))
 
   # first argument is the svd_like object, second is the data
   # do some renaming here
@@ -207,8 +248,8 @@ citation_impute.LRMF <- function(
     log_info(
       glue(
         "Iter {iter} complete. ",
-        "delta = {if (!is.null(check_interval)) round(delta, 8) else Inf}, ",
-        "alpha = {round(alpha, 3)}"
+        "delta = {if (!is.null(check_interval)) delta else Inf}, ",
+        "alpha = {alpha}"
       )
     )
 

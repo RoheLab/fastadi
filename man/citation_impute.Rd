@@ -10,10 +10,11 @@ citation_impute(
   X,
   rank,
   ...,
-  initialization = c("svd", "adaptive-initialize"),
+  initialization = c("svd", "adaptive-initialize", "approximate"),
   max_iter = 200L,
   check_interval = 1L,
-  epsilon = 1e-07
+  epsilon = 1e-07,
+  additional = NULL
 )
 
 \method{citation_impute}{sparseMatrix}(X, rank, initialization = c("svd", "adaptive-initialize"), ...)
@@ -49,6 +50,9 @@ unobserved values as zeroes.
 unobserved values as actually unobserved. However, the current
 \code{AdaptiveInitialize} implementation relies on dense matrix
 computations that are only suitable for relatively small matrices.
+\item \code{"approximate"}. An approximate variant of \code{AdaptiveInitialize}
+that is less computationally expensive. See \code{adaptive_initialize}
+for details.
 }
 
 Note that initialization matters as \code{AdaptiveImpute} optimizes
@@ -72,6 +76,12 @@ in the imputed matrix. In this case \code{delta} will be reported as \code{Inf}.
 
 \item{epsilon}{Convergence criteria, measured in terms of relative change
 in Frobenius norm of the full imputed matrix. Defaults to \code{1e-7}.}
+
+\item{additional}{Ignored except when \code{alpha_method = "approximate"}
+in which case it controls the precise of the approximation to \code{alpha}.
+The approximate computation of \code{alpha} will always understand \code{alpha},
+but the approximation will be better for larger values of \code{additional}.
+We recommend making \code{additional} as large as computationally tolerable.}
 }
 \value{
 A low rank matrix factorization represented by an
@@ -92,13 +102,27 @@ with (near) tree structure, such as citation networks.
 n <- 100
 A <- rsparsematrix(n, n, 0.1, rand.x = NULL)
 
+### SVD initialization (default) --------------------------------------------
+
 mf <- citation_impute(A, rank = 3L, max_iter = 10L)
+
+### Exact AdaptiveInitialize initialization ---------------------------------
 
 mf2 <- citation_impute(
   A,
   rank = 3L,
   max_iter = 10L,
   initialization = "adaptive-initialize"
+)
+
+### Approximate AdaptiveInitialize initialization ---------------------------
+
+mf3 <- citation_impute(
+  A,
+  rank = 3L,
+  max_iter = 10L,
+  initialization = "approximate",
+  additional = 5L
 )
 
 }

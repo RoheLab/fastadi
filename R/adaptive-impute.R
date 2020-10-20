@@ -23,6 +23,10 @@
 #'     `AdaptiveInitialize` implementation relies on dense matrix
 #'     computations that are only suitable for relatively small matrices.
 #'
+#'   - `"approximate"`. An approximate variant of `AdaptiveInitialize`
+#'     that is less computationally expensive. See `adaptive_initialize`
+#'     for details.
+#'
 #'   Note that initialization matters as `AdaptiveImpute` optimizes
 #'   a non-convex objective. The current theory shows that initializing
 #'   with `AdaptiveInitialize` leads to a consistent estimator, but it
@@ -45,6 +49,8 @@
 #'   will occur with no possibility of stopping due to small relative change
 #'   in the imputed matrix. In this case `delta` will be reported as `Inf`.
 #'
+#' @inheritParams adaptive_initialize
+#'
 #' @return A low rank matrix factorization represented by an
 #'   [adaptive_imputation()] object.
 #'
@@ -52,8 +58,9 @@
 #'
 #' @examples
 #'
+#' ### SVD initialization (default) --------------------------------------------
+#'
 #' mf <- adaptive_impute(ml100k, rank = 3L, max_iter = 20L)
-#' # mf
 #'
 #' # build a rank-5 approximation only for
 #' # observed elements of ml100k
@@ -65,6 +72,7 @@
 #' R <- resid(mf, ml100k)
 #' norm(R, type = "F") / nnzero(ml100k)
 #'
+#' ### Exact AdaptiveInitialize initialization ---------------------------------
 #'
 #' mf2 <- adaptive_impute(
 #'   ml100k,
@@ -73,19 +81,31 @@
 #'   initialization = "adaptive-initialize"
 #' )
 #'
-#' # mf2
-#'
 #' R2 <- resid(mf2, ml100k)
 #' norm(R2, type = "F") / nnzero(ml100k)
+#'
+#' ### Approximate AdaptiveInitialize initialization ---------------------------
+#'
+#' mf3 <- adaptive_impute(
+#'   ml100k,
+#'   rank = 3L,
+#'   max_iter = 20L,
+#'   initialization = "approximate",
+#'   additional = 25
+#' )
+#'
+#' R3 <- resid(mf3, ml100k)
+#' norm(R3, type = "F") / nnzero(ml100k)
 #'
 adaptive_impute <- function(
   X,
   rank,
   ...,
-  initialization = c("svd", "adaptive-initialize"),
+  initialization = c("svd", "adaptive-initialize", "approximate"),
   max_iter = 200L,
   check_interval = 1L,
-  epsilon = 1e-7
+  epsilon = 1e-7,
+  additional = NULL
 ) {
 
   ellipsis::check_dots_used()
@@ -130,10 +150,11 @@ adaptive_impute.default <- function(
   X,
   rank,
   ...,
-  initialization = c("svd", "adaptive-initialize"),
+  initialization = c("svd", "adaptive-initialize", "approximate"),
   max_iter = 200L,
   check_interval = 1L,
-  epsilon = 1e-7) {
+  epsilon = 1e-7,
+  additional = NULL) {
 
   stop(
     glue("No `adaptive_impute` method for objects of class {class(X)}."),
@@ -146,19 +167,34 @@ adaptive_impute.default <- function(
 adaptive_impute.sparseMatrix <- function(
   X,
   rank,
-  initialization = c("svd", "adaptive-initialize"),
-  ...
+  ...,
+  initialization = c("svd", "adaptive-initialize", "approximate"),
+  additional = NULL
 ) {
 
   initialization <- match.arg(initialization)
 
-  log_info(glue("Use {initialization} initialization."))
+  log_info(glue("Using {initialization} initialization."))
 
   if (initialization == "svd") {
     s <- svds(X, rank)
     mf <- as_svd_like(s)
   } else if (initialization == "adaptive-initialize") {
-    mf <- adaptive_initialize(X, rank)
+    mf <- adaptive_initialize(X, rank, alpha_method = "exact")
+  } else if (initialization == "approximate") {
+
+    if (is.null(additional))
+      stop(
+        "Must specify `additional` when using approximate initialization.",
+        call. = FALSE
+      )
+
+    mf <- adaptive_initialize(
+      X, rank,
+      alpha_method = "approximate",
+      additional = additional
+    )
+
   } else {
     stop("This should not happen.", call. = FALSE)
   }
@@ -180,7 +216,9 @@ adaptive_impute.LRMF <- function(
 ) {
 
   log_info(glue("Beginning AdaptiveImpute (max {max_iter} iterations)."))
-  log_info(glue("Checking convergence every {check_interval} iteration(s)."))
+
+  if (!is.null(check_interval))
+    log_info(glue("Checking convergence every {check_interval} iteration(s)."))
 
   # first argument is the svd_like object, second is the data
   # do some renaming here
@@ -227,8 +265,8 @@ adaptive_impute.LRMF <- function(
     log_info(
       glue(
         "Iter {iter} complete. ",
-        "delta = {if (!is.null(check_interval)) round(delta, 8) else Inf}, ",
-        "alpha = {round(alpha, 3)}"
+        "delta = {if (!is.null(check_interval)) delta else Inf}, ",
+        "alpha = {alpha}"
       )
     )
 
