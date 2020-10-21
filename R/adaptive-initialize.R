@@ -95,7 +95,6 @@ adaptive_initialize.sparseMatrix <- function(
   alpha_method = c("exact", "approximate"),
   additional = NULL) {
 
-
   alpha_method <- match.arg(alpha_method)
 
   log_info("Beginning AdaptiveInitialize.")
@@ -111,20 +110,13 @@ adaptive_initialize.sparseMatrix <- function(
     )
   )
 
-  XtX <- crossprod(X)
-  XXt <- tcrossprod(X)
-
   # need to divide by p^2 from Cho et al 2016 to get the "right"
   # singular values / singular values on a comparable scale
-
-  # both of these matrices are symmetric, but not necessarily positive
-  # this has important implications for the SVD / eigendecomp relationship
 
   n <- nrow(X)
   d <- ncol(X)
 
-  sigma_p <- XtX - (1 - p_hat) * Diagonal(n = d, x = diag(XtX))  # line 2
-  sigma_t <- XXt - (1 - p_hat) * Diagonal(n = n, x = diag(XXt))  # line 3
+  sigma_t <- SigmaT(X, p_hat)
 
   # (near) dense computation, but truncated
   svd_t <- svds(sigma_t, rank)
@@ -136,6 +128,9 @@ adaptive_initialize.sparseMatrix <- function(
   )
 
   if (alpha_method == "exact") {
+
+    XtX <- crossprod(X)
+    sigma_p <- XtX - (1 - p_hat) * Diagonal(n = d, x = diag(XtX))  # line 2
 
     # full (near) dense svd -- slow
     svd_p <- svd(sigma_p)
@@ -161,6 +156,7 @@ adaptive_initialize.sparseMatrix <- function(
       )
     )
 
+    sigma_p <- SigmaP(X, p_hat) # line 2, implicitly
     svd_p <- svds(sigma_p, k = rank + additional, nu = rank, nv = rank)
 
   } else {

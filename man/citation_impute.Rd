@@ -17,7 +17,13 @@ citation_impute(
   additional = NULL
 )
 
-\method{citation_impute}{sparseMatrix}(X, rank, initialization = c("svd", "adaptive-initialize"), ...)
+\method{citation_impute}{sparseMatrix}(
+  X,
+  rank,
+  ...,
+  initialization = c("svd", "adaptive-initialize", "approximate"),
+  additional = NULL
+)
 
 \method{citation_impute}{LRMF}(
   X,
