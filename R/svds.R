@@ -52,9 +52,6 @@ SigmaT <- function(X, p_hat) {
   methods::new(Class = "SigmaT", X = X, p_hat = p_hat)
 }
 
-setMethod("dim", "SigmaP", function(x) c(ncol(x@X), ncol(x@X)))
-setMethod("dim", "SigmaT", function(x) c(nrow(x@X), nrow(x@X)))
-
 # should do a setValidity() method down the line if these get
 # a lot of use
 
@@ -86,7 +83,7 @@ svds.SigmaP <- function(A, k, nu = k, nv = k, opts = list(), ...) {
     nv = nv,
     opts = opts,
     Atrans = SigmaPx,  # symmetric!
-    dim = dim(A),
+    dim = dim(XtX),
     args = args,
     ...
   )
@@ -110,7 +107,7 @@ svds.SigmaT <- function(A, k, nu = k, nv = k, opts = list(), ...) {
     nv = nv,
     opts = opts,
     Atrans = SigmaTx, # also symmetric!
-    dim = dim(A),
+    dim = dim(XXt),
     args = args,
     ...
   )
