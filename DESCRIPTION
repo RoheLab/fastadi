@@ -1,7 +1,7 @@
 Type: Package
 Package: fastadi
 Title: Self-Tuning Data Adaptive Matrix Imputation
-Version: 0.0.0.9016
+Version: 0.0.0.9017
 Authors@R: 
     c(person(given = "Alex",
              family = "Hayes",
@@ -28,7 +28,7 @@ License: MIT + file LICENSE
 URL: https://github.com/RoheLab/fastadi
 BugReports: https://github.com/RoheLab/fastadi/issues
 Depends: 
-    LRMF3 (>= 0.0.0.9003),
+    LRMF3 (>= 0.0.0.9007),
     Matrix,
     R (>= 3.1)
 Imports: 
