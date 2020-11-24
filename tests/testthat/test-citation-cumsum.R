@@ -18,7 +18,7 @@ test_that("p_u_zx_impl", {
   Y <- as(upper.tri(M), "CsparseMatrix")
 
   expected <- drop((s$u %*% diag(s$d) %*% t(s$v) * Y) %*% x)
-  impl_result <- p_u_zx_impl(s$u, s$d, s$v, x)
+  impl_result <- p_u_zx_impl(s$u, s$d, s$v, x, 1L)
 
   expect_equal(
     drop(impl_result),
@@ -34,7 +34,7 @@ test_that("p_u_tilde_zx_impl", {
   lower_expected <- (s$u %*% diag(s$d) %*% t(s$v) * L) %*% x
 
   mask <- as(L, "TsparseMatrix")
-  lower_impl <- p_u_tilde_zx_impl(s$u, s$d, s$v, mask@i, mask@j, x)
+  lower_impl <- p_u_tilde_zx_impl(s$u, s$d, s$v, mask@i, mask@j, x, 1L)
 
   expect_equal(
     drop(lower_impl),
@@ -47,7 +47,7 @@ test_that("p_u_ztx_impl", {
   Y <- as(upper.tri(M), "CsparseMatrix")
 
   expected <- drop(t(s$u %*% diag(s$d) %*% t(s$v) * Y) %*% x)
-  impl_result <- p_u_ztx_impl(s$u, s$d, s$v, x)
+  impl_result <- p_u_ztx_impl(s$u, s$d, s$v, x, 1L)
 
   expect_equal(
     drop(impl_result),
@@ -63,7 +63,7 @@ test_that("p_u_tilde_ztx_impl", {
   lower_expected <- t(s$u %*% diag(s$d) %*% t(s$v) * L) %*% x
 
   mask <- as(L, "TsparseMatrix")
-  lower_impl <- p_u_tilde_ztx_impl(s$u, s$d, s$v, mask@i, mask@j, x)
+  lower_impl <- p_u_tilde_ztx_impl(s$u, s$d, s$v, mask@i, mask@j, x, 1L)
 
   expect_equal(
     drop(lower_impl),

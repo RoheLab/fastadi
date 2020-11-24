@@ -19,7 +19,7 @@ test_that("relative_f_norm_change", {
 
   # Armadillo calculation
   impl_result <- relative_f_norm_change_impl(s_new$u, s_new$d, s_new$v,
-                                             s$u, s$d, s$v)
+                                             s$u, s$d, s$v, 1L)
 
   # wrapped Armadillo calculation
   wrapped_result <- relative_f_norm_change(s_new, s)

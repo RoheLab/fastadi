@@ -1,4 +1,6 @@
 #include <RcppArmadillo.h>
+#include <omp.h>
+// [[Rcpp::plugins(openmp)]]
 
 using namespace arma;
 
@@ -8,12 +10,16 @@ arma::vec p_u_ztx_impl(
     const arma::mat& U,
     const arma::vec& d,
     const arma::mat& V,
-    const arma::vec& x) {
+    const arma::vec& x,
+    const int num_threads) {
 
   // just UD at this point
   arma::mat S = U * diagmat(d);
 
+  omp_set_num_threads(num_threads);
+
   // multiply rows by x to obtain W
+  #pragma omp parallel for
   for (int i = 0; i < S.n_rows; i++) {
     S.row(i) *= x(i);
   }
@@ -27,6 +33,7 @@ arma::vec p_u_ztx_impl(
   // do the matrix-vector multiplication
   arma::vec ztx = zeros<vec>(V.n_rows);
 
+  #pragma omp parallel for
   for (int i = 0; i < V.n_rows; i++) {
     ztx(i) = dot(S.row(i), V.row(i));
   }

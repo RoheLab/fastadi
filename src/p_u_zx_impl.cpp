@@ -1,4 +1,6 @@
 #include <RcppArmadillo.h>
+#include <omp.h>
+// [[Rcpp::plugins(openmp)]]
 
 using namespace arma;
 
@@ -8,12 +10,16 @@ arma::vec p_u_zx_impl(
     const arma::mat& U,
     const arma::vec& d,
     const arma::mat& V,
-    const arma::vec& x) {
+    const arma::vec& x,
+    const int num_threads) {
 
   // just DVt at this point
   arma::mat W = diagmat(d) * V.t();
 
+  omp_set_num_threads(num_threads);
+
   // multiply columns by x to obtain W
+  #pragma omp parallel for
   for (int j = 0; j < W.n_cols; j++) {
     W.col(j) *= x(j);
   }
@@ -27,6 +33,7 @@ arma::vec p_u_zx_impl(
   // perform the cumulative summation from right to left
   // skip the rightmost two columns, which are already fine
   // and the leftmost column, which we will drop
+  #pragma omp parallel for
   for (int j = W.n_cols - 3; j > 0; j--) {
     W.col(j) += W.col(j + 1);
   }
@@ -37,6 +44,7 @@ arma::vec p_u_zx_impl(
   // do the matrix-vector multiplication
   arma::vec zx = zeros<vec>(U.n_rows);
 
+  #pragma omp parallel for
   for (int j = 0; j < U.n_rows; j++) {
     zx(j) = dot(U.row(j), W.col(j));
   }

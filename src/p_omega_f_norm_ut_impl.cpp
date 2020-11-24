@@ -1,4 +1,6 @@
 #include <RcppArmadillo.h>
+#include <omp.h>
+// [[Rcpp::plugins(openmp)]]
 
 using namespace arma;
 
@@ -9,7 +11,8 @@ double p_omega_f_norm_ut_impl(
     const arma::rowvec& d,
     const arma::mat& V,
     const arma::vec& row,
-    const arma::vec& col) {
+    const arma::vec& col,
+    const int num_threads) {
 
   // first add the observed elements on the lower triangle and diagonal
 
@@ -18,6 +21,9 @@ double p_omega_f_norm_ut_impl(
 
   arma::mat DVt = diagmat(d) * V.t();
 
+  omp_set_num_threads(num_threads);
+
+  #pragma omp parallel for
   for (int idx = 0; idx < row.n_elem; idx++) {
 
     i = row(idx);
@@ -38,6 +44,7 @@ double p_omega_f_norm_ut_impl(
   arma::vec U_lq;
   arma::rowvec V_lq, V_lq_tri;
 
+  #pragma omp parallel for
   for (int l = 0; l < r; l++) {
     for (int q = 0; q < r; q++) {
 

@@ -622,6 +622,21 @@ M' =
   \end{bmatrix}
 \end{align}
 
+Temporary scratch for presentation
+
+
+\begin{align}
+A = 
+ \begin{bmatrix}
+    0 & 0 & 1 & 1 & 0 \\
+    ? & 0 & 0 & 1 & 0 \\
+    ? & ? & 0 & 0 & 0 \\
+    ? & ? & ? & 0 & 1 \\
+    ? & ? & ? & ? & 0 \\
+    ? & ? & ? & ? & 0
+  \end{bmatrix}
+\end{align}
+
 And now we need to figure out how to calculate
 
 \begin{align}

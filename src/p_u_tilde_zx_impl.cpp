@@ -1,4 +1,6 @@
 #include <RcppArmadillo.h>
+#include <omp.h>
+// [[Rcpp::plugins(openmp)]]
 
 using namespace arma;
 
@@ -10,7 +12,8 @@ arma::vec p_u_tilde_zx_impl(
     const arma::mat& V,
     const arma::vec& row,
     const arma::vec& col,
-    const arma::vec& x) {
+    const arma::vec& x,
+    const int num_threads) {
 
   // first add the observed elements on the lower triangle
 
@@ -19,6 +22,9 @@ arma::vec p_u_tilde_zx_impl(
 
   arma::vec zx = zeros<vec>(U.n_rows);
 
+  omp_set_num_threads(num_threads);
+
+  #pragma omp parallel for
   for (int idx = 0; idx < row.n_elem; idx++) {
 
     i = row(idx);
