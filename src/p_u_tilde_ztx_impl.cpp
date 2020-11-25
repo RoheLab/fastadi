@@ -15,6 +15,8 @@ arma::vec p_u_tilde_ztx_impl(
     const arma::vec& x,
     const int num_threads) {
 
+  omp_set_num_threads(num_threads);
+
   // first add the observed elements on the lower triangle
 
   int i, j;
@@ -22,9 +24,6 @@ arma::vec p_u_tilde_ztx_impl(
 
   arma::vec ztx = zeros<vec>(V.n_rows);
 
-  omp_set_num_threads(num_threads);
-
-  #pragma omp parallel for
   for (int idx = 0; idx < row.n_elem; idx++) {
 
     i = row(idx);
@@ -32,7 +31,7 @@ arma::vec p_u_tilde_ztx_impl(
 
     // only elements of the lower triangle + diagonal!
     if (i >= j) {
-      z_ij = arma::accu(U.row(i) % d % V.row(j));
+      z_ij = accu(U.row(i) % d % V.row(j));
       ztx(j) += x(i) * z_ij;
     }
   }

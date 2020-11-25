@@ -15,19 +15,21 @@ double relative_f_norm_change_impl(
     const arma::mat& V,
     const int num_threads) {
 
+  omp_set_num_threads(num_threads);
+
   arma::mat new_DVt = diagmat(new_d) * new_V.t();
   arma::mat DVt = diagmat(d) * V.t();
-
-  arma::rowvec new_Z_i, Z_i, diff;
+  
   double diff_norm_sq = 0;
 
   // expand a single row of new_Z and Z at a time
   // to avoid hitting memory limits
-
-  omp_set_num_threads(num_threads);
-
-  #pragma omp parallel for
+  
+  // http://jakascorner.com/blog/2016/06/omp-data-sharing-attributes.html
+  #pragma omp parallel for reduction(+: diff_norm_sq)
   for (int i = 0; i < U.n_rows; i++) {
+
+    arma::rowvec new_Z_i, Z_i, diff;
 
     new_Z_i = new_U.row(i) * new_DVt;
     Z_i = U.row(i) * DVt;

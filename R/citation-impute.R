@@ -19,6 +19,8 @@
 #'
 #' # create a (binary) square sparse matrix to demonstrate on
 #'
+#' set.seed(887)
+#'
 #' n <- 100
 #' A <- rsparsematrix(n, n, 0.1, rand.x = NULL)
 #'

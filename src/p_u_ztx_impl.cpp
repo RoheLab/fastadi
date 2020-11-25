@@ -13,10 +13,10 @@ arma::vec p_u_ztx_impl(
     const arma::vec& x,
     const int num_threads) {
 
+  omp_set_num_threads(num_threads);
+
   // just UD at this point
   arma::mat S = U * diagmat(d);
-
-  omp_set_num_threads(num_threads);
 
   // multiply rows by x to obtain W
   #pragma omp parallel for
