@@ -49,7 +49,7 @@ LinkingTo:
     RcppArmadillo,
     RcppParallel
 Remotes: 
-    Yunyi/LRMF3
+    YunyiShen/LRMF3
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
