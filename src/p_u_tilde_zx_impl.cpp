@@ -12,7 +12,6 @@ arma::vec p_u_tilde_zx_impl(
     const arma::vec& x,
     const int num_threads) {
 
-  omp_set_num_threads(num_threads);
 
   // first add the observed elements on the lower triangle
 
