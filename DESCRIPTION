@@ -45,9 +45,10 @@ Suggests:
     testthat
 LinkingTo: 
     Rcpp,
-    RcppArmadillo
+    RcppArmadillo,
+    RcppParallel
 Remotes: 
-    RoheLab/LRMF3
+    Yunyi/LRMF3
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
