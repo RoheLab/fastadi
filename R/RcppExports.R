@@ -2,26 +2,26 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 p_omega_f_norm_ut_impl_cpp <- function(U, d, V, row, col) {
-    .Call('_fastadi_p_omega_f_norm_ut_impl_cpp', PACKAGE = 'fastadi', U, d, V, row, col)
+    .Call(`_fastadi_p_omega_f_norm_ut_impl_cpp`, U, d, V, row, col)
 }
 
 p_u_tilde_ztx_impl <- function(U, d, V, row, col, x, num_threads) {
-    .Call('_fastadi_p_u_tilde_ztx_impl', PACKAGE = 'fastadi', U, d, V, row, col, x, num_threads)
+    .Call(`_fastadi_p_u_tilde_ztx_impl`, U, d, V, row, col, x, num_threads)
 }
 
 p_u_tilde_zx_impl <- function(U, d, V, row, col, x, num_threads) {
-    .Call('_fastadi_p_u_tilde_zx_impl', PACKAGE = 'fastadi', U, d, V, row, col, x, num_threads)
+    .Call(`_fastadi_p_u_tilde_zx_impl`, U, d, V, row, col, x, num_threads)
 }
 
 p_u_ztx_impl_cpp <- function(U, d, V, x) {
-    .Call('_fastadi_p_u_ztx_impl_cpp', PACKAGE = 'fastadi', U, d, V, x)
+    .Call(`_fastadi_p_u_ztx_impl_cpp`, U, d, V, x)
 }
 
 p_u_zx_impl_cpp <- function(U, d, V, x) {
-    .Call('_fastadi_p_u_zx_impl_cpp', PACKAGE = 'fastadi', U, d, V, x)
+    .Call(`_fastadi_p_u_zx_impl_cpp`, U, d, V, x)
 }
 
 relative_f_norm_change_impl_cpp <- function(new_U, new_d, new_V, U, d, V) {
-    .Call('_fastadi_relative_f_norm_change_impl_cpp', PACKAGE = 'fastadi', new_U, new_d, new_V, U, d, V)
+    .Call(`_fastadi_relative_f_norm_change_impl_cpp`, new_U, new_d, new_V, U, d, V)
 }
 

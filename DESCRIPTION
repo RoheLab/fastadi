@@ -37,6 +37,7 @@ Imports:
     logger,
     methods,
     Rcpp,
+    RcppParallel,
     RSpectra
 Suggests: 
     covr,
