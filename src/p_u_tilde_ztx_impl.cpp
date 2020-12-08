@@ -1,6 +1,4 @@
 #include <RcppArmadillo.h>
-#include <omp.h>
-// [[Rcpp::plugins(openmp)]]
 
 using namespace arma;
 
