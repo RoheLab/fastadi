@@ -16,7 +16,11 @@ Authors@R:
              role = "aut"),
       person(given = "Karl",
              family = "Rohe",
-             role = "aut"))
+             role = "aut"),
+      person(given = "Yunyi",
+             family = "Shen",
+             role = "ctb")     
+             )
 Description: Implements the AdaptiveImpute matrix completion
     algorithm of 'Intelligent Initialization and Adaptive Thresholding for
     Iterative Matrix Completion',
