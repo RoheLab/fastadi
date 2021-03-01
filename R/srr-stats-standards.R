@@ -71,12 +71,6 @@
 #'
 #' @srrstatsTODO {G5.9b} *Running under different random seeds or initial conditions does not meaningfully change results*
 #'
-#' @noRd
-#'
-NULL
-
-
-#'
 #' @srrstats {UL1.0} *Unsupervised Learning Software should explicitly document expected format (types or classes) for input data, including descriptions of types or classes which are not accepted; for example, specification that software accepts only numeric inputs in `vector` or `matrix` form, or that all inputs must be in `data.frame` form with both column and row names.*
 #'
 #' @srrstats {UL1.1} *Unsupervised Learning Software should provide distinct sub-routines to assert that all input data is of the expected form, and issue informative error messages when incompatible data are submitted.*
@@ -97,11 +91,7 @@ NULL
 #'
 #' @srrstats {UL1.6b} *Examples or other documentation should not use `scale()` or equivalent transformations without explaining why scale is applied, and explicitly illustrating and contrasting the consequences of not applying such transformations.*
 #'
-#' @srrstatsNA {UL2.0} *Routines likely to give unreliable or irreproducible results in response to violations of assumptions regarding input data (see UL1.6) should implement pre-processing steps to diagnose potential violations, and issue appropriately informative messages, and/or include parameters to enable suitable transformations to be applied (such as the `center` and `scale.` parameters of the [`stats::prcomp()`](https://stat.ethz.ch/R-manual/R-patched/library/stats/html/prcomp.html) function).*
-#'
-#' @srrstatsNA {UL2.1} *Unsupervised Learning Software should document any transformations applied to input data, for example conversion of label-values to `factor`, and should provide ways to explicitly avoid any default transformations (with error or warning conditions where appropriate).*
-#'
-#' @srrstatsNA {UL2.2} *For Unsupervised Learning Software which accepts missing values in input data, functions should implement explicit parameters controlling the processing of missing values, ideally distinguishing `NA` or `NaN` values from `Inf` values (for example, through use of `na.omit()` and related functions from the `stats` package).*
+
 #'
 #' @srrstatsTODO {UL2.3} *Unsupervised Learning Software should implement pre-processing routines to identify whether aspects of input data are perfectly collinear.*
 #'
@@ -121,31 +111,11 @@ NULL
 #'
 #' @srrstatsTODO {UL4.2} *The return object from Unsupervised Learning Software should include, or otherwise enable immediate extraction of, all parameters used to control the algorithm used.*
 #'
-#' @srrstatsTODO {UL4.2} *Model objects returned by Unsupervised Learning Software should implement or appropriately extend a default `print` method which provides an on-screen summary of model (input) parameters and methods used to generate results. The `print` method may also summarise statistical aspects of the output data or results.*
+#' @srrstats {UL4.2} *Model objects returned by Unsupervised Learning Software should implement or appropriately extend a default `print` method which provides an on-screen summary of model (input) parameters and methods used to generate results. The `print` method may also summarise statistical aspects of the output data or results.*
 #'
 #' @srrstatsTODO {UL4.2a} *The default `print` method should always ensure only a restricted number of rows of any result matrices or equivalent are printed to the screen.*
 #'
-#' @srrstatsTODO {UL4.3} *Unsupervised Learning Software should also implement `summary` methods for model objects which should summarise the primary statistics used in generating the model (such as numbers of observations, parameters of methods applied). The `summary` method may also provide summary statistics from the resultant model.*
-#'
-#' @srrstatsTODO {UL6.0} *Objects returned by Unsupervised Learning Software should have default `plot` methods, either through explicit implementation, extension of methods for existing model objects, through ensuring default methods work appropriately, or through explicit reference to helper packages such as [`factoextra`](https://github.com/kassambara/factoextra) and associated functions.*
-#'
-#' @srrstatsTODO {UL6.1} *Where the default `plot` method is **NOT** a generic `plot` method dispatched on the class of return objects (that is, through a `plot.<myclass>` function), that method dispatch should nevertheless exist in order to explicitly direct users to the appropriate function.*
-#'
-#' @srrstatsTODO {UL6.2} *Where default plot methods include labelling components of return objects (such as cluster labels), routines should ensure that labels are automatically placed to ensure readability, and/or that appropriate diagnostic messages are issued where readability is likely to be compromised (for example, through attempting to place too many labels).*
-#'
-#' @srrstatsTODO {UL7.0} *Inappropriate types of input data are rejected with expected error messages.*
-#'
-#' @srrstatsTODO {UL7.1} *Tests should demonstrate that violations of assumed input properties yield unreliable or invalid outputs, and should clarify how such unreliability or invalidity is manifest through the properties of returned objects.*
-#'
-#' @srrstatsTODO {UL7.2} *Demonstrate that labels placed on output data follow decreasing group sizes (**UL3.1**)*
-#'
-#' @srrstatsTODO {UL7.3} *Demonstrate that labels on input data are propagated to, or may be recovered from, output data (see **UL3.3**).*
-#'
-#' @srrstatsTODO {UL7.4} *Demonstrate that submission of new data to a previously fitted model can generate results more efficiently than initial model fitting.*
-#'
-#' @srrstatsTODO {UL7.5} *Batch processing routines should be explicitly tested, commonly via extended tests (see **G4.10**--**G4.12**).*
-#'
-#' @srrstatsTODO {UL7.5a} *Tests of batch processing routines should demonstrate that equivalent results are obtained from direct (non-batch) processing.*
+#' @srrstats {UL7.0} *Inappropriate types of input data are rejected with expected error messages.*
 #'
 #' @noRd
 NULL
@@ -214,6 +184,40 @@ NULL
 #' @srrstatsNA {G5.11a} *When any downloads of additional data necessary for extended tests fail, the tests themselves should not fail, rather be skipped and implicitly succeed with an appropriate diagnostic message.*
 #'
 #' @srrstatsNA {G5.12} *Any conditions necessary to run extended tests such as platform requirements, memory, expected runtime, and artefacts produced that may need manual inspection, should be described in developer documentation such as a `CONTRIBUTING.md` or `tests/README.md` file.*
+#'
+#' @srrstatsNA {UL2.0} *Routines likely to give unreliable or irreproducible results in response to violations of assumptions regarding input data (see UL1.6) should implement pre-processing steps to diagnose potential violations, and issue appropriately informative messages, and/or include parameters to enable suitable transformations to be applied (such as the `center` and `scale.` parameters of the [`stats::prcomp()`](https://stat.ethz.ch/R-manual/R-patched/library/stats/html/prcomp.html) function).*
+#'
+#' @srrstatsNA {UL2.1} *Unsupervised Learning Software should document any transformations applied to input data, for example conversion of label-values to `factor`, and should provide ways to explicitly avoid any default transformations (with error or warning conditions where appropriate).*
+#'
+#' @srrstatsNA {UL2.2} *For Unsupervised Learning Software which accepts missing values in input data, functions should implement explicit parameters controlling the processing of missing values, ideally distinguishing `NA` or `NaN` values from `Inf` values (for example, through use of `na.omit()` and related functions from the `stats` package).*
+#'
+#' @srrstatsNA {UL1.6a} *Software which responds qualitatively differently to input data which has components on markedly different scales should explicitly document such differences, and implications of submitting such data.*
+#'
+#' @srrstatsNA {UL3.3} *Unsupervised Learning Software for which input data does not generally include labels (such as `array`-like data with no row names) should provide an additional parameter to enable cases to be labelled.*
+#'
+#' @srrstatsNA {UL3.5} *Objects returned from Unsupervised Learning Software which labels, categorise, or partitions data into discrete groups should include, or provide immediate access to, quantitative information on intra-group variances or equivalent, as well as on inter-group relationships where applicable.*
+#'
+#' @srrstatsNA {UL4.1} *Unsupervised Learning Software may enable an ability to generate a model object without actually fitting values. This may be useful for controlling batch processing of computationally intensive fitting algorithms.*
+#'
+#' @srrstatsNA {UL4.3} *Unsupervised Learning Software should also implement `summary` methods for model objects which should summarise the primary statistics used in generating the model (such as numbers of observations, parameters of methods applied). The `summary` method may also provide summary statistics from the resultant model.* No. I don't like this.
+#'
+#' @srrstatsNA {UL6.0} *Objects returned by Unsupervised Learning Software should have default `plot` methods, either through explicit implementation, extension of methods for existing model objects, through ensuring default methods work appropriately, or through explicit reference to helper packages such as [`factoextra`](https://github.com/kassambara/factoextra) and associated functions.*
+#'
+#' @srrstatsNA {UL6.1} *Where the default `plot` method is **NOT** a generic `plot` method dispatched on the class of return objects (that is, through a `plot.<myclass>` function), that method dispatch should nevertheless exist in order to explicitly direct users to the appropriate function.*
+#'
+#' @srrstatsNA {UL6.2} *Where default plot methods include labelling components of return objects (such as cluster labels), routines should ensure that labels are automatically placed to ensure readability, and/or that appropriate diagnostic messages are issued where readability is likely to be compromised (for example, through attempting to place too many labels).*
+#'
+#' @srrstatsTODO {UL7.1} *Tests should demonstrate that violations of assumed input properties yield unreliable or invalid outputs, and should clarify how such unreliability or invalidity is manifest through the properties of returned objects.* LOL this will be really hard.
+#'
+#' @srrstatsNA {UL7.2} *Demonstrate that labels placed on output data follow decreasing group sizes (**UL3.1**)*
+#'
+#' @srrstatsNA {UL7.3} *Demonstrate that labels on input data are propagated to, or may be recovered from, output data (see **UL3.3**).*
+#'
+#' @srrstatsNA {UL7.4} *Demonstrate that submission of new data to a previously fitted model can generate results more efficiently than initial model fitting.*
+#'
+#' @srrstatsNA {UL7.5} *Batch processing routines should be explicitly tested, commonly via extended tests (see **G4.10**--**G4.12**).*
+#'
+#' @srrstatsNA {UL7.5a} *Tests of batch processing routines should demonstrate that equivalent results are obtained from direct (non-batch) processing.*
 #'
 #' Any non-applicable standards can have their tags changed from `@srrstatsTODO`
 #' to `@srrstatsNA`, and placed together in this block, along with explanations
