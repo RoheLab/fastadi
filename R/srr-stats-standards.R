@@ -9,6 +9,14 @@
 #'
 #' @srrstatsVerbose TRUE
 #'
+#' @srrstats {G1.3} *Software should use [`roxygen2`](https://roxygen2.r-lib.org/) to document all functions.*
+#'
+#' @srrstats {G2.0} *Implement assertions on lengths of inputs, particularly through asserting that inputs expected to be single- or multi-valued are indeed so.*
+#'
+#' @srrstats {G2.1a} *Provide explicit secondary documentation of expectations on data types of all vector inputs.*
+#'
+#' @srrstats {G2.3a} *Use `match.arg()` or equivalent where applicable to only permit expected values.*
+#'
 #' @srrstatsTODO {G1.1} *Statistical Software should document whether the algorithm(s) it implements are:* - *The first implementation of a novel algorithm*; or - *The first implementation within **R** of an algorithm which has previously been implemented in other languages or contexts*; or - *An improvement on other implementations of similar algorithms in **R***.
 #'
 #' @srrstatsTODO {G1.2} *All statistical terminology should be clarified and unambiguously defined.*
@@ -87,11 +95,8 @@
 #'
 #' @srrstatsTODO {UL1.6} *Unsupervised Learning Software should document any assumptions made with regard to input data; for example assumptions about distributional forms or locations (such as that data are centred or on approximately equivalent distributional scales). Implications of violations of these assumptions should be both documented and tested, in particular:*
 #'
-#' @srrstatsNA {UL1.6a} *Software which responds qualitatively differently to input data which has components on markedly different scales should explicitly document such differences, and implications of submitting such data.*
 #'
 #' @srrstats {UL1.6b} *Examples or other documentation should not use `scale()` or equivalent transformations without explaining why scale is applied, and explicitly illustrating and contrasting the consequences of not applying such transformations.*
-#'
-
 #'
 #' @srrstatsTODO {UL2.3} *Unsupervised Learning Software should implement pre-processing routines to identify whether aspects of input data are perfectly collinear.*
 #'
@@ -99,15 +104,9 @@
 #'
 #' @srrstatsTODO {UL3.2} *Dimensionality reduction or equivalent algorithms which label dimensions should ensure that that sequences of labels follows decreasing "importance" (for example, eigenvalues or variance contributions).*
 #'
-#' @srrstatsNA {UL3.3} *Unsupervised Learning Software for which input data does not generally include labels (such as `array`-like data with no row names) should provide an additional parameter to enable cases to be labelled.*
-#'
 #' @srrstats {UL3.4} *Where applicable, Unsupervised Learning Software should implement routines to predict the properties (such as numerical ordinates, or cluster memberships) of additional new data without re-running the entire algorithm.*
 #'
-#' @srrstatsNA {UL3.5} *Objects returned from Unsupervised Learning Software which labels, categorise, or partitions data into discrete groups should include, or provide immediate access to, quantitative information on intra-group variances or equivalent, as well as on inter-group relationships where applicable.*
-#'
 #' @srrstats {UL4.0} *Unsupervised Learning Software should return some form of "model" object, generally through using or modifying existing class structures for model objects, or creating a new class of model objects.*
-#'
-#' @srrstatsNA {UL4.1} *Unsupervised Learning Software may enable an ability to generate a model object without actually fitting values. This may be useful for controlling batch processing of computationally intensive fitting algorithms.*
 #'
 #' @srrstatsTODO {UL4.2} *The return object from Unsupervised Learning Software should include, or otherwise enable immediate extraction of, all parameters used to control the algorithm used.*
 #'
@@ -120,20 +119,13 @@
 #' @noRd
 NULL
 
-#' General standards
-#'
-#' @srrstats {G1.3} *Software should use [`roxygen2`](https://roxygen2.r-lib.org/) to document all functions.*
-#'
-#' @srrstats {G2.0} *Implement assertions on lengths of inputs, particularly through asserting that inputs expected to be single- or multi-valued are indeed so.*
-#'
-#' @srrstats {G2.1a} *Provide explicit secondary documentation of expectations on data types of all vector inputs.*
-#'
-#' @srrstats {G2.3a} *Use `match.arg()` or equivalent where applicable to only permit expected values.*
-#'
-#' @noRd
-NULL
-
 #' NA_standards
+#'
+#' @srrstatsNA {UL3.3} *Unsupervised Learning Software for which input data does not generally include labels (such as `array`-like data with no row names) should provide an additional parameter to enable cases to be labelled.*
+#'
+#' @srrstatsNA {UL4.1} *Unsupervised Learning Software may enable an ability to generate a model object without actually fitting values. This may be useful for controlling batch processing of computationally intensive fitting algorithms.*
+#'
+#' @srrstatsNA {UL1.6a} *Software which responds qualitatively differently to input data which has components on markedly different scales should explicitly document such differences, and implications of submitting such data.*
 #'
 #' @srrstatsNA {G1.4} *Software should include all code necessary to reproduce results which form the basis of performance claims made in associated publications.* This is not the appropriate place for that code. The paper has it's own standalone repo.
 #'
