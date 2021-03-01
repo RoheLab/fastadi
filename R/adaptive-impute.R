@@ -56,6 +56,20 @@
 #'
 #' @export
 #'
+#' @srrstats {G1.0} *Statistical Software should list at least one primary reference from published academic literature.*
+#'
+#' @references
+#'
+#' 1. Cho, J., Kim, D. & Rohe, K. Asymptotic Theory for Estimating the Singular
+#'   Vectors and Values of a Partially-observed Low Rank Matrix with Noise.
+#'   arXiv:1508.05431 [stat] (2015). <http://arxiv.org/abs/1508.05431>
+#'
+#' 2. Cho, J., Kim, D. & Rohe, K. Intelligent Initialization and Adaptive
+#'   Thresholding for Iterative Matrix Completion; Some Statistical and
+#'   Algorithmic Theory for Adaptive-Impute. Journal of Computational
+#'   and Graphical Statistics 1–26 (2018) doi:10.1080/10618600.2018.1518238.
+#'   <https://amstat.tandfonline.com/doi/abs/10.1080/10618600.2018.1518238>
+#'
 #' @examples
 #'
 #' ### SVD initialization (default) --------------------------------------------
