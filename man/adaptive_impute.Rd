@@ -136,3 +136,15 @@ R3 <- resid(mf3, ml100k)
 norm(R3, type = "F") / nnzero(ml100k)
 
 }
+\references{
+\enumerate{
+\item Cho, J., Kim, D. & Rohe, K. Asymptotic Theory for Estimating the Singular
+Vectors and Values of a Partially-observed Low Rank Matrix with Noise.
+arXiv:1508.05431 \link{stat} (2015). \url{http://arxiv.org/abs/1508.05431}
+\item Cho, J., Kim, D. & Rohe, K. Intelligent Initialization and Adaptive
+Thresholding for Iterative Matrix Completion; Some Statistical and
+Algorithmic Theory for Adaptive-Impute. Journal of Computational
+and Graphical Statistics 1–26 (2018) doi:10.1080/10618600.2018.1518238.
+\url{https://amstat.tandfonline.com/doi/abs/10.1080/10618600.2018.1518238}
+}
+}
