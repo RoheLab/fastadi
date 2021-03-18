@@ -1,0 +1,849 @@
+
+@article{wang_dont_2016,
+	title = {Don't mind the (eigen) gap},
+	url = {http://www.stat.cmu.edu/~jiashun/Research/Selected/SCC-disc3.pdf},
+	language = {en},
+	author = {Wang, Song and Rohe, Karl},
+	year = {2016},
+	pages = {7},
+	file = {Wang and Rohe - Don't mind the (eigen) gap.pdf:C\:\\Users\\alex\\Zotero\\storage\\H3RSHLRF\\Wang and Rohe - Don't mind the (eigen) gap.pdf:application/pdf}
+}
+
+@article{cho_intelligent_2018,
+	title = {Intelligent {Initialization} and {Adaptive} {Thresholding} for {Iterative} {Matrix} {Completion}; {Some} {Statistical} and {Algorithmic} {Theory} for {Adaptive}-{Impute}},
+	issn = {1061-8600, 1537-2715},
+	url = {https://www.tandfonline.com/doi/full/10.1080/10618600.2018.1518238},
+	doi = {10.1080/10618600.2018.1518238},
+	abstract = {Over the past decade, various matrix completion algorithms have been developed. Thresholded singular value decomposition (SVD) is a popular technique in implementing many of them. A sizable number of studies have shown its theoretical and empirical excellence, but choosing the right threshold level still remains as a key empirical diﬃculty. This paper proposes a novel matrix completion algorithm which iterates thresholded SVD with theoretically-justiﬁed and data-dependent values of thresholding parameters. The estimate of the proposed algorithm enjoys the ∗This research is supported by NSF grant DMS-1309998 and ARO grant W911NF-15-1-0423.},
+	language = {en},
+	urldate = {2018-12-10},
+	journal = {Journal of Computational and Graphical Statistics},
+	author = {Cho, Juhee and Kim, Donggyu and Rohe, Karl},
+	month = sep,
+	year = {2018},
+	pages = {1--26},
+	file = {Cho et al. - 2018 - Intelligent Initialization and Adaptive Thresholdi.pdf:C\:\\Users\\alex\\Zotero\\storage\\3936LKKS\\Cho et al. - 2018 - Intelligent Initialization and Adaptive Thresholdi.pdf:application/pdf}
+}
+
+@article{zhang_understanding_2018,
+	title = {Understanding {Regularized} {Spectral} {Clustering} via {Graph} {Conductance}},
+	url = {http://arxiv.org/abs/1806.01468},
+	abstract = {This paper uses the relationship between graph conductance and spectral clustering to study (i) the failures of spectral clustering and (ii) the beneﬁts of regularization. The explanation is simple. Sparse and stochastic graphs create a lot of small trees that are connected to the core of the graph by only one edge. Graph conductance is sensitive to these noisy “dangling sets”. Spectral clustering inherits this sensitivity. The second part of the paper starts from a previously proposed form of regularized spectral clustering and shows that it is related to the graph conductance on a “regularized graph”. We call the conductance on the regularized graph CoreCut. Based upon previous arguments that relate graph conductance to spectral clustering (e.g. Cheeger inequality), minimizing CoreCut relaxes to regularized spectral clustering. Simple inspection of CoreCut reveals why it is less sensitive to small cuts in the graph.},
+	language = {en},
+	urldate = {2019-02-06},
+	journal = {arXiv:1806.01468 [cs, stat]},
+	author = {Zhang, Yilin and Rohe, Karl},
+	month = jun,
+	year = {2018},
+	note = {arXiv: 1806.01468},
+	keywords = {Computer Science - Machine Learning, Statistics - Machine Learning},
+	annote = {Comment: 14 pages, 8 figures},
+	file = {Zhang and Rohe - 2018 - Understanding Regularized Spectral Clustering via .pdf:C\:\\Users\\alex\\Zotero\\storage\\NINSF6NF\\Zhang and Rohe - 2018 - Understanding Regularized Spectral Clustering via .pdf:application/pdf}
+}
+
+@article{maechler_2nd_2006,
+	title = {2nd {Introduction} to the {Matrix} package},
+	url = {https://cran.r-project.org/web/packages/Matrix/vignettes/Intro2Matrix.pdf},
+	abstract = {Linear algebra is at the core of many areas of statistical computing and from its inception the S language has supported numerical linear algebra via a matrix data type and several functions and operators, such as \%*\%, qr, chol, and solve. However, these data types and functions do not provide direct access to all of the facilities for eﬃcient manipulation of dense matrices, as provided by the Lapack subroutines, and they do not provide for manipulation of sparse matrices.},
+	urldate = {2019-05-15},
+	author = {Maechler, Martin and Bates, Douglas},
+	year = {2006},
+	file = {Maechler and Bates - 2nd Introduction to the Matrix package.pdf:C\:\\Users\\alex\\Zotero\\storage\\C5GQGHLI\\Maechler and Bates - 2nd Introduction to the Matrix package.pdf:application/pdf}
+}
+
+@article{bates_introduction_2005,
+	title = {Introduction to the {Matrix} package},
+	url = {https://cran.r-project.org/web/packages/Matrix/vignettes/Introduction.pdf},
+	abstract = {Linear algebra is at the core of many areas of statistical computing and from its inception the S language has supported numerical linear algebra via a matrix data type and several functions and operators, such as \%*\%, qr, chol, and solve. However, these data types and functions do not provide direct access to all of the facilities for eﬃcient manipulation of dense matrices, as provided by the Lapack subroutines, and they do not provide for manipulation of sparse matrices.},
+	language = {en},
+	urldate = {2019-05-15},
+	author = {Bates, Douglas},
+	year = {2005},
+	file = {Bates - 2005 - Introduction to the Matrix package.pdf:C\:\\Users\\alex\\Zotero\\storage\\TTSG6YLB\\Bates - 2005 - Introduction to the Matrix package.pdf:application/pdf}
+}
+
+@article{mazumder_spectral_2010,
+	title = {Spectral {Regularization} {Algorithms} for {Learning} {Large} {Incomplete} {Matrices}},
+	url = {https://web.stanford.edu/~hastie/Papers/mazumder10a.pdf},
+	abstract = {We use convex relaxation techniques to provide a sequence of regularized low-rank solutions for large-scale matrix completion problems. Using the nuclear norm as a regularizer, we provide a simple and very efﬁcient convex algorithm for minimizing the reconstruction error subject to a bound on the nuclear norm. Our algorithm SOFT-IMPUTE iteratively replaces the missing elements with those obtained from a soft-thresholded SVD. With warm starts this allows us to efﬁciently compute an entire regularization path of solutions on a grid of values of the regularization parameter. The computationally intensive part of our algorithm is in computing a low-rank SVD of a dense matrix. Exploiting the problem structure, we show that the task can be performed with a complexity of order linear in the matrix dimensions. Our semideﬁnite-programming algorithm is readily scalable to large matrices; for example SOFT-IMPUTE takes a few hours to compute low-rank approximations of a 106 × 106 incomplete matrix with 107 observed entries, and ﬁts a rank-95 approximation to the full Netﬂix training set in 3.3 hours. Our methods achieve good training and test errors and exhibit superior timings when compared to other competitive state-of-the-art techniques.},
+	language = {en},
+	author = {Mazumder, Rahul and Hastie, Trevor and Tibshirani, Robert},
+	year = {2010},
+	file = {Mazumder et al. - 2010 - Spectral Regularization Algorithms for Learning La.pdf:C\:\\Users\\alex\\Zotero\\storage\\QMXUWKEE\\Mazumder et al. - 2010 - Spectral Regularization Algorithms for Learning La.pdf:application/pdf}
+}
+
+@article{bro_resolving_2007,
+	title = {Resolving the {Sign} {Ambiguity} in the {Singular} {Value} {Decomposition}},
+	abstract = {Many modem data analysis methods involve computing a matrix singular value decomposition (SVD) or eigenvalue decomposition (EVD). Principal components analysis is the time-honored example, but more recent applications include latent semantic indexing, hypertext induced topic selection (HITS), clustering, classification, etc. Though the SVD and EVD are well-established and can be computed via state-of-the-art algorithms, it is not commonly mentioned that there is an intrinsic sign indeterminacy that can significantly impact the conclusions and interpretations drawn from their results. Here we provide a solution to the sign ambiguity problem and show how it leads to more sensible solutions.},
+	language = {en},
+	author = {Bro, Rasmus and Acar, Evrim and Kolda, Tamara G.},
+	year = {2007},
+	pages = {18},
+	file = {Bro et al. - 2007 - Resolving the Sign Ambiguity in the Singular Value.pdf:C\:\\Users\\alex\\Zotero\\storage\\97QLQJL3\\Bro et al. - 2007 - Resolving the Sign Ambiguity in the Singular Value.pdf:application/pdf}
+}
+
+@article{cho_asymptotic_2015,
+	title = {Asymptotic {Theory} for {Estimating} the {Singular} {Vectors} and {Values} of a {Partially}-observed {Low} {Rank} {Matrix} with {Noise}},
+	url = {http://arxiv.org/abs/1508.05431},
+	abstract = {Matrix completion algorithms recover a low rank matrix from a small fraction of the entries, each entry contaminated with additive errors. In practice, the singular vectors and singular values of the low rank matrix play a pivotal role for statistical analyses and inferences. This paper proposes estimators of these quantities and studies their asymptotic behavior. Under the setting where the dimensions of the matrix increase to inﬁnity and the probability of observing each entry is identical, Theorem 1 gives the rate of convergence for the estimated singular vectors; Theorem 3 gives a multivariate central limit theorem for the estimated singular values. Even though the estimators use only a partially observed matrix, they achieve the same rates of convergence as the fully observed case. These estimators combine to form a consistent estimator of the full low rank matrix that is computed with a non-iterative algorithm. In the cases studied in this paper, this estimator achieves the minimax lower bound in Koltchinskii et al. (2011a). The numerical experiments corroborate our theoretical results.},
+	language = {en},
+	urldate = {2019-05-10},
+	journal = {arXiv:1508.05431 [stat]},
+	author = {Cho, Juhee and Kim, Donggyu and Rohe, Karl},
+	month = aug,
+	year = {2015},
+	note = {arXiv: 1508.05431},
+	keywords = {Statistics - Methodology},
+	file = {Cho et al. - 2015 - Asymptotic Theory for Estimating the Singular Vect.pdf:C\:\\Users\\alex\\Zotero\\storage\\YCBQPX7P\\Cho et al. - 2015 - Asymptotic Theory for Estimating the Singular Vect.pdf:application/pdf}
+}
+
+@article{airoldi_mixed_2008,
+	title = {Mixed {Membership} {Stochastic} {Blockmodels}},
+	url = {http://jmlr.csail.mit.edu/papers/volume9/airoldi08a/airoldi08a.pdf},
+	abstract = {Consider data consisting of pairwise measurements, such as presence or absence of links between pairs of objects. These data arise, for instance, in the analysis of protein interactions and gene regulatory networks, collections of author-recipient email, and social networks. Analyzing pairwise measurements with probabilistic models requires special assumptions, since the usual independence or exchangeability assumptions no longer hold. Here we introduce a class of variance allocation models for pairwise measurements: mixed membership stochastic blockmodels. These models combine global parameters that instantiate dense patches of connectivity (blockmodel) with local parameters that instantiate node-speciﬁc variability in the connections (mixed membership). We develop a general variational inference algorithm for fast approximate posterior inference. We demonstrate the advantages of mixed membership stochastic blockmodels with applications to social networks and protein interaction networks.},
+	language = {en},
+	author = {Airoldi, Edoardo M and Blei, David M and Fienberg, Stephen E and Xing, Eric P},
+	year = {2008},
+	pages = {34},
+	file = {Airoldi et al. - Mixed Membership Stochastic Blockmodels.pdf:C\:\\Users\\alex\\Zotero\\storage\\IEWP9NKB\\Airoldi et al. - Mixed Membership Stochastic Blockmodels.pdf:application/pdf}
+}
+
+@article{karrer_stochastic_2011,
+	title = {Stochastic blockmodels and community structure in networks},
+	volume = {83},
+	issn = {1539-3755, 1550-2376},
+	url = {http://arxiv.org/abs/1008.3926},
+	doi = {10.1103/PhysRevE.83.016107},
+	abstract = {Stochastic blockmodels have been proposed as a tool for detecting community structure in networks as well as for generating synthetic networks for use as benchmarks. Most blockmodels, however, ignore variation in vertex degree, making them unsuitable for applications to real-world networks, which typically display broad degree distributions that can significantly distort the results. Here we demonstrate how the generalization of blockmodels to incorporate this missing element leads to an improved objective function for community detection in complex networks. We also propose a heuristic algorithm for community detection using this objective function or its non-degree-corrected counterpart and show that the degree-corrected version dramatically outperforms the uncorrected one in both real-world and synthetic networks.},
+	language = {en},
+	number = {1},
+	urldate = {2019-07-01},
+	journal = {Physical Review E},
+	author = {Karrer, Brian and Newman, M. E. J.},
+	month = jan,
+	year = {2011},
+	note = {arXiv: 1008.3926},
+	keywords = {Computer Science - Social and Information Networks, Condensed Matter - Statistical Mechanics, Physics - Data Analysis, Statistics and Probability, Physics - Physics and Society},
+	pages = {016107},
+	annote = {Comment: 11 pages, 3 figures},
+	file = {Karrer and Newman - 2011 - Stochastic blockmodels and community structure in .pdf:C\:\\Users\\alex\\Zotero\\storage\\6NLCQCJZ\\Karrer and Newman - 2011 - Stochastic blockmodels and community structure in .pdf:application/pdf}
+}
+
+@article{latouche_overlapping_2011,
+	title = {Overlapping stochastic block models with application to the {French} political blogosphere},
+	volume = {5},
+	issn = {1932-6157},
+	url = {http://arxiv.org/abs/0910.2098},
+	doi = {10.1214/10-AOAS382},
+	abstract = {Complex systems in nature and in society are often represented as networks, describing the rich set of interactions between objects of interest. Many deterministic and probabilistic clustering methods have been developed to analyze such structures. Given a network, almost all of them partition the vertices into disjoint clusters, according to their connection profile. However, recent studies have shown that these techniques were too restrictive and that most of the existing networks contained overlapping clusters. To tackle this issue, we present in this paper the Overlapping Stochastic Block Model. Our approach allows the vertices to belong to multiple clusters, and, to some extent, generalizes the well-known Stochastic Block Model [Nowicki and Snijders (2001)]. We show that the model is generically identifiable within classes of equivalence and we propose an approximate inference procedure, based on global and local variational techniques. Using toy data sets as well as the French Political Blogosphere network and the transcriptional network of Saccharomyces cerevisiae, we compare our work with other approaches.},
+	language = {en},
+	number = {1},
+	urldate = {2019-07-01},
+	journal = {The Annals of Applied Statistics},
+	author = {Latouche, Pierre and Birmelé, Etienne and Ambroise, Christophe},
+	month = mar,
+	year = {2011},
+	note = {arXiv: 0910.2098},
+	keywords = {Statistics - Applications, Statistics - Methodology},
+	pages = {309--336},
+	annote = {Comment: Published in at http://dx.doi.org/10.1214/10-AOAS382 the Annals of Applied Statistics (http://www.imstat.org/aoas/) by the Institute of Mathematical Statistics (http://www.imstat.org)},
+	file = {Latouche et al. - 2011 - Overlapping stochastic block models with applicati.pdf:C\:\\Users\\alex\\Zotero\\storage\\K3DPEYC8\\Latouche et al. - 2011 - Overlapping stochastic block models with applicati.pdf:application/pdf}
+}
+
+@article{rohe_co-clustering_2016,
+	title = {Co-clustering directed graphs to discover asymmetries and directional communities},
+	volume = {113},
+	issn = {0027-8424, 1091-6490},
+	url = {http://www.pnas.org/lookup/doi/10.1073/pnas.1525793113},
+	doi = {10.1073/pnas.1525793113},
+	language = {en},
+	number = {45},
+	urldate = {2019-07-01},
+	journal = {Proceedings of the National Academy of Sciences},
+	author = {Rohe, Karl and Qin, Tai and Yu, Bin},
+	month = nov,
+	year = {2016},
+	pages = {12679--12684},
+	file = {Rohe et al. - 2016 - Co-clustering directed graphs to discover asymmetr.pdf:C\:\\Users\\alex\\Zotero\\storage\\XBGL47JH\\Rohe et al. - 2016 - Co-clustering directed graphs to discover asymmetr.pdf:application/pdf}
+}
+
+@article{chaudhuri_spectral_2012,
+	title = {Spectral {Clustering} of {Graphs} with {General} {Degrees} in the {Extended} {Planted} {Partition} {Model}},
+	url = {https://pdfs.semanticscholar.org/5ff3/9b3b89414c7f2305d2d5e2301404678bb067.pdf},
+	abstract = {In this paper, we examine a spectral clustering algorithm for similarity graphs drawn from a simple random graph model, where nodes are allowed to have varying degrees, and we provide theoretical bounds on its performance. The random graph model we study is the Extended Planted Partition (EPP) model, a variant of the classical planted partition model.},
+	language = {en},
+	author = {Chaudhuri, Kamalika and Chung, Fan and Tsiatas, Alexander},
+	year = {2012},
+	pages = {23},
+	file = {Chaudhuri et al. - Spectral Clustering of Graphs with General Degrees.pdf:C\:\\Users\\alex\\Zotero\\storage\\XU4PX6CJ\\Chaudhuri et al. - Spectral Clustering of Graphs with General Degrees.pdf:application/pdf}
+}
+
+@article{li_prediction_2019,
+	title = {Prediction models for network-linked data},
+	volume = {13},
+	issn = {1932-6157},
+	url = {https://projecteuclid.org/euclid.aoas/1554861644},
+	doi = {10.1214/18-AOAS1205},
+	language = {en},
+	number = {1},
+	urldate = {2019-07-30},
+	journal = {The Annals of Applied Statistics},
+	author = {Li, Tianxi and Levina, Elizaveta and Zhu, Ji},
+	month = mar,
+	year = {2019},
+	pages = {132--164},
+	file = {Li et al. - 2019 - Prediction models for network-linked data.pdf:C\:\\Users\\alex\\Zotero\\storage\\NTHMK8Y7\\Li et al. - 2019 - Prediction models for network-linked data.pdf:application/pdf}
+}
+
+@article{katsevich_multilayer_2019,
+	title = {Multilayer knockoff filter: {Controlled} variable selection at multiple resolutions},
+	volume = {13},
+	issn = {1932-6157},
+	shorttitle = {Multilayer knockoff filter},
+	url = {https://projecteuclid.org/euclid.aoas/1554861639},
+	doi = {10.1214/18-AOAS1185},
+	language = {en},
+	number = {1},
+	urldate = {2019-07-30},
+	journal = {The Annals of Applied Statistics},
+	author = {Katsevich, Eugene and Sabatti, Chiara},
+	month = mar,
+	year = {2019},
+	pages = {1--33},
+	file = {Katsevich and Sabatti - 2019 - Multilayer knockoff filter Controlled variable se.pdf:C\:\\Users\\alex\\Zotero\\storage\\27Y2UBBH\\Katsevich and Sabatti - 2019 - Multilayer knockoff filter Controlled variable se.pdf:application/pdf}
+}
+
+@article{dobra_modeling_2019,
+	title = {Modeling association in microbial communities with clique loglinear models},
+	volume = {13},
+	issn = {1932-6157},
+	url = {https://projecteuclid.org/euclid.aoas/1560758433},
+	doi = {10.1214/18-AOAS1229},
+	language = {en},
+	number = {2},
+	urldate = {2019-07-30},
+	journal = {The Annals of Applied Statistics},
+	author = {Dobra, Adrian and Valdes, Camilo and Ajdic, Dragana and Clarke, Bertrand and Clarke, Jennifer},
+	month = jun,
+	year = {2019},
+	pages = {931--957},
+	file = {Dobra et al. - 2019 - Modeling association in microbial communities with.pdf:C\:\\Users\\alex\\Zotero\\storage\\24ZUNW67\\Dobra et al. - 2019 - Modeling association in microbial communities with.pdf:application/pdf}
+}
+
+@article{bohning_identity_2019,
+	title = {The identity of the zero-truncated, one-inflated likelihood and the zero-one-truncated likelihood for general count densities with an application to drink-driving in {Britain}},
+	volume = {13},
+	issn = {1932-6157},
+	url = {https://projecteuclid.org/euclid.aoas/1560758443},
+	doi = {10.1214/18-AOAS1232},
+	language = {en},
+	number = {2},
+	urldate = {2019-07-30},
+	journal = {The Annals of Applied Statistics},
+	author = {Böhning, Dankmar and van der Heijden, Peter G. M.},
+	month = jun,
+	year = {2019},
+	pages = {1198--1211},
+	file = {Böhning and van der Heijden - 2019 - The identity of the zero-truncated, one-inflated l.pdf:C\:\\Users\\alex\\Zotero\\storage\\NU5CTH8N\\Böhning and van der Heijden - 2019 - The identity of the zero-truncated, one-inflated l.pdf:application/pdf}
+}
+
+@article{joseph_impact_2013,
+	title = {Impact of regularization on {Spectral} {Clustering}},
+	url = {http://arxiv.org/abs/1312.1733},
+	abstract = {The performance of spectral clustering can be considerably improved via regularization, as demonstrated empirically in Amini et al. [2]. Here, we provide an attempt at quantifying this improvement through theoretical analysis. Under the stochastic block model (SBM), and its extensions, previous results on spectral clustering relied on the minimum degree of the graph being suﬃciently large for its good performance. By examining the scenario where the regularization parameter τ is large we show that the minimum degree assumption can potentially be removed. As a special case, for an SBM with two blocks, the results require the maximum degree to be large (grow faster than log n) as opposed to the minimum degree. More importantly, we show the usefulness of regularization in situations where not all nodes belong to well-deﬁned clusters. Our results rely on a ‘bias-variance’-like trade-oﬀ that arises from understanding the concentration of the sample Laplacian and the eigen gap as a function of the regularization parameter. As a byproduct of our bounds, we propose a data-driven technique DKest (standing for estimated DavisKahan bounds) for choosing the regularization parameter. This technique is shown to work well through simulations and on a real data set.},
+	language = {en},
+	urldate = {2019-07-30},
+	journal = {arXiv:1312.1733 [stat]},
+	author = {Joseph, Antony and Yu, Bin},
+	month = dec,
+	year = {2013},
+	note = {arXiv: 1312.1733},
+	keywords = {Statistics - Machine Learning},
+	annote = {Comment: 37 pages},
+	file = {Joseph and Yu - 2013 - Impact of regularization on Spectral Clustering.pdf:C\:\\Users\\alex\\Zotero\\storage\\GG8KSBAG\\Joseph and Yu - 2013 - Impact of regularization on Spectral Clustering.pdf:application/pdf}
+}
+
+@article{le_concentration_2015,
+	title = {Concentration and regularization of random graphs},
+	url = {http://arxiv.org/abs/1506.00669},
+	abstract = {This paper studies how close random graphs are typically to their expectations. We interpret this question through the concentration of the adjacency and Laplacian matrices in the spectral norm. We study inhomogeneous Erdo¨s-R´enyi random graphs on n vertices, where edges form independently and possibly with diﬀerent probabilities pij. Sparse random graphs whose expected degrees are o(log n) fail to concentrate; the obstruction is caused by vertices with abnormally high and low degrees. We show that concentration can be restored if we regularize the degrees of such vertices, and one can do this in various ways. As an example, let us reweight or remove enough edges to make all degrees bounded above by O(d) where d = max npij. Then we show t√hat the resulting adjacency matrix A concentrates with the optimal rate: A −E A = O( d). Similarly, if we make all degrees bounded below by d by adding weight d/n to all edges,√then the resulting Laplacian concentrates with the optimal rate: L(A ) − L(E A ) = O(1/ d). Our approach is based on GrothendieckPietsch factorization, using which we construct a new decomposition of random graphs. We illustrate the concentration results with an application to the community detection problem in the analysis of networks.},
+	language = {en},
+	urldate = {2019-07-30},
+	journal = {arXiv:1506.00669 [cs, math, stat]},
+	author = {Le, Can M. and Levina, Elizaveta and Vershynin, Roman},
+	month = jun,
+	year = {2015},
+	note = {arXiv: 1506.00669},
+	keywords = {Mathematics - Statistics Theory, Mathematics - Probability, Computer Science - Social and Information Networks, 05C80, 60B20, 05C85},
+	annote = {Comment: 21 pages. Elizaveta Levina is added as a co-author. Application to community detection of networks is expanded},
+	file = {Le et al. - 2015 - Concentration and regularization of random graphs.pdf:C\:\\Users\\alex\\Zotero\\storage\\8GLGV3MZ\\Le et al. - 2015 - Concentration and regularization of random graphs.pdf:application/pdf}
+}
+
+@article{li_network_2016,
+	title = {Network cross-validation by edge sampling},
+	url = {http://arxiv.org/abs/1612.04717},
+	abstract = {While many statistical models and methods are now available for network analysis, resampling network data remains a challenging problem. Cross-validation is a useful general tool for model selection and parameter tuning, but is not directly applicable to networks since splitting network nodes into groups requires deleting edges and destroys some of the network structure. Here we propose a new network resampling strategy based on splitting node pairs rather than nodes applicable to crossvalidation for a wide range of network model selection tasks. We provide a theoretical justiﬁcation for our method in a general setting and examples of how our method can be used in speciﬁc network model selection and parameter tuning tasks. Numerical results on simulated networks and on a citation network of statisticians show that this cross-validation approach works well for model selection.},
+	language = {en},
+	urldate = {2019-07-30},
+	journal = {arXiv:1612.04717 [stat]},
+	author = {Li, Tianxi and Levina, Elizaveta and Zhu, Ji},
+	month = dec,
+	year = {2016},
+	note = {arXiv: 1612.04717},
+	keywords = {Statistics - Machine Learning, Statistics - Methodology},
+	file = {Li et al. - 2016 - Network cross-validation by edge sampling.pdf:C\:\\Users\\alex\\Zotero\\storage\\MKHUXMP9\\Li et al. - 2016 - Network cross-validation by edge sampling.pdf:application/pdf}
+}
+
+@article{najas-garcia_trends_2018,
+	title = {Trends in the {Study} of {Motivation} in {Schizophrenia}: {A} {Bibliometric} {Analysis} of {Six} {Decades} of {Research} (1956–2017)},
+	volume = {9},
+	issn = {1664-1078},
+	shorttitle = {Trends in the {Study} of {Motivation} in {Schizophrenia}},
+	url = {https://www.frontiersin.org/articles/10.3389/fpsyg.2018.00063/full},
+	doi = {10.3389/fpsyg.2018.00063},
+	abstract = {Motivation in schizophrenia has been a key research aim for several decades. Motivation is a very complex process underlying negative symptoms that has been assessed and identified using very different instruments and terminologies. This study provides a comprehensive overview of the growing literature production and highlights an extensive set of variables to better understand the study of motivation. Electronic databases were searched in order to compile relevant studies of motivation in individuals with schizophrenia. The initial search identified 3,248 potentially interesting records, and of these, 161 articles published between 1956 and 2017 were finally included. Information such as year of publication, journal, country, and number of authors was codified. Variables related to sample characteristics, methodological aspects, and motivational terms were also extracted. The results revealed a significant growth trend in literature production, especially since the 2000s, with reward as the main term studied. In addition, questionnaires were identified as the preferred instrument to assess motivation in patients with schizophrenia. Other aspects such as country of publication, authors, journals of publication, and co-citation network analysis were also examined. The discussion offers recommendations for future research.},
+	language = {English},
+	urldate = {2019-07-31},
+	journal = {Frontiers in Psychology},
+	author = {Najas-Garcia, Antonia and Carmona, Viviana R. and Gómez-Benito, Juana},
+	year = {2018},
+	keywords = {Co-citation analysis, intrinsic motivation, Mapping, negative symptoms, Reward, self efficacy},
+	file = {Full Text:C\:\\Users\\alex\\Zotero\\storage\\F2ATE4ZU\\Najas-Garcia et al. - 2018 - Trends in the Study of Motivation in Schizophrenia.pdf:application/pdf}
+}
+
+@article{maltseva_social_2018,
+	title = {Social {Network} {Analysis}: {Bibliographic} {Network} {Analysis} of the {Field} and its {Evolution} / {Part} 1. {Basic} {Statistics} and {Citation} {Network} {Analysis}},
+	shorttitle = {Social {Network} {Analysis}},
+	url = {http://arxiv.org/abs/1812.05908},
+	abstract = {In this paper, we present the results of the study on the development of social network analysis (SNA) discipline and its evolution over time, using the analysis of bibliographic networks. The dataset consists of articles from the Web of Science Clarivate Analytics database and those published in the main journals in the ﬁeld (70,000+ publications), created by searching for the key word “social network*.” From the collected data, we constructed several networks (citation and two-mode, linking publications with authors, keywords and journals). Analyzing the obtained networks, we evaluated the trends in the ﬁeld‘s growth, noted the most cited works, created a list of authors and journals with the largest amount of works, and extracted the most often used keywords in the SNA ﬁeld. Next, using the Search path count approach, we extracted the main path, key-route paths and link islands in the citation network. Based on the probabilistic ﬂow node values, we identiﬁed the most important articles. Our results show that authors from the social sciences, who were most active through the whole history of the ﬁeld development, experienced the “invasion” of physicists from 2000’s. However, starting from the 2010’s, a new very active group of animal social network analysis has emerged.},
+	language = {en},
+	urldate = {2019-07-31},
+	journal = {arXiv:1812.05908 [physics, stat]},
+	author = {Maltseva, Daria and Batagelj, Vladimir},
+	month = dec,
+	year = {2018},
+	note = {arXiv: 1812.05908},
+	keywords = {Mathematics - History and Overview, Computer Science - Social and Information Networks, Statistics - Applications, Physics - Physics and Society, 91D30, 01A90, 05C82, 05C21},
+	file = {Maltseva and Batagelj - 2018 - Social Network Analysis Bibliographic Network Ana.pdf:C\:\\Users\\alex\\Zotero\\storage\\GS94YK2C\\Maltseva and Batagelj - 2018 - Social Network Analysis Bibliographic Network Ana.pdf:application/pdf;Maltseva and Batagelj - 2018 - Social Network Analysis Bibliographic Network Ana.pdf:C\:\\Users\\alex\\Zotero\\storage\\DWMJ2Q2L\\Maltseva and Batagelj - 2018 - Social Network Analysis Bibliographic Network Ana.pdf:application/pdf;Maltseva and Batagelj - 2018 - Social Network Analysis Bibliographic Network Ana.pdf:C\:\\Users\\alex\\Zotero\\storage\\654X6UTR\\Maltseva and Batagelj - 2018 - Social Network Analysis Bibliographic Network Ana.pdf:application/pdf}
+}
+
+@article{ji_coauthorship_2014,
+	title = {Coauthorship and {Citation} {Networks} for {Statisticians}},
+	language = {en},
+	author = {Ji, Pengsheng and Jin, Jiashun},
+	year = {2014},
+	pages = {36},
+	file = {Ji and Jin - Coauthorship and Citation Networks for Statisticia.pdf:C\:\\Users\\alex\\Zotero\\storage\\BA9HHN4Z\\Ji and Jin - Coauthorship and Citation Networks for Statisticia.pdf:application/pdf}
+}
+
+@article{newman_coauthorship_2004,
+	title = {Coauthorship networks and patterns of scientific collaboration},
+	volume = {101},
+	issn = {0027-8424, 1091-6490},
+	url = {http://www.pnas.org/cgi/doi/10.1073/pnas.0307545100},
+	doi = {10.1073/pnas.0307545100},
+	language = {en},
+	number = {Supplement 1},
+	urldate = {2019-07-31},
+	journal = {Proceedings of the National Academy of Sciences},
+	author = {Newman, M. E. J.},
+	month = apr,
+	year = {2004},
+	pages = {5200--5205},
+	file = {Newman - 2004 - Coauthorship networks and patterns of scientific c.pdf:C\:\\Users\\alex\\Zotero\\storage\\J2JQEHCU\\Newman - 2004 - Coauthorship networks and patterns of scientific c.pdf:application/pdf}
+}
+
+@misc{evans_time_2015,
+	title = {Time and {Citation} {Networks} ({ISSI} 2015)},
+	copyright = {CC-BY},
+	url = {http://figshare.com/articles/Time_and_Citation_Networks_ISSI_2015_/1464980},
+	abstract = {Citation networks emerge from a number of different social systems, such as academia (from published papers), business (through patents) and law (through legal judgements). A citation represents a transfer of information, and so studying the structure of the citation network will help us understand how knowledge is passed on.},
+	language = {en},
+	urldate = {2019-08-20},
+	publisher = {Figshare},
+	author = {Evans, Tim},
+	year = {2015},
+	doi = {10.6084/m9.figshare.1464980},
+	note = {type: dataset},
+	annote = {A shitty version of Karl's blessing of transitivity paper for citation networks with lots of blah blah blah},
+	file = {Evans - 2015 - Time and Citation Networks (ISSI 2015).pdf:C\:\\Users\\alex\\Zotero\\storage\\C587UFRC\\Evans - 2015 - Time and Citation Networks (ISSI 2015).pdf:application/pdf}
+}
+
+@article{price_general_1976,
+	title = {A general theory of bibliometric and other cumulative advantage processes},
+	volume = {27},
+	issn = {00028231, 10974571},
+	url = {http://doi.wiley.com/10.1002/asi.4630270505},
+	doi = {10.1002/asi.4630270505},
+	language = {en},
+	number = {5},
+	urldate = {2019-08-20},
+	journal = {Journal of the American Society for Information Science},
+	author = {Price, Derek De Solla},
+	month = sep,
+	year = {1976},
+	pages = {292--306},
+	file = {Price - 1976 - A general theory of bibliometric and other cumulat.pdf:C\:\\Users\\alex\\Zotero\\storage\\5ZDMBQN7\\Price - 1976 - A general theory of bibliometric and other cumulat.pdf:application/pdf}
+}
+
+@article{goldberg_modelling_2015,
+	title = {Modelling {Citation} {Networks}},
+	volume = {105},
+	issn = {0138-9130, 1588-2861},
+	url = {http://arxiv.org/abs/1408.2970},
+	doi = {10.1007/s11192-015-1737-9},
+	abstract = {The distribution of the number of academic publications as a function of citation count for a given year is remarkably similar from year to year. We measure this similarity as a width of the distribution and ﬁnd it to be approximately constant from year to year. We show that simple citation models fail to capture this behaviour. We then provide a simple three parameter citation network model using a mixture of local and global search processes which can reproduce the correct distribution over time. We use the citation network of papers from the hep-th section of arXiv to test our model. For this data, around 20\% of citations use global information to reference recently published papers, while the remaining 80\% are found using local searches. We note that this is consistent with other studies though our motivation is very diﬀerent from previous work. Finally, we also ﬁnd that the ﬂuctuations in the size of an academic publication’s bibliography is important for the model. This is not addressed in most models and needs further work.},
+	language = {en},
+	number = {3},
+	urldate = {2019-08-21},
+	journal = {Scientometrics},
+	author = {Goldberg, S. R. and Anthony, H. and Evans, T. S.},
+	month = dec,
+	year = {2015},
+	note = {arXiv: 1408.2970},
+	keywords = {Computer Science - Social and Information Networks, Physics - Physics and Society, Computer Science - Digital Libraries},
+	pages = {1577--1604},
+	annote = {Comment: 29 pages, 22 figures},
+	file = {Goldberg et al. - 2015 - Modelling Citation Networks.pdf:C\:\\Users\\alex\\Zotero\\storage\\PGNLSFUM\\Goldberg et al. - 2015 - Modelling Citation Networks.pdf:application/pdf}
+}
+
+@article{clough_transitive_2015,
+	title = {Transitive {Reduction} of {Citation} {Networks}},
+	volume = {3},
+	issn = {2051-1310, 2051-1329},
+	url = {http://arxiv.org/abs/1310.8224},
+	doi = {10.1093/comnet/cnu039},
+	abstract = {In many complex networks the vertices are ordered in time, and edges represent causal connections. We propose methods of analysing such directed acyclic graphs taking into account the constraints of causality and highlighting the causal structure. We illustrate our approach using citation networks formed from academic papers, patents, and US Supreme Court verdicts. We show how transitive reduction reveals fundamental diﬀerences in the citation practices of diﬀerent areas, how it highlights particularly interesting work, and how it can correct for the eﬀect that the age of a document has on its citation count. Finally, we transitively reduce null models of citation networks with similar degree distributions and show the diﬀerence in degree distributions after transitive reduction to illustrate the lack of causal structure in such models.},
+	language = {en},
+	number = {2},
+	urldate = {2019-08-21},
+	journal = {Journal of Complex Networks},
+	author = {Clough, James R. and Gollings, Jamie and Loach, Tamar V. and Evans, Tim S.},
+	month = jun,
+	year = {2015},
+	note = {arXiv: 1310.8224},
+	keywords = {Computer Science - Social and Information Networks, Physics - Physics and Society, Computer Science - Digital Libraries},
+	pages = {189--203},
+	annote = {Comment: 17 pages, 13 figures, data available},
+	file = {Clough et al. - 2015 - Transitive Reduction of Citation Networks.pdf:C\:\\Users\\alex\\Zotero\\storage\\YG67MY5Z\\Clough et al. - 2015 - Transitive Reduction of Citation Networks.pdf:application/pdf}
+}
+
+@article{martin_coauthorship_2013,
+	title = {Coauthorship and citation patterns in the {Physical} {Review}},
+	volume = {88},
+	issn = {1539-3755, 1550-2376},
+	url = {https://link.aps.org/doi/10.1103/PhysRevE.88.012814},
+	doi = {10.1103/PhysRevE.88.012814},
+	language = {en},
+	number = {1},
+	urldate = {2019-08-26},
+	journal = {Physical Review E},
+	author = {Martin, Travis and Ball, Brian and Karrer, Brian and Newman, M. E. J.},
+	month = jul,
+	year = {2013},
+	pages = {012814},
+	file = {Martin et al. - 2013 - Coauthorship and citation patterns in the Physical.pdf:C\:\\Users\\alex\\Zotero\\storage\\GJTCQADD\\Martin et al. - 2013 - Coauthorship and citation patterns in the Physical.pdf:application/pdf}
+}
+
+@inproceedings{feng_fast_2018,
+	title = {Fast {Randomized} {PCA} for {Sparse} {Data}},
+	abstract = {Principal component analysis (PCA) is widely used for dimension reduction and embedding of real data in social network analysis, information retrieval, and natural language processing, etc. In this work we propose a fast randomized PCA algorithm for processing large sparse data. The algorithm has similar accuracy to the basic randomized SVD (rPCA) algorithm (Halko et al., 2011), but is largely optimized for sparse data. It also has good ﬂexibility to trade off runtime against accuracy for practical usage. Experiments on real data show that the proposed algorithm is up to 9.1X faster than the basic rPCA algorithm without accuracy loss, and is up to 20X faster than the svds in Matlab with little error. The algorithm computes the ﬁrst 100 principal components of a large information retrieval data with 12,869,521 persons and 323,899 keywords in less than 400 seconds on a 24-core machine, while all conventional methods fail due to the out-of-memory issue.},
+	language = {en},
+	author = {Feng, Xu and Xie, Yuyang and Song, Mingye and Yu, Wenjian and Tang, Jie},
+	year = {2018},
+	pages = {16},
+	file = {Feng et al. - Fast Randomized PCA for Sparse Data.pdf:C\:\\Users\\alex\\Zotero\\storage\\V6NBY2SH\\Feng et al. - Fast Randomized PCA for Sparse Data.pdf:application/pdf}
+}
+
+@article{feng_faster_2018,
+	title = {Faster {Matrix} {Completion} {Using} {Randomized} {SVD}},
+	url = {http://arxiv.org/abs/1810.06860},
+	abstract = {Matrix completion is a widely used technique for image inpainting and personalized recommender system, etc. In this work, we focus on accelerating the matrix completion using faster randomized singular value decomposition (rSVD). Firstly, two fast randomized algorithms (rSVD-PI and rSVDBKI) are proposed for handling sparse matrix. They make use of an eigSVD procedure and several accelerating skills. Then, with the rSVD-BKI algorithm and a new subspace recycling technique, we accelerate the singular value thresholding (SVT) method in [1] to realize faster matrix completion. Experiments show that the proposed rSVD algorithms can be 6X faster than the basic rSVD algorithm [2] while keeping same accuracy. For image inpainting and movie-rating estimation problems (including up to 2 × 107 ratings), the proposed accelerated SVT algorithm consumes 15X and 8X less CPU time than the methods using svds and lansvd respectively, without loss of accuracy.},
+	language = {en},
+	urldate = {2019-09-24},
+	journal = {arXiv:1810.06860 [cs, stat]},
+	author = {Feng, Xu and Yu, Wenjian and Li, Yaohang},
+	month = oct,
+	year = {2018},
+	note = {arXiv: 1810.06860},
+	keywords = {Computer Science - Machine Learning, Statistics - Machine Learning},
+	annote = {Comment: 8 pages, 5 figures, ICTAI 2018 Accepted},
+	file = {Feng et al. - 2018 - Faster Matrix Completion Using Randomized SVD.pdf:C\:\\Users\\alex\\Zotero\\storage\\K7H6ZK27\\Feng et al. - 2018 - Faster Matrix Completion Using Randomized SVD.pdf:application/pdf}
+}
+
+@misc{tulloch_fast_2014,
+	title = {Fast {Randomized} {SVD}},
+	url = {https://research.fb.com/blog/2014/09/fast-randomized-svd/},
+	abstract = {Computing the Singular Value Decomposition (SVD) is a key problem in linear algebra, and is incredibly useful in a wide variety of contexts in machine learning, statistics, signal processing, and other fields. Formally, the SVD of a real m × n matrix A is a factorization of the form A = U Σ Vᵀ, where U is an m × m orthogonal matrix of left singular vectors, Σ is an m × n diagonal matrix of singular values, and Vᵀ is an n × n orthogonal matrix of right singular vectors.},
+	language = {en-US},
+	urldate = {2019-09-24},
+	journal = {Facebook Research},
+	author = {Tulloch, Andrew},
+	month = sep,
+	year = {2014},
+	file = {Snapshot:C\:\\Users\\alex\\Zotero\\storage\\DAF9IBEV\\fast-randomized-svd.html:text/html}
+}
+
+@article{redner_citation_2005,
+	title = {Citation {Statistics} from 110 {Years} of {Physical} {Review}},
+	volume = {58},
+	issn = {0031-9228, 1945-0699},
+	url = {http://physicstoday.scitation.org/doi/10.1063/1.1996475},
+	doi = {10.1063/1.1996475},
+	language = {en},
+	number = {6},
+	urldate = {2019-09-30},
+	journal = {Physics Today},
+	author = {Redner, Sidney},
+	month = jun,
+	year = {2005},
+	pages = {49--54},
+	file = {Redner - 2005 - Citation Statistics from 110 Years of iPhysical .pdf:C\:\\Users\\alex\\Zotero\\storage\\2HSE993K\\Redner - 2005 - Citation Statistics from 110 Years of iPhysical .pdf:application/pdf}
+}
+
+@article{adler_citation_2009,
+	title = {Citation {Statistics}},
+	volume = {24},
+	issn = {0883-4237},
+	url = {http://arxiv.org/abs/0910.3529},
+	doi = {10.1214/09-STS285},
+	abstract = {This is a report about the use and misuse of citation data in the assessment of scientific research. The idea that research assessment must be done using ``simple and objective'' methods is increasingly prevalent today. The ``simple and objective'' methods are broadly interpreted as bibliometrics, that is, citation data and the statistics derived from them. There is a belief that citation statistics are inherently more accurate because they substitute simple numbers for complex judgments, and hence overcome the possible subjectivity of peer review. But this belief is unfounded.},
+	language = {en},
+	number = {1},
+	urldate = {2019-09-30},
+	journal = {Statistical Science},
+	author = {Adler, Robert and Ewing, John and Taylor, Peter},
+	month = feb,
+	year = {2009},
+	note = {arXiv: 0910.3529},
+	keywords = {Statistics - Methodology, Physics - Physics and Society, Computer Science - Digital Libraries},
+	pages = {1--14},
+	annote = {Comment: This paper commented in: [arXiv:0910.3532], [arXiv:0910.3537], [arXiv:0910.3543], [arXiv:0910.3546]. Rejoinder in [arXiv:0910.3548]. Published in at http://dx.doi.org/10.1214/09-STS285 the Statistical Science (http://www.imstat.org/sts/) by the Institute of Mathematical Statistics (http://www.imstat.org)},
+	file = {Adler et al. - 2009 - Citation Statistics.pdf:C\:\\Users\\alex\\Zotero\\storage\\297R4C49\\Adler et al. - 2009 - Citation Statistics.pdf:application/pdf}
+}
+
+@article{simkin_mathematical_2007,
+	title = {A mathematical theory of citing},
+	volume = {58},
+	issn = {15322882, 15322890},
+	url = {http://doi.wiley.com/10.1002/asi.20653},
+	doi = {10.1002/asi.20653},
+	language = {en},
+	number = {11},
+	urldate = {2019-09-30},
+	journal = {Journal of the American Society for Information Science and Technology},
+	author = {Simkin, Mikhail V. and Roychowdhury, Vwani P.},
+	month = sep,
+	year = {2007},
+	pages = {1661--1673},
+	file = {Simkin and Roychowdhury - 2007 - A mathematical theory of citing.pdf:C\:\\Users\\alex\\Zotero\\storage\\HR8AYFX3\\Simkin and Roychowdhury - 2007 - A mathematical theory of citing.pdf:application/pdf}
+}
+
+@article{simkin_read_2002,
+	title = {Read before you cite!},
+	url = {https://arxiv.org/ftp/cond-mat/papers/0212/0212043.pdf},
+	urldate = {2019-09-30},
+	author = {Simkin, Mikhail V. and Roychowdhury, Vwani P.},
+	year = {2002},
+	file = {0212043.pdf:C\:\\Users\\alex\\Zotero\\storage\\J7IYCZQZ\\0212043.pdf:application/pdf}
+}
+
+@article{bommarito_ii_mathematical_2010,
+	title = {A {Mathematical} {Approach} to the {Study} of the {United} {States} {Code}},
+	volume = {389},
+	issn = {03784371},
+	url = {http://arxiv.org/abs/1003.4146},
+	doi = {10.1016/j.physa.2010.05.057},
+	abstract = {The United States Code (Code) is a document containing over 22 million words that represents a large and important source of Federal statutory law. Scholars and policy advocates often discuss the direction and magnitude of changes in various aspects of the Code. However, few have mathematically formalized the notions behind these discussions or directly measured the resulting representations. This paper addresses the current state of the literature in two ways. First, we formalize a representation of the United States Code as the union of a hierarchical network and a citation network over vertices containing the language of the Code. This representation reﬂects the fact that the Code is a hierarchically organized document containing language and explicit citations between provisions. Second, we use this formalization to measure aspects of the Code as codiﬁed in October 2008, November 2009, and March 2010. These measurements allow for a characterization of the actual changes in the Code over time. Our ﬁndings indicate that in the recent past, the Code has grown in its amount of structure, interdependence, and language.},
+	language = {en},
+	number = {19},
+	urldate = {2019-09-30},
+	journal = {Physica A: Statistical Mechanics and its Applications},
+	author = {Bommarito II, Michael J. and Katz, Daniel Martin},
+	month = oct,
+	year = {2010},
+	note = {arXiv: 1003.4146},
+	keywords = {Computer Science - Information Retrieval, Computer Science - Computers and Society, Physics - Physics and Society, Computer Science - Digital Libraries},
+	pages = {4195--4200},
+	annote = {Comment: 5 pages, 6 figures, 2 tables.},
+	file = {1003.4146.pdf:C\:\\Users\\alex\\Zotero\\storage\\LPKJFDAT\\1003.4146.pdf:application/pdf}
+}
+
+@article{bommarito_ii_properties_2009,
+	title = {Properties of the {United} {States} {Code} {Citation} {Network}},
+	url = {http://arxiv.org/abs/0911.1751},
+	abstract = {The United States Code (Code) is an important source of Federal law that is produced by the interactions of many heterogeneous actors in a complex, dynamic space. The Code can be represented as the union of a hierarchical network and a citation network over the vertices representing the language of the Code. In this paper, we investigate the properties of the Code’s citation network by examining the directed degree distributions of the network. We ﬁnd that the power-law model is a plausible ﬁt for the outdegree distribution but not for the indegree distribution. In order to better understand this result, we construct a model with the assumption that the probability of citation is a per-word rate. We calculate the adjusted degree of each vertex under this model and study the directed adjusted degree distributions. These adjusted degree distributions indicate that both the adjusted indegree and outdegree distributions seems to follow a log-normal form, not a power-law form. Our ﬁndings indicate that the power-law is not generally applicable to degree distributions within the United States Code but that the distribution of degree per word is well-described by a log-normal model.},
+	language = {en},
+	urldate = {2019-09-30},
+	journal = {arXiv:0911.1751 [physics]},
+	author = {Bommarito II, Michael J. and Katz, Daniel Martin},
+	month = nov,
+	year = {2009},
+	note = {arXiv: 0911.1751},
+	keywords = {Physics - Physics and Society},
+	annote = {Comment: 4 pages, 6 figures, 2 tables.},
+	file = {Bommarito II and Katz - 2009 - Properties of the United States Code Citation Netw.pdf:C\:\\Users\\alex\\Zotero\\storage\\KBZH8QBJ\\Bommarito II and Katz - 2009 - Properties of the United States Code Citation Netw.pdf:application/pdf}
+}
+
+@article{bommarito_ii_stability_2009,
+	title = {On the {Stability} of {Community} {Detection} {Algorithms} on {Longitudinal} {Citation} {Data}},
+	url = {http://arxiv.org/abs/0908.0449},
+	abstract = {There are fundamental diﬀerences between citation networks and other classes of graphs. In particular, given that citation networks are directed and acyclic, methods developed primarily for use with undirected social network data may face obstacles. This is particularly true for the dynamic development of community structure in citation networks. Namely, it is neither clear when it is appropriate to employ existing community detection approaches nor is it clear how to choose among existing approaches. Using simulated data, we attempt to clarify the conditions under which one should use existing methods and which of these algorithms is appropriate in a given context. We hope this paper will serve as both a useful guidepost and an encouragement to those interested in the development of more targeted approaches for use with longitudinal citation data.},
+	language = {en},
+	urldate = {2019-09-30},
+	journal = {arXiv:0908.0449 [physics]},
+	author = {Bommarito II, Michael James and Katz, Daniel Martin and Zelner, Jon},
+	month = aug,
+	year = {2009},
+	note = {arXiv: 0908.0449},
+	keywords = {Physics - Data Analysis, Statistics and Probability, Physics - Physics and Society},
+	annote = {Comment: 17 pages, 7 figures, presenting at Applications of Social Network Analysis 2009, ETH Zurich Edit, August 17, 2009: updated abstract, figures, text clarifications},
+	file = {Bommarito II et al. - 2009 - On the Stability of Community Detection Algorithms.pdf:C\:\\Users\\alex\\Zotero\\storage\\VB2NCAMS\\Bommarito II et al. - 2009 - On the Stability of Community Detection Algorithms.pdf:application/pdf}
+}
+
+@article{carmichael_examining_2017,
+	title = {Examining the {Evolution} of {Legal} {Precedent} {Through} {Citation} {Network} {Analysis}},
+	volume = {96},
+	language = {en},
+	journal = {NORTH CAROLINA LAW REVIEW},
+	author = {Carmichael, Iain and Wudel, James and Kim, Michael and Jushchuk, James},
+	year = {2017},
+	pages = {44},
+	file = {Carmichael et al. - 2017 - Examining the Evolution of Legal Precedent Through.pdf:C\:\\Users\\alex\\Zotero\\storage\\TSGBRS9T\\Carmichael et al. - 2017 - Examining the Evolution of Legal Precedent Through.pdf:application/pdf}
+}
+
+@article{lupu_strategic_2013,
+	title = {Strategic {Citations} to {Precedent} on the {U}.{S}. {Supreme} {Court}},
+	volume = {42},
+	issn = {0047-2530, 1537-5366},
+	url = {https://www.journals.uchicago.edu/doi/10.1086/669125},
+	doi = {10.1086/669125},
+	abstract = {Common law evolves not only through the outcomes of cases but also through the reasoning and citations to precedent employed in judicial opinions. We focus on citations to precedent by the U.S. Supreme Court. We demonstrate how strategic interaction between justices during the Court’s bargaining process affects citations to precedent in the Court’s opinion. We ﬁnd that the majority-opinion writer relies more heavily on precedent when the Court’s decision is accompanied by separate opinions. We also show that diversity of opinion on the Court, a factor often overlooked, has a signiﬁcant relationship with citations to precedent. Finally, our results indicate that the ideology of the median justice inﬂuences citation practices more than ideology of the majority-opinion writer.},
+	language = {en},
+	number = {1},
+	urldate = {2019-09-30},
+	journal = {The Journal of Legal Studies},
+	author = {Lupu, Yonatan and Fowler, James H.},
+	month = jan,
+	year = {2013},
+	pages = {151--186},
+	file = {Lupu and Fowler - 2013 - Strategic Citations to Precedent on the U.S. Supre.pdf:C\:\\Users\\alex\\Zotero\\storage\\94X39QQE\\Lupu and Fowler - 2013 - Strategic Citations to Precedent on the U.S. Supre.pdf:application/pdf}
+}
+
+@article{katz_crowdsourcing_2017,
+	title = {Crowdsourcing accurately and robustly predicts {Supreme} {Court} decisions},
+	url = {http://arxiv.org/abs/1712.03846},
+	abstract = {Scholars have increasingly investigated "crowdsourcing" as an alternative to expert-based judgment or purely data-driven approaches to predicting the future. Under certain conditions, scholars have found that crowdsourcing can outperform these other approaches. However, despite interest in the topic and a series of successful use cases, relatively few studies have applied empirical model thinking to evaluate the accuracy and robustness of crowdsourcing in real-world contexts. In this paper, we offer three novel contributions. First, we explore a dataset of over 600,000 predictions from over 7,000 participants in a multi-year tournament to predict the decisions of the Supreme Court of the United States. Second, we develop a comprehensive crowd construction framework that allows for the formal description and application of crowdsourcing to real-world data. Third, we apply this framework to our data to construct more than 275,000 crowd models. We find that in out-of-sample historical simulations, crowdsourcing robustly outperforms the commonly-accepted null model, yielding the highest-known performance for this context at 80.8\% case level accuracy. To our knowledge, this dataset and analysis represent one of the largest explorations of recurring human prediction to date, and our results provide additional empirical support for the use of crowdsourcing as a prediction method.},
+	language = {en},
+	urldate = {2019-09-30},
+	journal = {arXiv:1712.03846 [physics]},
+	author = {Katz, Daniel Martin and Bommarito II, Michael James and Blackman, Josh},
+	month = dec,
+	year = {2017},
+	note = {arXiv: 1712.03846},
+	keywords = {Computer Science - Social and Information Networks, Physics - Physics and Society},
+	annote = {Comment: 11 pages, 5 figures, 4 tables; preprint for public feedback},
+	file = {1712.03846.pdf:C\:\\Users\\alex\\Zotero\\storage\\HUVJ56LB\\1712.03846.pdf:application/pdf}
+}
+
+@article{katz_law_2015,
+	title = {Law on the {Market}? {Abnormal} {Stock} {Returns} and {Supreme} {Court} {Decision}-{Making}},
+	shorttitle = {Law on the {Market}?},
+	url = {http://arxiv.org/abs/1508.05751},
+	abstract = {What happens when the Supreme Court of the United States decides a case impacting one or more publicly-traded ﬁrms? While many have observed anecdotal evidence linking decisions or oral arguments to abnormal stock returns, few have rigorously or systematically investigated the behavior of equities around Supreme Court actions. In this research, we present the ﬁrst comprehensive, longitudinal study on the topic, spanning over 15 years and hundreds of cases and ﬁrms. Using both intra- and interday data around decisions and oral arguments, we evaluate the frequency and magnitude of statistically-signiﬁcant abnormal return events after Supreme Court action. On a per-term basis, we ﬁnd 5.3 cases and 7.8 stocks that exhibit abnormal returns after decision. In total, across the cases we examined, we ﬁnd 79 out of the 211 cases (37\%) exhibit an average abnormal return of 4.4\% over a two-session window with an average {\textbar}t{\textbar}-statistic of 2.9. Finally, we observe that abnormal returns following Supreme Court decisions materialize over the span of hours and days, not minutes, yielding strong implications for market eﬃciency in this context. While we cannot causally separate substantive legal impact from mere revision of beliefs, we do ﬁnd strong evidence that there is indeed a “law on the market” eﬀect as measured by the frequency of abnormal return events, and that these abnormal returns are not immediately incorporated into prices.},
+	language = {en},
+	urldate = {2019-09-30},
+	journal = {arXiv:1508.05751 [physics, q-fin]},
+	author = {Katz, Daniel Martin and Bommarito II, Michael J. and Soellinger, Tyler and Chen, James Ming},
+	month = aug,
+	year = {2015},
+	note = {arXiv: 1508.05751},
+	keywords = {Physics - Physics and Society, Quantitative Finance - General Finance},
+	annote = {Comment: 25 pages, 6 figures; first presented in brief at the 14th Annual Finance, Risk and Accounting Conference, Oriel College - Oxford University (2014)},
+	file = {Katz et al. - 2015 - Law on the Market Abnormal Stock Returns and Supr.pdf:C\:\\Users\\alex\\Zotero\\storage\\5MAW5AJA\\Katz et al. - 2015 - Law on the Market Abnormal Stock Returns and Supr.pdf:application/pdf}
+}
+
+@article{bommarito_ii_measuring_2016,
+	title = {Measuring the temperature and diversity of the {U}.{S}. regulatory ecosystem},
+	url = {http://arxiv.org/abs/1612.09244},
+	abstract = {Over the last 23 years, the U.S. Securities and Exchange Commission has required over 34,000 companies to ﬁle over 165,000 annual reports. These reports, the so-called “Form 10-Ks,” contain a characterization of a company’s ﬁnancial performance and its risks, including the regulatory environment in which a company operates. In this paper, we analyze over 4.5 million references to U.S. Federal Acts and Agencies contained within these reports to build a mean-ﬁeld measurement of temperature and diversity in this regulatory ecosystem, where companies are organisms inhabiting the regulatory environment. While individuals across the political, economic, and academic world frequently refer to trends in this regulatory ecosystem, far less attention has been paid to supporting such claims with large-scale, longitudinal data. In this paper, we document an increase in the regulatory energy per ﬁling, i.e., a warming “temperature.” We also ﬁnd that the diversity of the regulatory ecosystem has been increasing over the past two decades, as measured by the dimensionality of the regulatory space and distance between the “regulatory bitstrings” of companies. These ﬁndings support the claim that regulatory activity and complexity are increasing, and this measurement framework contributes an important step towards improving academic and policy discussions around legal complexity and regulation.},
+	language = {en},
+	urldate = {2019-09-30},
+	journal = {arXiv:1612.09244 [physics, q-fin]},
+	author = {Bommarito II, Michael J. and Katz, Daniel Martin},
+	month = dec,
+	year = {2016},
+	note = {arXiv: 1612.09244},
+	keywords = {Physics - Physics and Society, Quantitative Finance - General Finance},
+	annote = {Comment: Preprint, first of three papers released in paper series; updated on 2017-01-10 with additional text and figures in response to feedback},
+	file = {Bommarito II and Katz - 2016 - Measuring the temperature and diversity of the U.S.pdf:C\:\\Users\\alex\\Zotero\\storage\\6R4ADYZP\\Bommarito II and Katz - 2016 - Measuring the temperature and diversity of the U.S.pdf:application/pdf}
+}
+
+@article{bommarito_law_2009,
+	title = {Law as a seamless web?: comparison of various network representations of the {United} {States} {Supreme} {Court} corpus (1791-2005)},
+	language = {en},
+	author = {Bommarito, Michael J and Katz, Daniel and Zelner, Jon},
+	year = {2009},
+	pages = {2},
+	file = {Bommarito et al. - Law as a seamless web comparison of various netw.pdf:C\:\\Users\\alex\\Zotero\\storage\\2WFR5NYK\\Bommarito et al. - Law as a seamless web comparison of various netw.pdf:application/pdf}
+}
+
+@article{smith_web_2005,
+	title = {The {Web} of {Law}},
+	author = {Smith, Thomas A.},
+	year = {2005},
+	file = {the-web-of-law.pdf:C\:\\Users\\alex\\Zotero\\storage\\FKS365UV\\the-web-of-law.pdf:application/pdf}
+}
+
+@article{fowler_authority_2008,
+	title = {The authority of {Supreme} {Court} precedent},
+	volume = {30},
+	issn = {03788733},
+	url = {https://linkinghub.elsevier.com/retrieve/pii/S0378873307000378},
+	doi = {10.1016/j.socnet.2007.05.001},
+	abstract = {We construct the complete network of 30,288 majority opinions written by the U.S. Supreme Court and the cases they cite from 1754 to 2002 in the United States Reports. Data from this network demonstrates quantitatively the evolution of the norm of stare decisis in the 19th Century and a signiﬁcant deviation from this norm by the activist Warren Court. We further describe a method for creating authority scores using the network data to identify the most important court precedents. This method yields rankings that conform closely to evaluations by legal experts, and even predicts which cases they will identify as important in the future. An analysis of these scores over time allows us to test several hypotheses about the rise and fall of precedent. We show that reversed cases tend to be much more important than other decisions, and the cases that overrule them quickly become and remain even more important as the reversed decisions decline. We also show that the Court is careful to ground overruling decisions in past precedent, and the care it exercises is increasing in the importance of the decision that is overruled. Finally, authority scores corroborate qualitative assessments of which issues and cases the Court prioritizes and how these change over time.},
+	language = {en},
+	number = {1},
+	urldate = {2019-09-30},
+	journal = {Social Networks},
+	author = {Fowler, James H. and Jeon, Sangick},
+	month = jan,
+	year = {2008},
+	pages = {16--30},
+	file = {Fowler and Jeon - 2008 - The authority of Supreme Court precedent.pdf:C\:\\Users\\alex\\Zotero\\storage\\7TNCWMS2\\Fowler and Jeon - 2008 - The authority of Supreme Court precedent.pdf:application/pdf}
+}
+
+@article{musco_randomized_2015,
+	title = {Randomized {Block} {Krylov} {Methods} for {Stronger} and {Faster} {Approximate} {Singular} {Value} {Decomposition}},
+	abstract = {Since being analyzed by Rokhlin, Szlam, and Tygert [1] and popularized by Halko, Martinsson, and Tropp [2], randomized Simultaneous Power Iteration has become the method of choice for approximate singular value decomposition. It is more accurate than simpler sketching algorithms, yet still converges quickly for any matrix, independently of singular value gaps. After O˜(1/ ) iterations, it gives a low-rank approximation within (1 + ) of optimal for spectral norm error.},
+	language = {en},
+	author = {Musco, Cameron and Musco, Christopher},
+	year = {2015},
+	pages = {22},
+	file = {Musco and Musco - Randomized Block Krylov Methods for Stronger and F.pdf:C\:\\Users\\alex\\Zotero\\storage\\8TT2H99P\\Musco and Musco - Randomized Block Krylov Methods for Stronger and F.pdf:application/pdf}
+}
+
+@article{erichson_randomized_2019,
+	title = {Randomized {Matrix} {Decompositions} using {R}},
+	volume = {89},
+	issn = {1548-7660},
+	url = {http://arxiv.org/abs/1608.02148},
+	doi = {10.18637/jss.v089.i11},
+	abstract = {Matrix decompositions are fundamental tools in the area of applied mathematics, statistical computing, and machine learning. In particular, low-rank matrix decompositions are vital, and widely used for data analysis, dimensionality reduction, and data compression. Massive datasets, however, pose a computational challenge for traditional algorithms, placing signiﬁcant constraints on both memory and processing power. Recently, the powerful concept of randomness has been introduced as a strategy to ease the computational load. The essential idea of probabilistic algorithms is to employ some amount of randomness in order to derive a smaller matrix from a high-dimensional data matrix. The smaller matrix is then used to compute the desired low-rank approximation. Such algorithms are shown to be computationally eﬃcient for approximating matrices with low-rank structure. We present the R package rsvd, and provide a tutorial introduction to randomized matrix decompositions. Speciﬁcally, randomized routines for the singular value decomposition, (robust) principal component analysis, interpolative decomposition, and CUR decomposition are discussed. Several examples demonstrate the routines, and show the computational advantage over other methods implemented in R.},
+	language = {en},
+	number = {11},
+	urldate = {2019-10-01},
+	journal = {Journal of Statistical Software},
+	author = {Erichson, N. Benjamin and Voronin, Sergey and Brunton, Steven L. and Kutz, J. Nathan},
+	year = {2019},
+	note = {arXiv: 1608.02148},
+	keywords = {Statistics - Computation, Statistics - Methodology, Computer Science - Mathematical Software},
+	annote = {Comment: Conditionally accepted for publication in Journal of Statistical Software (JSS)},
+	file = {Erichson et al. - 2019 - Randomized Matrix Decompositions using R.pdf:C\:\\Users\\alex\\Zotero\\storage\\8I5YSXTX\\Erichson et al. - 2019 - Randomized Matrix Decompositions using R.pdf:application/pdf}
+}
+
+@inproceedings{erichson_compressed_2017,
+	address = {Venice},
+	title = {Compressed {Singular} {Value} {Decomposition} for {Image} and {Video} {Processing}},
+	isbn = {978-1-5386-1034-3},
+	url = {http://ieeexplore.ieee.org/document/8265432/},
+	doi = {10.1109/ICCVW.2017.222},
+	abstract = {We demonstrate a heuristic algorithm to compute the approximate low-rank singular value decomposition. The algorithm is inspired by ideas from compressed sensing and, in particular, is suitable for image and video processing applications. Speciﬁcally, our compressed singular value decomposition (cSVD) algorithm employs aggressive random test matrices to efﬁciently sketch the row space of the input matrix. The resulting compressed representation of the data enables the computation of an accurate approximation of the dominant high-dimensional left and right singular vectors. We benchmark cSVD against the current state-of-the-art randomized SVD and show a performance boost while attaining near similar relative errors. The cSVD is simple to implement as well as embarrassingly parallel, i.e, ideally suited for GPU computations and mobile platforms.},
+	language = {en},
+	urldate = {2019-10-01},
+	booktitle = {2017 {IEEE} {International} {Conference} on {Computer} {Vision} {Workshops} ({ICCVW})},
+	publisher = {IEEE},
+	author = {Erichson, N. Benjamin and Brunton, Steven L. and Kutz, J. Nathan},
+	month = oct,
+	year = {2017},
+	pages = {1880--1888},
+	file = {Erichson et al. - 2017 - Compressed Singular Value Decomposition for Image .pdf:C\:\\Users\\alex\\Zotero\\storage\\ILNKN9LG\\Erichson et al. - 2017 - Compressed Singular Value Decomposition for Image .pdf:application/pdf}
+}
+
+@article{halko_finding_2009-1,
+	title = {Finding structure with randomness: {Probabilistic} algorithms for constructing approximate matrix decompositions},
+	shorttitle = {Finding structure with randomness},
+	url = {http://arxiv.org/abs/0909.4061},
+	abstract = {Low-rank matrix approximations, such as the truncated singular value decomposition and the rank-revealing QR decomposition, play a central role in data analysis and scientiﬁc computing. This work surveys and extends recent research which demonstrates that randomization oﬀers a powerful tool for performing low-rank matrix approximation. These techniques exploit modern computational architectures more fully than classical methods and open the possibility of dealing with truly massive data sets.},
+	language = {en},
+	urldate = {2019-10-01},
+	journal = {arXiv:0909.4061 [math]},
+	author = {Halko, Nathan and Martinsson, Per-Gunnar and Tropp, Joel A.},
+	month = sep,
+	year = {2009},
+	note = {arXiv: 0909.4061},
+	keywords = {Mathematics - Probability, Mathematics - Numerical Analysis},
+	file = {Halko et al. - 2009 - Finding structure with randomness Probabilistic a.pdf:C\:\\Users\\alex\\Zotero\\storage\\GTVC9HLS\\Halko et al. - 2009 - Finding structure with randomness Probabilistic a.pdf:application/pdf}
+}
+
+@article{jin_fast_2015,
+	title = {Fast community detection by {SCORE}},
+	volume = {43},
+	issn = {0090-5364},
+	url = {http://projecteuclid.org/euclid.aos/1416322036},
+	doi = {10.1214/14-AOS1265},
+	language = {en},
+	number = {1},
+	urldate = {2019-10-02},
+	journal = {The Annals of Statistics},
+	author = {Jin, Jiashun},
+	month = feb,
+	year = {2015},
+	pages = {57--89},
+	file = {Jin - 2015 - Fast community detection by SCORE.pdf:C\:\\Users\\alex\\Zotero\\storage\\CU2BRPUI\\Jin - 2015 - Fast community detection by SCORE.pdf:application/pdf}
+}
+
+@article{rohe_vintage_nodate,
+	title = {Vintage {Factor} {Analysis} with {Varimax} {Performs} {Statistical} {Inference}},
+	abstract = {Multiple factor analysis, or what we call Vintage Factor Analysis, decomposes multivariate data into a small number of interpretable factors without any a priori knowledge about those factors. It was developed in Thurstone [1935], Kaiser [1958], and others in Psychology. In Vintage Factor Analysis, the “factor rotation” is a key step to make the factors interpretable. This step is controversial because the factors are rotationally invariant under the Gaussian factor model [Anderson and Rubin, 1956]. Shalizi [2009] gives the conventional interpretation of this invariance result, “If we can rotate the factors as much as we like without consequences, how on Earth can we interpret them?” This is an engima because Vintage Factor Analysis has survived and is widely popular because, empirically, the factor rotation often makes the factors easier to interpret. We show that Maxwell’s Theorem [Maxwell, 1860] highlights how the Gaussian factor model is the only factor model of independent variables that is rotationally invariant. Then, we show that Principal Components Analysis (PCA) with the popular Varimax factor rotation [Kaiser, 1958] is consistent for a large semi-parametric class of approximately sparse factor models, including the Stochastic Blockmodel and a natural variation of Latent Dirichlet Allocation (i.e., “topic modeling”). As such, PCA with Varimax is an old algorithm that provides a uniﬁed spectral estimation strategy for a broad class of modern factor models, unifying many diﬀerent areas in multivariate statistics. In addition, we show that Thurstone’s widely employed sparsity diagnostics implicitly assess a key “leptokurtic” condition for statistical identiﬁability for Varimax. Taken together, this shows that Vintage Factor Analysis performs statistical inference, reversing nearly a century of statistical thinking on the topic. With a sparse eigensolver, PCA with Varimax is both fast and stable. Combined with Thurstone’s straightforward diagnostics, Vintage Factor Analysis is suitable for a wide array of modern applications.},
+	language = {en},
+	author = {Rohe, Karl and Zeng, Muzhe},
+	pages = {80},
+	file = {Rohe and Zeng - Vintage Factor Analysis with Varimax Performs Stat.pdf:C\:\\Users\\alex\\Zotero\\storage\\KAYI2H8Q\\Rohe and Zeng - Vintage Factor Analysis with Varimax Performs Stat.pdf:application/pdf}
+}
+
+@article{abbe_community_2017,
+	title = {Community {Detection} and {Stochastic} {Block} {Models}: {Recent} {Developments}},
+	abstract = {The stochastic block model (SBM) is a random graph model with planted clusters. It is widely employed as a canonical model to study clustering and community detection, and provides generally a fertile ground to study the statistical and computational tradeoﬀs that arise in network and data sciences. This note surveys the recent developments that establish the fundamental limits for community detection in the SBM, both with respect to information-theoretic and computational thresholds, and for various recovery requirements such as exact, partial and weak recovery (a.k.a., detection). The main results discussed are the phase transitions for exact recovery at the Chernoﬀ-Hellinger threshold, the phase transition for weak recovery at the Kesten-Stigum threshold, the optimal distortion-SNR tradeoﬀ for partial recovery, the learning of the SBM parameters and the gap between information-theoretic and computational thresholds.},
+	language = {en},
+	author = {Abbe, Emmanuel},
+	year = {2017},
+	pages = {80},
+	file = {Abbe - Community Detection and Stochastic Block Models R.pdf:C\:\\Users\\alex\\Zotero\\storage\\3DFFE9Z2\\Abbe - Community Detection and Stochastic Block Models R.pdf:application/pdf}
+}
+
+@article{cline_computation_nodate,
+	title = {Computation of the {Singular} {Value} {Decomposition}},
+	language = {en},
+	journal = {Handbook of Linear Algebra},
+	author = {Cline, Alan Kaylor and Dhillon, Inderjit S},
+	pages = {14},
+	file = {Cline and Dhillon - Computation of the Singular Value Decomposition.pdf:C\:\\Users\\alex\\Zotero\\storage\\9Q3RN9HX\\Cline and Dhillon - Computation of the Singular Value Decomposition.pdf:application/pdf}
+}
+
+@article{vinayak_graph_nodate,
+	title = {Graph {Clustering} {With} {Missing} {Data} : {Convex} {Algorithms} and {Analysis}},
+	abstract = {We consider the problem of ﬁnding clusters in an unweighted graph, when the graph is partially observed. We analyze two programs, one which works for dense graphs and one which works for both sparse and dense graphs, but requires some a priori knowledge of the total cluster size, that are based on the convex optimization approach for low-rank matrix recovery using nuclear norm minimization. For the commonly used Stochastic Block Model, we obtain explicit bounds on the parameters of the problem (size and sparsity of clusters, the amount of observed data) and the regularization parameter characterize the success and failure of the programs. We corroborate our theoretical ﬁndings through extensive simulations. We also run our algorithm on a real data set obtained from crowdsourcing an image classiﬁcation task on the Amazon Mechanical Turk, and observe signiﬁcant performance improvement over traditional methods such as k-means.},
+	language = {en},
+	number = {1},
+	journal = {r n},
+	author = {Vinayak, Ramya Korlakai and Oymak, Samet and Hassibi, Babak},
+	pages = {25},
+	file = {Vinayak et al. - Graph Clustering With Missing Data  Convex Algori.pdf:C\:\\Users\\alex\\Zotero\\storage\\MGIQZN2C\\Vinayak et al. - Graph Clustering With Missing Data  Convex Algori.pdf:application/pdf}
+}
+
+@article{chen_clustering_2014,
+	title = {Clustering {Partially} {Observed} {Graphs} via {Convex} {Optimization}},
+	url = {http://arxiv.org/abs/1104.4803},
+	abstract = {This paper considers the problem of clustering a partially observed unweighted graph—i.e., one where for some node pairs we know there is an edge between them, for some others we know there is no edge, and for the remaining we do not know whether or not there is an edge. We want to organize the nodes into disjoint clusters so that there is relatively dense (observed) connectivity within clusters, and sparse across clusters.},
+	language = {en},
+	urldate = {2019-10-23},
+	journal = {arXiv:1104.4803 [cs, stat]},
+	author = {Chen, Yudong and Jalali, Ali and Sanghavi, Sujay and Xu, Huan},
+	month = jul,
+	year = {2014},
+	note = {arXiv: 1104.4803},
+	keywords = {Computer Science - Machine Learning, Statistics - Machine Learning},
+	annote = {Comment: This is the final version published in Journal of Machine Learning Research (JMLR). Partial results appeared in International Conference on Machine Learning (ICML) 2011},
+	file = {Chen et al. - 2014 - Clustering Partially Observed Graphs via Convex Op.pdf:C\:\\Users\\alex\\Zotero\\storage\\24RIVI77\\Chen et al. - 2014 - Clustering Partially Observed Graphs via Convex Op.pdf:application/pdf}
+}

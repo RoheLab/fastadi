@@ -12,3 +12,4 @@ reference
 ^\.github$
 ^doc$
 vignettes
+paper
