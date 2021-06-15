@@ -5,7 +5,7 @@ model <- function(
   p
 ) {
   object <- list(
-    A = matrix()
+    A = matrix(),
     n = n,
     d = d,
     r = r,
