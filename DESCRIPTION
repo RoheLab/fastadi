@@ -28,7 +28,7 @@ License: MIT + file LICENSE
 URL: https://github.com/RoheLab/fastadi
 BugReports: https://github.com/RoheLab/fastadi/issues
 Depends: 
-    LRMF3 (>= 0.0.0.9007),
+    LRMF3,
     Matrix,
     R (>= 3.1)
 Imports: 
@@ -39,19 +39,14 @@ Imports:
     Rcpp,
     RSpectra,
 Suggests: 
-    invertiforms (>= 0.0.0.9002),
+    invertiforms,
     covr,
     knitr,
     rmarkdown,
-    testthat,
-    vsp (>= 0.0.0.9013)
+    testthat
 LinkingTo: 
     Rcpp,
     RcppArmadillo
-Remotes:  
-    RoheLab/LRMF3,
-    RoheLab/invertiforms,
-    RoheLab/vsp
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE, roclets = c ("namespace", "rd"))

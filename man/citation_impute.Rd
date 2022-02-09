@@ -114,30 +114,11 @@ dependent on your BLAS and LAPACK installations and configurations.
 
 set.seed(887)
 
-n <- 100
+n <- 10
 A <- rsparsematrix(n, n, 0.1, rand.x = NULL)
 
-### SVD initialization (default) --------------------------------------------
+mf <- citation_impute(A, rank = 3L, max_iter = 1L, check_interval = Inf)
+mf
 
-mf <- citation_impute(A, rank = 3L, max_iter = 10L)
-
-### Exact AdaptiveInitialize initialization ---------------------------------
-
-mf2 <- citation_impute(
-  A,
-  rank = 3L,
-  max_iter = 10L,
-  initialization = "adaptive-initialize"
-)
-
-### Approximate AdaptiveInitialize initialization ---------------------------
-
-mf3 <- citation_impute(
-  A,
-  rank = 3L,
-  max_iter = 10L,
-  initialization = "approximate",
-  additional = 5L
-)
 
 }
