@@ -55,36 +55,26 @@
 #'   [adaptive_imputation()] object.
 #'
 #' @export
-#'
-#' @srrstats {G1.0} *Statistical Software should list at least one primary reference from published academic literature.*
+#' @include masked_approximation
 #'
 #' @references
 #'
-#' 1. Cho, J., Kim, D. & Rohe, K. Asymptotic Theory for Estimating the Singular
-#'   Vectors and Values of a Partially-observed Low Rank Matrix with Noise.
-#'   arXiv:1508.05431 [stat] (2015). <http://arxiv.org/abs/1508.05431>
+#' 1. Cho, Juhee, Donggyu Kim, and Karl Rohe. “Asymptotic Theory for
+#'   Estimating the Singular Vectors and Values of a Partially-Observed
+#'   Low Rank Matrix with Noise.” Statistica Sinica, 2018.
+#'   https://doi.org/10.5705/ss.202016.0205.
 #'
-#' 2. Cho, J., Kim, D. & Rohe, K. Intelligent Initialization and Adaptive
-#'   Thresholding for Iterative Matrix Completion; Some Statistical and
-#'   Algorithmic Theory for Adaptive-Impute. Journal of Computational
-#'   and Graphical Statistics 1–26 (2018) doi:10.1080/10618600.2018.1518238.
-#'   <https://amstat.tandfonline.com/doi/abs/10.1080/10618600.2018.1518238>
+#' 2. ———. “Intelligent Initialization and Adaptive Thresholding for
+#'   Iterative Matrix Completion: Some Statistical and Algorithmic Theory for
+#'   Adaptive-Impute.” Journal of Computational and Graphical Statistics 28,
+#'   no. 2 (April 3, 2019): 323–33.
+#'   https://doi.org/10.1080/10618600.2018.1518238.
 #'
 #' @examples
 #'
 #' ### SVD initialization (default) --------------------------------------------
 #'
-#' mf <- adaptive_impute(ml100k, rank = 3L, max_iter = 20L)
-#'
-#' # build a rank-5 approximation only for
-#' # observed elements of ml100k
-#'
-#' preds <- predict(mf, ml100k)
-#'
-#' # estimate the in-sample reconstruction mse
-#'
-#' R <- resid(mf, ml100k)
-#' norm(R, type = "F") / nnzero(ml100k)
+#' mf <- adaptive_impute(ml100k, rank = 50L, max_iter = 20L)
 #'
 #' ### Exact AdaptiveInitialize initialization ---------------------------------
 #'
@@ -95,9 +85,6 @@
 #'   initialization = "adaptive-initialize"
 #' )
 #'
-#' R2 <- resid(mf2, ml100k)
-#' norm(R2, type = "F") / nnzero(ml100k)
-#'
 #' ### Approximate AdaptiveInitialize initialization ---------------------------
 #'
 #' mf3 <- adaptive_impute(
@@ -107,9 +94,6 @@
 #'   initialization = "approximate",
 #'   additional = 25
 #' )
-#'
-#' R3 <- resid(mf3, ml100k)
-#' norm(R3, type = "F") / nnzero(ml100k)
 #'
 adaptive_impute <- function(
   X,
@@ -255,6 +239,10 @@ adaptive_impute.LRMF <- function(
 
     R <- X - masked_approximation(s, X)  # residual matrix
     args <- list(u = s$u, d = s$d, v = s$v, R = R)
+
+
+    log_debug(glue("Norm of X: {norm(X, type='F')}"))
+    log_debug(glue("Norm of residual: {norm(R, type='F')}"))
 
     s_new <- svds(Ax, k = rank, Atrans = Atx, dim = dim(X), args = args)
 

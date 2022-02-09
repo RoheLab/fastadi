@@ -44,10 +44,6 @@
 #' mf <- adaptive_initialize(ml100k, rank = 3L)
 #' mf
 #'
-#' # build a rank-5 approximation only for
-#' # observed elements of ml100k
-#' preds <- predict(mf, ml100k)
-#'
 adaptive_initialize <- function(
   X,
   rank,

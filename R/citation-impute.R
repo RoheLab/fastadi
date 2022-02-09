@@ -14,6 +14,7 @@
 #'
 #' @inherit adaptive_impute params return
 #' @export
+#' @include masked_approximation
 #'
 #' @examples
 #'
@@ -239,7 +240,7 @@ citation_impute.LRMF <- function(
     s_new$d <- sqrt(s_new$d^2 - alpha)  # line 7
 
     # save a little bit on computation and only check for
-    # # convergence intermittently
+    # convergence intermittently
     if (!is.null(check_interval) && iter %% check_interval == 0) {
       log_debug("Computing relative change in Frobenius norm.")
       delta <- relative_f_norm_change(s_new, s)
