@@ -126,7 +126,13 @@ We recommend making <code>additional</code> as large as computationally tolerabl
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="va">mf</span> <span class="op">&lt;-</span> <span class="fu">adaptive_initialize</span><span class="op">(</span><span class="va">ml100k</span>, rank <span class="op">=</span> <span class="fl">3L</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">mf</span> <span class="op">&lt;-</span> <span class="fu">adaptive_initialize</span><span class="op">(</span></span>
+<span class="r-in">  <span class="va">ml100k</span>,</span>
+<span class="r-in">  rank <span class="op">=</span> <span class="fl">3</span>,</span>
+<span class="r-in">  alpha_method <span class="op">=</span> <span class="st">"approximate"</span>,</span>
+<span class="r-in">  additional <span class="op">=</span> <span class="fl">2</span></span>
+<span class="r-in"><span class="op">)</span></span>
+<span class="r-in"></span>
 <span class="r-in"><span class="va">mf</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Adaptively Imputed Low Rank Matrix Factorization</span>
@@ -137,8 +143,8 @@ We recommend making <code>additional</code> as large as computationally tolerabl
 <span class="r-out co"><span class="r-pr">#&gt;</span> Rows: 943</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Cols: 1682</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> d[rank]: 3334.419</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> alpha:   684.448</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> d[rank]: 3359.134</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> alpha:   26.874</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Components</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>

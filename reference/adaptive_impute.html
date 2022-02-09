@@ -162,34 +162,27 @@ https://doi.org/10.1080/10618600.2018.1518238.</p></li>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="co">### SVD initialization (default) --------------------------------------------</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">mf</span> <span class="op">&lt;-</span> <span class="fu">adaptive_impute</span><span class="op">(</span><span class="va">ml100k</span>, rank <span class="op">=</span> <span class="fl">50L</span>, max_iter <span class="op">=</span> <span class="fl">20L</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">mf</span> <span class="op">&lt;-</span> <span class="fu">adaptive_impute</span><span class="op">(</span><span class="va">ml100k</span>, rank <span class="op">=</span> <span class="fl">3L</span>, max_iter <span class="op">=</span> <span class="fl">5L</span><span class="op">)</span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> Reached maximum allowed iterations. Returning early.</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">### Exact AdaptiveInitialize initialization ---------------------------------</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">mf2</span> <span class="op">&lt;-</span> <span class="fu">adaptive_impute</span><span class="op">(</span></span>
-<span class="r-in">  <span class="va">ml100k</span>,</span>
-<span class="r-in">  rank <span class="op">=</span> <span class="fl">3L</span>,</span>
-<span class="r-in">  max_iter <span class="op">=</span> <span class="fl">20L</span>,</span>
-<span class="r-in">  initialization <span class="op">=</span> <span class="st">"adaptive-initialize"</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> Reached maximum allowed iterations. Returning early.</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">### Approximate AdaptiveInitialize initialization ---------------------------</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">mf3</span> <span class="op">&lt;-</span> <span class="fu">adaptive_impute</span><span class="op">(</span></span>
-<span class="r-in">  <span class="va">ml100k</span>,</span>
-<span class="r-in">  rank <span class="op">=</span> <span class="fl">3L</span>,</span>
-<span class="r-in">  max_iter <span class="op">=</span> <span class="fl">20L</span>,</span>
-<span class="r-in">  initialization <span class="op">=</span> <span class="st">"approximate"</span>,</span>
-<span class="r-in">  additional <span class="op">=</span> <span class="fl">25</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> Reached maximum allowed iterations. Returning early.</span>
+<span class="r-in"><span class="va">mf</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Adaptively Imputed Low Rank Matrix Factorization</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ------------------------------------------------</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Rank: 3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Rows: 943</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Cols: 1682</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> d[rank]: 467.486</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> alpha:   144.663</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Components</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> u: 943 x 3 [matrix] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> d: 3      [numeric] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> v: 1682 x 3 [matrix] </span>
 <span class="r-in"></span>
 </code></pre></div>
     </div>
