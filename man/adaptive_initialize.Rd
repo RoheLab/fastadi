@@ -65,7 +65,13 @@ of rows and columns at most.
 }
 \examples{
 
-mf <- adaptive_initialize(ml100k, rank = 3L)
+mf <- adaptive_initialize(
+  ml100k,
+  rank = 3,
+  alpha_method = "approximate",
+  additional = 2
+)
+
 mf
 
 }

@@ -72,28 +72,8 @@
 #'
 #' @examples
 #'
-#' ### SVD initialization (default) --------------------------------------------
-#'
-#' mf <- adaptive_impute(ml100k, rank = 50L, max_iter = 20L)
-#'
-#' ### Exact AdaptiveInitialize initialization ---------------------------------
-#'
-#' mf2 <- adaptive_impute(
-#'   ml100k,
-#'   rank = 3L,
-#'   max_iter = 20L,
-#'   initialization = "adaptive-initialize"
-#' )
-#'
-#' ### Approximate AdaptiveInitialize initialization ---------------------------
-#'
-#' mf3 <- adaptive_impute(
-#'   ml100k,
-#'   rank = 3L,
-#'   max_iter = 20L,
-#'   initialization = "approximate",
-#'   additional = 25
-#' )
+#' mf <- adaptive_impute(ml100k, rank = 3L, max_iter = 5L)
+#' mf
 #'
 adaptive_impute <- function(
   X,
