@@ -25,6 +25,8 @@ using namespace arma;
 //'   from `U`, `d` and `V`, only at the index pairs indicated by
 //'   `row` and `col`.
 //'
+//' @keywords internal
+//'
 // [[Rcpp::export]]
 arma::sp_mat masked_approximation_impl(
     const arma::mat& U,

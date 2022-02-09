@@ -22,6 +22,8 @@
 #'   from `U`, `d` and `V`, only at the index pairs indicated by
 #'   `row` and `col`.
 #'
+#' @keywords internal
+#'
 masked_approximation_impl <- function(U, V, row, col) {
     .Call(`_fastadi_masked_approximation_impl`, U, V, row, col)
 }

@@ -32,3 +32,4 @@ most easily from a sparse masking Matrix (Matrix package),
 coercing to triplet format, and extracting \code{mask@i} for \code{row}
 and \code{mask@j} for column.
 }
+\keyword{internal}
