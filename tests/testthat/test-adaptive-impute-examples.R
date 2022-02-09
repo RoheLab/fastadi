@@ -9,11 +9,6 @@ test_that("adaptive impute svd initialization", {
     mf <- adaptive_impute(ml100k, rank = 3L, max_iter = 3L),
     regexp = "Reached maximum allowed iterations. Returning early."
   )
-
-  preds <- predict(mf, ml100k)
-
-  R <- resid(mf, ml100k)
-  norm(R, type = "F") / nnzero(ml100k)
 })
 
 test_that("adaptive impute adaptive initialization example", {
@@ -27,10 +22,6 @@ test_that("adaptive impute adaptive initialization example", {
     ),
     regexp = "Reached maximum allowed iterations. Returning early."
   )
-
-
-  R2 <- resid(mf2, ml100k)
-  norm(R2, type = "F") / nnzero(ml100k)
 })
 
 test_that("adaptive impute approximate initialization example", {

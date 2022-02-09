@@ -1,4 +1,4 @@
-library(RSpectra)
+logger::log_threshold(logger::WARN)  # turn down verbosity for testing
 
 equal_svds <- function(s, s2) {
 
@@ -67,7 +67,7 @@ test_that("helpers work", {
   k <- 4
 
   s <- svd(M, k, k)
-  s2 <- svds(M, k, k)
+  s2 <- RSpectra::svds(M, k, k)
 
   expect_silent(equal_svds(s, s2))
 

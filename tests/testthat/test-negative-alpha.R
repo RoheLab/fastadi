@@ -9,8 +9,8 @@ test_that("sijia's negative alpha example", {
   diag(Cimcomp) <- 0
   matSparse <- as(Cimcomp, "sparseMatrix")
 
-  expect_error(
+  expect_warning(
     adaptive_impute(matSparse, rank = 3L, max_iter = 5L),
-    regexp = NA
+    regexp = "Reached maximum allowed iterations. Returning early."
   )
 })
