@@ -168,37 +168,31 @@ dependent on your BLAS and LAPACK installations and configurations.</p>
 <span class="r-in"></span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">887</span><span class="op">)</span></span>
 <span class="r-in"></span>
-<span class="r-in"><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">100</span></span>
+<span class="r-in"><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">10</span></span>
 <span class="r-in"><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Matrix/man/rsparsematrix.html" class="external-link">rsparsematrix</a></span><span class="op">(</span><span class="va">n</span>, <span class="va">n</span>, <span class="fl">0.1</span>, rand.x <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span class="r-in"></span>
-<span class="r-in"><span class="co">### SVD initialization (default) --------------------------------------------</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">mf</span> <span class="op">&lt;-</span> <span class="fu">citation_impute</span><span class="op">(</span><span class="va">A</span>, rank <span class="op">=</span> <span class="fl">3L</span>, max_iter <span class="op">=</span> <span class="fl">10L</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">mf</span> <span class="op">&lt;-</span> <span class="fu">citation_impute</span><span class="op">(</span><span class="va">A</span>, rank <span class="op">=</span> <span class="fl">3L</span>, max_iter <span class="op">=</span> <span class="fl">1L</span>, check_interval <span class="op">=</span> <span class="cn">Inf</span><span class="op">)</span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> Reached maximum allowed iterations. Returning early.</span>
+<span class="r-in"><span class="va">mf</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Adaptively Imputed Low Rank Matrix Factorization</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ------------------------------------------------</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Rank: 3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Rows: 10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Cols: 10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> d[rank]: 1.286</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> alpha:   0.345</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Components</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> u: 10 x 3 [matrix] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> d: 3      [numeric] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> v: 10 x 3 [matrix] </span>
 <span class="r-in"></span>
-<span class="r-in"><span class="co">### Exact AdaptiveInitialize initialization ---------------------------------</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">mf2</span> <span class="op">&lt;-</span> <span class="fu">citation_impute</span><span class="op">(</span></span>
-<span class="r-in">  <span class="va">A</span>,</span>
-<span class="r-in">  rank <span class="op">=</span> <span class="fl">3L</span>,</span>
-<span class="r-in">  max_iter <span class="op">=</span> <span class="fl">10L</span>,</span>
-<span class="r-in">  initialization <span class="op">=</span> <span class="st">"adaptive-initialize"</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> Reached maximum allowed iterations. Returning early.</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">### Approximate AdaptiveInitialize initialization ---------------------------</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">mf3</span> <span class="op">&lt;-</span> <span class="fu">citation_impute</span><span class="op">(</span></span>
-<span class="r-in">  <span class="va">A</span>,</span>
-<span class="r-in">  rank <span class="op">=</span> <span class="fl">3L</span>,</span>
-<span class="r-in">  max_iter <span class="op">=</span> <span class="fl">10L</span>,</span>
-<span class="r-in">  initialization <span class="op">=</span> <span class="st">"approximate"</span>,</span>
-<span class="r-in">  additional <span class="op">=</span> <span class="fl">5L</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> Reached maximum allowed iterations. Returning early.</span>
 <span class="r-in"></span>
 </code></pre></div>
     </div>
