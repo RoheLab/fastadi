@@ -65,7 +65,6 @@ SigmaTx <- function(x, args) {
   drop(out)
 }
 
-#' @export
 svds.SigmaP <- function(A, k, nu = k, nv = k, opts = list(), ...) {
 
   # maaaaaybe worth doing something more efficient here, i don't know
@@ -89,7 +88,6 @@ svds.SigmaP <- function(A, k, nu = k, nv = k, opts = list(), ...) {
   )
 }
 
-#' @export
 svds.SigmaT <- function(A, k, nu = k, nv = k, opts = list(), ...) {
 
   # maaaaaybe worth doing something more efficient here, i don't know

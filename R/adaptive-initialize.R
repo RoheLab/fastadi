@@ -39,6 +39,8 @@
 #'
 #' @export
 #'
+#' @include svds.SigmaP svds.SigmaT
+#'
 #' @examples
 #'
 #' mf <- adaptive_initialize(
