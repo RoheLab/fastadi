@@ -7,6 +7,12 @@
 #' useful for spectral decompositions of adjacency matrices of graphs
 #' with (near) tree structure, such as citation networks.
 #'
+#' @details If OpenMP is available, `citation_impute` will automatically
+#'   use `getOption("Ncpus", 1L)` OpenMP threads to parallelize some
+#'   key computations. Note that some computations are performed with
+#'   the Armadillo C++ linear algebra library and may also be parallelized
+#'   dependent on your BLAS and LAPACK installations and configurations.
+#'
 #' @param X A *square* sparse matrix of [Matrix::sparseMatrix()] class.
 #'   Implicit zeros in the upper triangle of this matrix are considered
 #'   observed and predictions on these elements contribute to the

@@ -101,6 +101,13 @@ zeros, as opposed to missing values. This is primarily
 useful for spectral decompositions of adjacency matrices of graphs
 with (near) tree structure, such as citation networks.
 }
+\details{
+If OpenMP is available, \code{citation_impute} will automatically
+use \code{getOption("Ncpus", 1L)} OpenMP threads to parallelize some
+key computations. Note that some computations are performed with
+the Armadillo C++ linear algebra library and may also be parallelized
+dependent on your BLAS and LAPACK installations and configurations.
+}
 \examples{
 
 # create a (binary) square sparse matrix to demonstrate on
