@@ -19,8 +19,6 @@ assert_alpha_positive <- function(alpha) {
 
 ### adaptive impute svd variant
 
-## TODO: how to parallelize?
-
 Ax <- function(x, args) {
   drop(args$R %*% x + args$u %*% diag(args$d) %*% crossprod(args$v, x))
 }
