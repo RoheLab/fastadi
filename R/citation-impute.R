@@ -31,28 +31,9 @@
 #' n <- 100
 #' A <- rsparsematrix(n, n, 0.1, rand.x = NULL)
 #'
-#' ### SVD initialization (default) --------------------------------------------
+#' mf <- citation_impute(A, rank = 3L, max_iter = 2L)
+#' mf
 #'
-#' mf <- citation_impute(A, rank = 3L, max_iter = 10L)
-#'
-#' ### Exact AdaptiveInitialize initialization ---------------------------------
-#'
-#' mf2 <- citation_impute(
-#'   A,
-#'   rank = 3L,
-#'   max_iter = 10L,
-#'   initialization = "adaptive-initialize"
-#' )
-#'
-#' ### Approximate AdaptiveInitialize initialization ---------------------------
-#'
-#' mf3 <- citation_impute(
-#'   A,
-#'   rank = 3L,
-#'   max_iter = 10L,
-#'   initialization = "approximate",
-#'   additional = 5L
-#' )
 #'
 citation_impute <- function(
   X,

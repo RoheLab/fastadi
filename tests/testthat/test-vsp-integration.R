@@ -1,9 +1,7 @@
 library(LRMF3)
 
-skip_if_not_installed("invertiforms")
 skip_if_not_installed("vsp")
 
-library(invertiforms)
 library(vsp)
 
 test_that("fastadi, no transformations", {
@@ -12,6 +10,8 @@ test_that("fastadi, no transformations", {
     mf <- adaptive_impute(ml100k, rank = 3, max_iter = 5),
     regexp = "Reached maximum allowed iterations. Returning early."
   )
+
+  skip_on_cran()
 
   expect_silent(
     fa <- vsp(mf)
@@ -27,6 +27,8 @@ test_that("fastadi, with scaling", {
     mf <- adaptive_impute(M, rank = 3, max_iter = 5),
     regexp = "Reached maximum allowed iterations. Returning early."
   )
+
+  skip_on_cran()
 
   expect_silent(
     vsp(mf, scaler = scaler, rescale = TRUE)
