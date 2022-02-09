@@ -20,7 +20,7 @@ with (near) tree structure, such as citation networks."><!-- mathjax --><script 
     
     <a class="navbar-brand me-2" href="../index.html">fastadi</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9019</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9020</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -151,6 +151,14 @@ We recommend making <code>additional</code> as large as computationally tolerabl
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>A low rank matrix factorization represented by an
 <code><a href="adaptive_imputation.html">adaptive_imputation()</a></code> object.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p>If OpenMP is available, <code>citation_impute</code> will automatically
+use <code>getOption("Ncpus", 1L)</code> OpenMP threads to parallelize some
+key computations. Note that some computations are performed with
+the Armadillo C++ linear algebra library and may also be parallelized
+dependent on your BLAS and LAPACK installations and configurations.</p>
     </div>
 
     <div class="section level2">
