@@ -57,9 +57,14 @@ Note that the vignettes are currently scratch work for reference by the develope
 
 ## References
 
-1. Cho, Juhee, Donggyu Kim, and Karl Rohe. “Asymptotic Theory for Estimating the Singular Vectors and Values of a Partially-Observed Low Rank Matrix with Noise.” Statistica Sinica, 2018. https://doi.org/10.5705/ss.202016.0205.
+1. Alex Hayes and Karl Rohe. "Finding Topics in Citation Data". 2022+
 
-2. ———. “Intelligent Initialization and Adaptive Thresholding for Iterative Matrix Completion: Some Statistical and Algorithmic Theory for Adaptive-Impute.” Journal of Computational and Graphical Statistics 28, no. 2 (April 3, 2019): 323–33. https://doi.org/10.1080/10618600.2018.1518238.
+2. Cho, Juhee, Donggyu Kim, and Karl Rohe. “Asymptotic Theory for Estimating the Singular Vectors and Values of a Partially-Observed Low Rank Matrix with Noise.” Statistica Sinica, 2018. https://doi.org/10.5705/ss.202016.0205.
+
+3. ———. “Intelligent Initialization and Adaptive Thresholding for Iterative Matrix Completion: Some Statistical and Algorithmic Theory for Adaptive-Impute.” Journal of Computational and Graphical Statistics 28, no. 2 (April 3, 2019): 323–33. https://doi.org/10.1080/10618600.2018.1518238.
+
+4. Mazumder, Rahul, Trevor Hastie, and Robert Tibshirani. “Spectral Regularization Algorithms for Learning Large Incomplete Matrices.” Journal of Machine Learning Research, 2010. https://web.stanford.edu/~hastie/Papers/mazumder10a.pdf.
+
 
 You can find the original implementation accompanying these papers [here](https://github.com/chojuhee/hello-world).
 
