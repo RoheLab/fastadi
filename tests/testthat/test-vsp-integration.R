@@ -1,7 +1,9 @@
 library(LRMF3)
 
+skip_if_not_installed("invertiforms")
 skip_if_not_installed("vsp")
 
+library(invertiforms)
 library(vsp)
 
 test_that("fastadi, no transformations", {
