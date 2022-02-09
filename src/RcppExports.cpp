@@ -6,6 +6,25 @@
 
 using namespace Rcpp;
 
+#ifdef RCPP_USE_GLOBAL_ROSTREAM
+Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
+Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
+#endif
+
+// masked_approximation_impl
+arma::sp_mat masked_approximation_impl(const arma::mat& U, const arma::mat& V, const arma::vec& row, const arma::vec& col);
+RcppExport SEXP _fastadi_masked_approximation_impl(SEXP USEXP, SEXP VSEXP, SEXP rowSEXP, SEXP colSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat& >::type U(USEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type V(VSEXP);
+    Rcpp::traits::input_parameter< const arma::vec& >::type row(rowSEXP);
+    Rcpp::traits::input_parameter< const arma::vec& >::type col(colSEXP);
+    rcpp_result_gen = Rcpp::wrap(masked_approximation_impl(U, V, row, col));
+    return rcpp_result_gen;
+END_RCPP
+}
 // p_omega_f_norm_ut_impl
 double p_omega_f_norm_ut_impl(const arma::mat& U, const arma::rowvec& d, const arma::mat& V, const arma::vec& row, const arma::vec& col, const int num_threads);
 RcppExport SEXP _fastadi_p_omega_f_norm_ut_impl(SEXP USEXP, SEXP dSEXP, SEXP VSEXP, SEXP rowSEXP, SEXP colSEXP, SEXP num_threadsSEXP) {
@@ -105,6 +124,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_fastadi_masked_approximation_impl", (DL_FUNC) &_fastadi_masked_approximation_impl, 4},
     {"_fastadi_p_omega_f_norm_ut_impl", (DL_FUNC) &_fastadi_p_omega_f_norm_ut_impl, 6},
     {"_fastadi_p_u_tilde_ztx_impl", (DL_FUNC) &_fastadi_p_u_tilde_ztx_impl, 7},
     {"_fastadi_p_u_tilde_zx_impl", (DL_FUNC) &_fastadi_p_u_tilde_zx_impl, 7},
