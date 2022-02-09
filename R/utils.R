@@ -43,7 +43,7 @@ Ax_citation <- function(x, args) {
 
   out <- args$M %*% x
   out <- out - p_u_zx_impl(args$u, args$d, args$v, x, getOption("Ncpus", 1L))
-  out <- out - p_u_tilde_zx_impl(args$u, args$d, args$v, mask@i, mask@j, x, getOption("Ncpus", 1L))
+  out <- out - p_u_tilde_zx_impl(args$u, args$d, args$v, mask@i, mask@j, x)
   out <- out + args$u %*% diag(args$d) %*% crossprod(args$v, x)
 
   drop(out)
@@ -55,7 +55,7 @@ Atx_citation <- function(x, args) {
 
   out <- t(args$M) %*% x
   out <- out - p_u_ztx_impl(args$u, args$d, args$v, x, getOption("Ncpus", 1L))
-  out <- out - p_u_tilde_ztx_impl(args$u, args$d, args$v, mask@i, mask@j, x, getOption("Ncpus", 1L))
+  out <- out - p_u_tilde_ztx_impl(args$u, args$d, args$v, mask@i, mask@j, x)
   out <- out + args$v %*% diag(args$d) %*% crossprod(args$u, x)
 
   drop(out)

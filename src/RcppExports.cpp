@@ -42,8 +42,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // p_u_tilde_ztx_impl
-arma::vec p_u_tilde_ztx_impl(const arma::mat& U, const arma::rowvec& d, const arma::mat& V, const arma::vec& row, const arma::vec& col, const arma::vec& x, const int num_threads);
-RcppExport SEXP _fastadi_p_u_tilde_ztx_impl(SEXP USEXP, SEXP dSEXP, SEXP VSEXP, SEXP rowSEXP, SEXP colSEXP, SEXP xSEXP, SEXP num_threadsSEXP) {
+arma::vec p_u_tilde_ztx_impl(const arma::mat& U, const arma::rowvec& d, const arma::mat& V, const arma::vec& row, const arma::vec& col, const arma::vec& x);
+RcppExport SEXP _fastadi_p_u_tilde_ztx_impl(SEXP USEXP, SEXP dSEXP, SEXP VSEXP, SEXP rowSEXP, SEXP colSEXP, SEXP xSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -53,14 +53,13 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const arma::vec& >::type row(rowSEXP);
     Rcpp::traits::input_parameter< const arma::vec& >::type col(colSEXP);
     Rcpp::traits::input_parameter< const arma::vec& >::type x(xSEXP);
-    Rcpp::traits::input_parameter< const int >::type num_threads(num_threadsSEXP);
-    rcpp_result_gen = Rcpp::wrap(p_u_tilde_ztx_impl(U, d, V, row, col, x, num_threads));
+    rcpp_result_gen = Rcpp::wrap(p_u_tilde_ztx_impl(U, d, V, row, col, x));
     return rcpp_result_gen;
 END_RCPP
 }
 // p_u_tilde_zx_impl
-arma::vec p_u_tilde_zx_impl(const arma::mat& U, const arma::rowvec& d, const arma::mat& V, const arma::vec& row, const arma::vec& col, const arma::vec& x, const int num_threads);
-RcppExport SEXP _fastadi_p_u_tilde_zx_impl(SEXP USEXP, SEXP dSEXP, SEXP VSEXP, SEXP rowSEXP, SEXP colSEXP, SEXP xSEXP, SEXP num_threadsSEXP) {
+arma::vec p_u_tilde_zx_impl(const arma::mat& U, const arma::rowvec& d, const arma::mat& V, const arma::vec& row, const arma::vec& col, const arma::vec& x);
+RcppExport SEXP _fastadi_p_u_tilde_zx_impl(SEXP USEXP, SEXP dSEXP, SEXP VSEXP, SEXP rowSEXP, SEXP colSEXP, SEXP xSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -70,8 +69,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const arma::vec& >::type row(rowSEXP);
     Rcpp::traits::input_parameter< const arma::vec& >::type col(colSEXP);
     Rcpp::traits::input_parameter< const arma::vec& >::type x(xSEXP);
-    Rcpp::traits::input_parameter< const int >::type num_threads(num_threadsSEXP);
-    rcpp_result_gen = Rcpp::wrap(p_u_tilde_zx_impl(U, d, V, row, col, x, num_threads));
+    rcpp_result_gen = Rcpp::wrap(p_u_tilde_zx_impl(U, d, V, row, col, x));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -126,8 +124,8 @@ END_RCPP
 static const R_CallMethodDef CallEntries[] = {
     {"_fastadi_masked_approximation_impl", (DL_FUNC) &_fastadi_masked_approximation_impl, 4},
     {"_fastadi_p_omega_f_norm_ut_impl", (DL_FUNC) &_fastadi_p_omega_f_norm_ut_impl, 6},
-    {"_fastadi_p_u_tilde_ztx_impl", (DL_FUNC) &_fastadi_p_u_tilde_ztx_impl, 7},
-    {"_fastadi_p_u_tilde_zx_impl", (DL_FUNC) &_fastadi_p_u_tilde_zx_impl, 7},
+    {"_fastadi_p_u_tilde_ztx_impl", (DL_FUNC) &_fastadi_p_u_tilde_ztx_impl, 6},
+    {"_fastadi_p_u_tilde_zx_impl", (DL_FUNC) &_fastadi_p_u_tilde_zx_impl, 6},
     {"_fastadi_p_u_ztx_impl", (DL_FUNC) &_fastadi_p_u_ztx_impl, 5},
     {"_fastadi_p_u_zx_impl", (DL_FUNC) &_fastadi_p_u_zx_impl, 5},
     {"_fastadi_relative_f_norm_change_impl", (DL_FUNC) &_fastadi_relative_f_norm_change_impl, 7},

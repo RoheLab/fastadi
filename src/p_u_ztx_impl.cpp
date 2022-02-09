@@ -1,5 +1,9 @@
 #include <RcppArmadillo.h>
+
+#ifdef SUPPORT_OPENMP
 #include <omp.h>
+#endif
+
 // [[Rcpp::plugins(openmp)]]
 
 using namespace arma;
@@ -13,7 +17,9 @@ arma::vec p_u_ztx_impl(
     const arma::vec& x,
     const int num_threads) {
 
+  #ifdef SUPPORT_OPENMP
   omp_set_num_threads(num_threads);
+  #endif
 
   // just UD at this point
   arma::mat S = U * diagmat(d);

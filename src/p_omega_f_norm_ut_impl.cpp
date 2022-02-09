@@ -1,5 +1,9 @@
 #include <RcppArmadillo.h>
+
+#ifdef SUPPORT_OPENMP
 #include <omp.h>
+#endif
+
 // [[Rcpp::plugins(openmp)]]
 
 using namespace arma;
@@ -14,7 +18,9 @@ double p_omega_f_norm_ut_impl(
     const arma::vec& col,
     const int num_threads) {
 
+  #ifdef SUPPORT_OPENMP
   omp_set_num_threads(num_threads);
+  #endif
 
   // first add the observed elements on the lower triangle and diagonal
 

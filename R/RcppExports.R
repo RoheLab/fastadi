@@ -32,12 +32,12 @@ p_omega_f_norm_ut_impl <- function(U, d, V, row, col, num_threads) {
     .Call(`_fastadi_p_omega_f_norm_ut_impl`, U, d, V, row, col, num_threads)
 }
 
-p_u_tilde_ztx_impl <- function(U, d, V, row, col, x, num_threads) {
-    .Call(`_fastadi_p_u_tilde_ztx_impl`, U, d, V, row, col, x, num_threads)
+p_u_tilde_ztx_impl <- function(U, d, V, row, col, x) {
+    .Call(`_fastadi_p_u_tilde_ztx_impl`, U, d, V, row, col, x)
 }
 
-p_u_tilde_zx_impl <- function(U, d, V, row, col, x, num_threads) {
-    .Call(`_fastadi_p_u_tilde_zx_impl`, U, d, V, row, col, x, num_threads)
+p_u_tilde_zx_impl <- function(U, d, V, row, col, x) {
+    .Call(`_fastadi_p_u_tilde_zx_impl`, U, d, V, row, col, x)
 }
 
 p_u_ztx_impl <- function(U, d, V, x, num_threads) {

@@ -1,5 +1,9 @@
 #include <RcppArmadillo.h>
+
+#ifdef SUPPORT_OPENMP
 #include <omp.h>
+#endif
+
 // [[Rcpp::plugins(openmp)]]
 
 using namespace arma;
@@ -13,12 +17,13 @@ arma::vec p_u_zx_impl(
     const arma::vec& x,
     const int num_threads) {
 
+  #ifdef SUPPORT_OPENMP
   omp_set_num_threads(num_threads);
+  #endif
 
   // just DVt at this point
   arma::mat W = diagmat(d) * V.t();
 
-  
   // multiply columns by x to obtain W
   #pragma omp parallel for
   for (int j = 0; j < W.n_cols; j++) {
