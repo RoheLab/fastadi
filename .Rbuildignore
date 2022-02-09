@@ -13,3 +13,4 @@ reference
 ^doc$
 vignettes
 paper
+^cran-comments\.md$

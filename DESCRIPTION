@@ -5,7 +5,7 @@ Version: 0.0.0.9019
 Authors@R: 
     c(person(given = "Alex",
              family = "Hayes",
-             role = c("aut", "cre"),
+             role = c("aut", "cre", "cph"),
              email = "alexpghayes@gmail.com",
              comment = c(ORCID = "0000-0002-4985-5160")),
       person(given = "Juhee",
@@ -37,18 +37,23 @@ Imports:
     logger,
     methods,
     Rcpp,
-    RSpectra
+    RSpectra,
 Suggests: 
+    invertiforms (>= 0.0.0.9002),
     covr,
     knitr,
     rmarkdown,
-    testthat
+    testthat,
+    vsp (>= 0.0.0.9013)
 LinkingTo: 
     Rcpp,
     RcppArmadillo
-Remotes: 
-    RoheLab/LRMF3
+Remotes:  
+    RoheLab/LRMF3,
+    RoheLab/invertiforms,
+    RoheLab/vsp
 Encoding: UTF-8
 LazyData: true
-Roxygen: list(markdown = TRUE, roclets = c ("namespace", "rd", "srr::srr_stats_roclet"))
-RoxygenNote: 7.1.1.9000
+Roxygen: list(markdown = TRUE, roclets = c ("namespace", "rd"))
+RoxygenNote: 7.1.2
+Config/testthat/edition: 3
