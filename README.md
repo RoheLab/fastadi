@@ -5,14 +5,9 @@
 
 <!-- badges: start -->
 
-[![Lifecycle:
-maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
-[![CRAN
-status](https://www.r-pkg.org/badges/version/fastadi)](https://CRAN.R-project.org/package=fastadi)
+[![R-CMD-check](https://github.com/RoheLab/fastadi/workflows/R-CMD-check/badge.svg)](https://github.com/RoheLab/fastadi/actions)
 [![Codecov test
-coverage](https://codecov.io/gh/RoheLab/fastadi/branch/master/graph/badge.svg)](https://codecov.io/gh/RoheLab/fastadi?branch=master)
-[![R build
-status](https://github.com/RoheLab/fastadi/workflows/R-CMD-check/badge.svg)](https://github.com/RoheLab/fastadi/actions)
+coverage](https://codecov.io/gh/RoheLab/fastadi/branch/main/graph/badge.svg)](https://app.codecov.io/gh/RoheLab/fastadi?branch=main)
 <!-- badges: end -->
 
 `fastadi` implements the `AdaptiveImpute` matrix completion algorithm.
@@ -30,6 +25,13 @@ processing, or building a recommendation system.
 
 ## Installation
 
+You can install the released version from
+[CRAN](https://cran.r-project.org/) with:
+
+``` r
+install.packages("fastadi")
+```
+
 You can install the development version from
 [GitHub](https://github.com/) with:
 
@@ -44,19 +46,9 @@ Here we embed users and items in the MovieLens 100K dataset.
 
 ``` r
 library(fastadi)
-#> Loading required package: Matrix
 #> Loading required package: LRMF3
-
+#> Loading required package: Matrix
 mf <- adaptive_impute(ml100k, rank = 3L, max_iter = 5L)
-#> INFO [2020-10-05 11:27:08] Use svd initialization.
-#> INFO [2020-10-05 11:27:08] Done initializing.
-#> INFO [2020-10-05 11:27:08] Beginning AdaptiveImpute (max 5 iterations).
-#> INFO [2020-10-05 11:27:08] Checking convergence every 1 iteration(s).
-#> INFO [2020-10-05 11:27:09] Iter 1 complete. delta = 0.22312337, alpha = 184.71
-#> INFO [2020-10-05 11:27:09] Iter 2 complete. delta = 0.05159124, alpha = 154.411
-#> INFO [2020-10-05 11:27:10] Iter 3 complete. delta = 0.02125919, alpha = 135.61
-#> INFO [2020-10-05 11:27:10] Iter 4 complete. delta = 0.01114668, alpha = 122.308
-#> INFO [2020-10-05 11:27:11] Iter 5 complete. delta = 0.00669206, alpha = 112.354
 #> Warning: 
 #> Reached maximum allowed iterations. Returning early.
 ```
@@ -72,8 +64,8 @@ mf
 #> Rows: 943
 #> Cols: 1682
 #> 
-#> d[rank]: 467.762
-#> alpha:   112.354
+#> d[rank]: 467.486
+#> alpha:   144.663
 #> 
 #> Components
 #> 
@@ -87,17 +79,16 @@ developers and are not yet ready for general consumption.
 
 ## References
 
-1.  Cho, J., Kim, D. & Rohe, K. Asymptotic Theory for Estimating the
-    Singular Vectors and Values of a Partially-observed Low Rank Matrix
-    with Noise. arXiv:1508.05431 \[stat\] (2015).
-    <http://arxiv.org/abs/1508.05431>
+1.  Cho, Juhee, Donggyu Kim, and Karl Rohe. “Asymptotic Theory for
+    Estimating the Singular Vectors and Values of a Partially-Observed
+    Low Rank Matrix with Noise.” Statistica Sinica, 2018.
+    <https://doi.org/10.5705/ss.202016.0205>.
 
-2.  Cho, J., Kim, D. & Rohe, K. Intelligent Initialization and Adaptive
-    Thresholding for Iterative Matrix Completion; Some Statistical and
-    Algorithmic Theory for Adaptive-Impute. Journal of Computational and
-    Graphical Statistics 1–26 (2018)
-    <doi:10.1080/10618600.2018.1518238>.
-    <https://amstat.tandfonline.com/doi/abs/10.1080/10618600.2018.1518238>
+2.  ———. “Intelligent Initialization and Adaptive Thresholding for
+    Iterative Matrix Completion: Some Statistical and Algorithmic Theory
+    for Adaptive-Impute.” Journal of Computational and Graphical
+    Statistics 28, no. 2 (April 3, 2019): 323–33.
+    <https://doi.org/10.1080/10618600.2018.1518238>.
 
 You can find the original implementation accompanying these papers
 [here](https://github.com/chojuhee/hello-world).
