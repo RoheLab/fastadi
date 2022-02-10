@@ -1,5 +1,7 @@
 ## R CMD check results
 
+Resubmission to fix silly mistake about version number
+
 0 errors | 0 warnings | 1 note
    
 Possibly mis-spelled words in DESCRIPTION:
