@@ -117,7 +117,7 @@ set.seed(887)
 n <- 10
 A <- rsparsematrix(n, n, 0.1, rand.x = NULL)
 
-mf <- citation_impute(A, rank = 3L, max_iter = 1L, check_interval = Inf)
+mf <- citation_impute(A, rank = 3L, max_iter = 1L, check_interval = NULL)
 mf
 
 

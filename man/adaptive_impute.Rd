@@ -96,7 +96,7 @@ for sparse matrices.
 }
 \examples{
 
-mf <- adaptive_impute(ml100k, rank = 3L, max_iter = 5L)
+mf <- adaptive_impute(ml100k, rank = 3L, max_iter = 5L, check_interval = NULL)
 mf
 
 }
