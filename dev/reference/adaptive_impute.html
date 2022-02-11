@@ -157,7 +157,7 @@ https://doi.org/10.1080/10618600.2018.1518238.</p></li>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="va">mf</span> <span class="op">&lt;-</span> <span class="fu">adaptive_impute</span><span class="op">(</span><span class="va">ml100k</span>, rank <span class="op">=</span> <span class="fl">3L</span>, max_iter <span class="op">=</span> <span class="fl">5L</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">mf</span> <span class="op">&lt;-</span> <span class="fu">adaptive_impute</span><span class="op">(</span><span class="va">ml100k</span>, rank <span class="op">=</span> <span class="fl">3L</span>, max_iter <span class="op">=</span> <span class="fl">5L</span>, check_interval <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> Reached maximum allowed iterations. Returning early.</span>
 <span class="r-in"><span class="va">mf</span></span>
