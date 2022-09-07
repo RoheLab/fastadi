@@ -48,6 +48,7 @@ Here we embed users and items in the MovieLens 100K dataset.
 library(fastadi)
 #> Loading required package: LRMF3
 #> Loading required package: Matrix
+
 mf <- adaptive_impute(ml100k, rank = 3L, max_iter = 5L)
 #> Warning: 
 #> Reached maximum allowed iterations. Returning early.

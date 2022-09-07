@@ -1,4 +1,6 @@
-# fastadi (development version)
+# fastadi 0.1.1
+
+* Updates to accommodate deprecations in Matrix 1.5.0
 
 # fastadi 0.1.0
 
