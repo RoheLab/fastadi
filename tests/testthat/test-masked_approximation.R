@@ -22,7 +22,7 @@ test_that("masked_approximation_impl (small sparse matrix)", {
 
   expected <- Z * Y                  # project SVD onto observed matrix
 
-  A_triplet <- as(A, "dgTMatrix")
+  A_triplet <- as(A, "TsparseMatrix")
 
   impl_result <- masked_approximation_impl(s$u, tcrossprod(s$v, diag(s$d)),
                                            A_triplet@i, A_triplet@j)
@@ -52,7 +52,7 @@ test_that("masked_approximation_impl (4 billion+ element sparse matrix)", {
 
   s <- svds(A, 5)
 
-  A_triplet <- as(A, "dgTMatrix")
+  A_triplet <- as(A, "TsparseMatrix")
 
   expect_silent(
     masked_approximation_impl(
