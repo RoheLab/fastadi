@@ -50,5 +50,5 @@ LinkingTo:
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE, roclets = c ("namespace", "rd"))
-RoxygenNote: 7.1.2
+RoxygenNote: 7.3.1.9000
 Config/testthat/edition: 3
