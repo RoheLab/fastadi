@@ -95,11 +95,16 @@ dependent on your BLAS and LAPACK installations and configurations.
 
 set.seed(887)
 
-n <- 10
-A <- rsparsematrix(n, n, 0.1, rand.x = NULL)
+n <- 1000
+A <- rsparsematrix(n, n, 0.1, rand.x = NULL) * 1
+A <- as(triu(A), "generalMatrix")
 
-mf <- citation_impute(A, rank = 3L, max_iter = 1L, check_interval = NULL)
+mf <- citation_impute(A, rank = 50, max_iter = 10L, check_interval = NULL)
 mf
+
+
+mf2 <- citation_impute2(A, rank = 50L, max_iter = 10L, check_interval = NULL)
+mf2
 
 
 }
