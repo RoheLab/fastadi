@@ -122,16 +122,16 @@ BEGIN_RCPP
 END_RCPP
 }
 // makeCitationEstimate
-Rcpp::XPtr<CitationEstimate> makeCitationEstimate(SparseMatrix citations, arma::mat U, arma::rowvec d, arma::mat V);
-RcppExport SEXP _fastadi_makeCitationEstimate(SEXP citationsSEXP, SEXP USEXP, SEXP dSEXP, SEXP VSEXP) {
+Rcpp::XPtr<CitationEstimate> makeCitationEstimate(const SparseMatrix& A, const arma::mat& U, const arma::rowvec& d, const arma::mat& V);
+RcppExport SEXP _fastadi_makeCitationEstimate(SEXP ASEXP, SEXP USEXP, SEXP dSEXP, SEXP VSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< SparseMatrix >::type citations(citationsSEXP);
-    Rcpp::traits::input_parameter< arma::mat >::type U(USEXP);
-    Rcpp::traits::input_parameter< arma::rowvec >::type d(dSEXP);
-    Rcpp::traits::input_parameter< arma::mat >::type V(VSEXP);
-    rcpp_result_gen = Rcpp::wrap(makeCitationEstimate(citations, U, d, V));
+    Rcpp::traits::input_parameter< const SparseMatrix& >::type A(ASEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type U(USEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type d(dSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type V(VSEXP);
+    rcpp_result_gen = Rcpp::wrap(makeCitationEstimate(A, U, d, V));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -147,6 +147,29 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// right
+arma::vec right(arma::vec x, Rcpp::XPtr<CitationEstimate> A);
+RcppExport SEXP _fastadi_right(SEXP xSEXP, SEXP ASEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::vec >::type x(xSEXP);
+    Rcpp::traits::input_parameter< Rcpp::XPtr<CitationEstimate> >::type A(ASEXP);
+    rcpp_result_gen = Rcpp::wrap(right(x, A));
+    return rcpp_result_gen;
+END_RCPP
+}
+// p_omega_z
+double p_omega_z(Rcpp::XPtr<CitationEstimate> A);
+RcppExport SEXP _fastadi_p_omega_z(SEXP ASEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::XPtr<CitationEstimate> >::type A(ASEXP);
+    rcpp_result_gen = Rcpp::wrap(p_omega_z(A));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_fastadi_masked_approximation_impl", (DL_FUNC) &_fastadi_masked_approximation_impl, 4},
@@ -158,6 +181,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_fastadi_relative_f_norm_change_impl", (DL_FUNC) &_fastadi_relative_f_norm_change_impl, 7},
     {"_fastadi_makeCitationEstimate", (DL_FUNC) &_fastadi_makeCitationEstimate, 4},
     {"_fastadi_left", (DL_FUNC) &_fastadi_left, 2},
+    {"_fastadi_right", (DL_FUNC) &_fastadi_right, 2},
+    {"_fastadi_p_omega_z", (DL_FUNC) &_fastadi_p_omega_z, 1},
     {NULL, NULL, 0}
 };
 

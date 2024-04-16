@@ -26,9 +26,13 @@
 #'
 #' # create a (binary) square sparse matrix to demonstrate on
 #'
+#' library(logger)
+#'
+#' log_threshold(INFO)
+#'
 #' set.seed(887)
 #'
-#' n <- 1000
+#' n <- 10000
 #' A <- rsparsematrix(n, n, 0.1, rand.x = NULL) * 1
 #' A <- as(triu(A), "generalMatrix")
 #'
@@ -214,8 +218,11 @@ citation_impute2.LRMF <- function(
     # update s: lines 4 and 5
     # take the SVD of M-tilde
 
+    log_debug(glue("Constructing Atilde({iter})..."))
     m <- makeCitationEstimate(X, s$u, s$d, s$v)
+    log_debug(glue("Constructing Atilde({iter})... done."))
 
+    log_debug(glue("Computing singular value decomposition of Atilde({iter})..."))
     s_new <- svds(
       left,
       k = rank,
@@ -223,19 +230,22 @@ citation_impute2.LRMF <- function(
       dim = dim(A),
       args = m
     )
+    log_debug(glue("Computing singular value decomposition of Atilde({iter})... done."))
 
+    log_debug(glue("Computing alpha({iter})..."))
     X_tilde_f_norm <- norm_X + sum(s$d^2) -
       p_omega_z(m)
-
     alpha <- (X_tilde_f_norm - sum(s_new$d^2)) / (d - rank)  # line 6
+    log_debug(glue("Computing alpha({iter})... done."))
 
     s_new$d <- sqrt(s_new$d^2 - alpha)  # line 7
 
     # save a little bit on computation and only check for
     # convergence intermittently
     if (!is.null(check_interval) && iter %% check_interval == 0) {
-      log_debug("Computing relative change in Frobenius norm.")
+      log_debug("Computing relative change in Frobenius norm...")
       delta <- relative_f_norm_change(s_new, s)
+      log_debug("Computing relative change in Frobenius norm... done.")
     }
 
     s <- s_new
