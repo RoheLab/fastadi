@@ -106,7 +106,7 @@ citation_impute2.default <- function(
 }
 
 #' @export
-#' @rdname citation_impute
+#' @rdname citation_impute2
 citation_impute2.sparseMatrix <- function(
   X,
   rank,
@@ -180,7 +180,7 @@ citation_impute2.sparseMatrix <- function(
 }
 
 #' @export
-#' @rdname citation_impute
+#' @rdname citation_impute2
 citation_impute2.LRMF <- function(
   X,
   rank,
@@ -220,7 +220,7 @@ citation_impute2.LRMF <- function(
       left,
       k = rank,
       Atrans = right,
-      dim = dim(A),
+      dim = dim(X),
       args = m
     )
 

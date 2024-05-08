@@ -2,6 +2,8 @@
 % Please edit documentation in R/citation-impute2.R
 \name{citation_impute2}
 \alias{citation_impute2}
+\alias{citation_impute2.sparseMatrix}
+\alias{citation_impute2.LRMF}
 \title{CitationImpute}
 \usage{
 citation_impute2(
@@ -13,6 +15,23 @@ citation_impute2(
   check_interval = 1L,
   epsilon = 1e-07,
   additional = NULL
+)
+
+\method{citation_impute2}{sparseMatrix}(
+  X,
+  rank,
+  ...,
+  initialization = c("svd", "adaptive-initialize", "approximate"),
+  additional = NULL
+)
+
+\method{citation_impute2}{LRMF}(
+  X,
+  rank,
+  ...,
+  epsilon = 1e-07,
+  max_iter = 200L,
+  check_interval = 1L
 )
 }
 \arguments{
@@ -95,11 +114,16 @@ dependent on your BLAS and LAPACK installations and configurations.
 
 set.seed(887)
 
-n <- 10
-A <- rsparsematrix(n, n, 0.1, rand.x = NULL)
+n <- 1000
+A <- rsparsematrix(n, n, 0.1, rand.x = NULL) * 1
+A <- as(triu(A), "generalMatrix")
 
-mf <- citation_impute(A, rank = 3L, max_iter = 1L, check_interval = NULL)
+mf <- citation_impute(A, rank = 50, max_iter = 10L, check_interval = NULL)
 mf
+
+
+mf2 <- citation_impute2(A, rank = 50L, max_iter = 10L, check_interval = NULL)
+mf2
 
 
 }
