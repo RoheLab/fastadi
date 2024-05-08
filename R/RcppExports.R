@@ -52,3 +52,19 @@ relative_f_norm_change_impl <- function(new_U, new_d, new_V, U, d, V, num_thread
     .Call(`_fastadi_relative_f_norm_change_impl`, new_U, new_d, new_V, U, d, V, num_threads)
 }
 
+makeCitationEstimate <- function(citations, U, d, V) {
+    .Call(`_fastadi_makeCitationEstimate`, citations, U, d, V)
+}
+
+left <- function(x, A) {
+    .Call(`_fastadi_left`, x, A)
+}
+
+right <- function(x, A) {
+    .Call(`_fastadi_right`, x, A)
+}
+
+p_omega_z <- function(A) {
+    .Call(`_fastadi_p_omega_z`, A)
+}
+
