@@ -86,7 +86,7 @@ adaptive_impute <- function(
   additional = NULL
 ) {
 
-  ellipsis::check_dots_used()
+  rlang::check_dots_used()
 
   rank <- as.integer(rank)
 

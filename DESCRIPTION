@@ -32,11 +32,11 @@ Depends:
     Matrix,
     R (>= 3.1)
 Imports: 
-    ellipsis,
     glue,
     logger,
     methods,
     Rcpp,
+    rlang,
     RSpectra,
 Suggests: 
     invertiforms,

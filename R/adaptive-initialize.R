@@ -61,7 +61,7 @@ adaptive_initialize <- function(
   additional = NULL
 ) {
 
-  ellipsis::check_dots_used()
+  rlang::check_dots_used()
 
   # avoid issues with svds() not supporting strictly binary Matrix classes
   X <- X * 1
