@@ -5,7 +5,7 @@
 
 <!-- badges: start -->
 
-[![R-CMD-check](https://github.com/RoheLab/fastadi/workflows/R-CMD-check/badge.svg)](https://github.com/RoheLab/fastadi/actions)
+[![R-CMD-check](ttps://github.com/RoheLab/fastadi/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/RoheLab/fastadi/actions/workflows/R-CMD-check.yaml)
 [![Codecov test
 coverage](https://codecov.io/gh/RoheLab/fastadi/branch/main/graph/badge.svg)](https://app.codecov.io/gh/RoheLab/fastadi?branch=main)
 <!-- badges: end -->
