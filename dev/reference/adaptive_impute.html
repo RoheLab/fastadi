@@ -9,7 +9,7 @@ for sparse matrices."><meta name="robots" content="noindex"></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">fastadi</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.1.1.9001</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.1.2.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -163,14 +163,14 @@ https://doi.org/10.1080/10618600.2018.1518238.</p></li>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">mf</span> <span class="op">&lt;-</span> <span class="fu">adaptive_impute</span><span class="op">(</span><span class="va">ml100k</span>, rank <span class="op">=</span> <span class="fl">3L</span>, max_iter <span class="op">=</span> <span class="fl">5L</span>, check_interval <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO [2025-05-02 15:31:50] Using svd initialization.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO [2025-05-02 15:31:50] Done initializing.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO [2025-05-02 15:31:50] Beginning AdaptiveImpute (max 5 iterations).</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO [2025-05-02 15:31:50] Iter 1 complete. delta = Inf, alpha = 315.498594765074</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO [2025-05-02 15:31:50] Iter 2 complete. delta = Inf, alpha = 236.478430784209</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO [2025-05-02 15:31:51] Iter 3 complete. delta = Inf, alpha = 192.407973190366</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO [2025-05-02 15:31:51] Iter 4 complete. delta = Inf, alpha = 164.221353309034</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO [2025-05-02 15:31:51] Iter 5 complete. delta = Inf, alpha = 144.66332718209</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO [2025-05-02 19:17:15] Using svd initialization.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO [2025-05-02 19:17:15] Done initializing.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO [2025-05-02 19:17:15] Beginning AdaptiveImpute (max 5 iterations).</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO [2025-05-02 19:17:15] Iter 1 complete. delta = Inf, alpha = 315.498594765074</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO [2025-05-02 19:17:15] Iter 2 complete. delta = Inf, alpha = 236.478430784209</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO [2025-05-02 19:17:15] Iter 3 complete. delta = Inf, alpha = 192.407973190366</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO [2025-05-02 19:17:15] Iter 4 complete. delta = Inf, alpha = 164.221353309034</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO [2025-05-02 19:17:15] Iter 5 complete. delta = Inf, alpha = 144.66332718209</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> Reached maximum allowed iterations. Returning early.</span>
 <span class="r-in"><span><span class="va">mf</span></span></span>
