@@ -28,15 +28,14 @@
 #'
 #' set.seed(887)
 #'
-#' n <- 1000
+#' n <- 100
 #' A <- rsparsematrix(n, n, 0.1, rand.x = NULL) * 1
 #' A <- as(triu(A), "generalMatrix")
 #'
-#' mf <- citation_impute(A, rank = 50, max_iter = 10L, check_interval = NULL)
+#' mf <- citation_impute(A, rank = 5, max_iter = 5L, check_interval = NULL)
 #' mf
 #'
-#'
-#' mf2 <- citation_impute2(A, rank = 50L, max_iter = 10L, check_interval = NULL)
+#' mf2 <- citation_impute2(A, rank = 5L, max_iter = 5L, check_interval = NULL)
 #' mf2
 #'
 #'
@@ -50,8 +49,7 @@ citation_impute2 <- function(
   epsilon = 1e-7,
   additional = NULL
 ) {
-
-  rlang::check_dots_used()
+  ellipsis::check_dots_used()
 
   rank <- as.integer(rank)
 
@@ -79,8 +77,7 @@ citation_impute2 <- function(
       call. = FALSE
     )
 
-  if (max_iter < 1)
-    stop("`max_iter` must be an integer >= 1L.", call. = FALSE)
+  if (max_iter < 1) stop("`max_iter` must be an integer >= 1L.", call. = FALSE)
 
   if (!is.null(check_interval) && check_interval < 1)
     stop("`check_interval` must be an integer >= 1L, or NULL.", call. = FALSE)
@@ -97,8 +94,8 @@ citation_impute2.default <- function(
   max_iter = 200L,
   check_interval = 1L,
   epsilon = 1e-7,
-  additional = NULL) {
-
+  additional = NULL
+) {
   stop(
     glue("No `citation_impute` method for objects of class {class(X)}."),
     call. = FALSE
@@ -114,7 +111,6 @@ citation_impute2.sparseMatrix <- function(
   initialization = c("svd", "adaptive-initialize", "approximate"),
   additional = NULL
 ) {
-
   initialization <- match.arg(initialization)
 
   # *explicitly* observed elements of X
@@ -139,17 +135,15 @@ citation_impute2.sparseMatrix <- function(
     s <- svds(X * 1, rank)
     mf <- as_svd_like(s)
   } else if (initialization == "adaptive-initialize") {
-
     # *total* observed elements of X, including entries in the
     # upper triangle that are implicitly observed
 
-    n <- ncol(X)  # recall that X is square
+    n <- ncol(X) # recall that X is square
     implicit_total <- (n - 1) * (n - 2) / 2 + obs_lower
     p_hat <- implicit_total / prod(dim(X))
 
     mf <- adaptive_initialize(X * 1, rank, p_hat = p_hat)
   } else if (initialization == "approximate") {
-
     if (is.null(additional))
       stop(
         "Must specify `additional` when using approximate initialization.",
@@ -159,17 +153,17 @@ citation_impute2.sparseMatrix <- function(
     # *total* observed elements of X, including entries in the
     # upper triangle that are implicitly observed
 
-    n <- ncol(X)  # recall that X is square
+    n <- ncol(X) # recall that X is square
     implicit_total <- (n - 1) * (n - 2) / 2 + obs_lower
     p_hat <- implicit_total / prod(dim(X))
 
     mf <- adaptive_initialize(
-      X * 1, rank = rank,
+      X * 1,
+      rank = rank,
       p_hat = p_hat,
       alpha_method = "approximate",
       additional = additional
     )
-
   } else {
     stop("This should not happen.", call. = FALSE)
   }
@@ -189,7 +183,6 @@ citation_impute2.LRMF <- function(
   max_iter = 200L,
   check_interval = 1L
 ) {
-
   log_info(glue("Beginning AdaptiveImpute (max {max_iter} iterations)."))
 
   if (!is.null(check_interval))
@@ -210,7 +203,6 @@ citation_impute2.LRMF <- function(
   iter <- 1L
 
   while (delta > epsilon) {
-
     # update s: lines 4 and 5
     # take the SVD of M-tilde
 
@@ -224,12 +216,11 @@ citation_impute2.LRMF <- function(
       args = m
     )
 
-    X_tilde_f_norm <- norm_X + sum(s$d^2) -
-      p_omega_z(m)
+    X_tilde_f_norm <- norm_X + sum(s$d^2) - p_omega_z(m)
 
-    alpha <- (X_tilde_f_norm - sum(s_new$d^2)) / (d - rank)  # line 6
+    alpha <- (X_tilde_f_norm - sum(s_new$d^2)) / (d - rank) # line 6
 
-    s_new$d <- sqrt(s_new$d^2 - alpha)  # line 7
+    s_new$d <- sqrt(s_new$d^2 - alpha) # line 7
 
     # save a little bit on computation and only check for
     # convergence intermittently
@@ -259,7 +250,6 @@ citation_impute2.LRMF <- function(
       )
       break
     }
-
   }
 
   adaptive_imputation(
@@ -269,5 +259,4 @@ citation_impute2.LRMF <- function(
     alpha = alpha,
     ...
   )
-
 }

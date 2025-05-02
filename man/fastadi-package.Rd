@@ -6,7 +6,7 @@
 \alias{fastadi-package}
 \title{fastadi: Self-Tuning Data Adaptive Matrix Imputation}
 \description{
-Implements the AdaptiveImpute matrix completion algorithm of 'Intelligent Initialization and Adaptive Thresholding for Iterative Matrix Completion', \url{https://amstat.tandfonline.com/doi/abs/10.1080/10618600.2018.1518238}. AdaptiveImpute is useful for embedding sparsely observed matrices, often out performs competing matrix completion algorithms, and self-tunes its hyperparameter, making usage easy.
+Implements the AdaptiveImpute matrix completion algorithm of 'Intelligent Initialization and Adaptive Thresholding for Iterative Matrix Completion' \doi{10.1080/10618600.2018.1518238} as well as the specialized variant of 'Co-Factor Analysis of Citation Networks' \doi{10.1080/10618600.2024.2394464}. AdaptiveImpute is useful for embedding sparsely observed matrices, often out performs competing matrix completion algorithms, and self-tunes its hyperparameter, making usage easy.
 }
 \seealso{
 Useful links:
