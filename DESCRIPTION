@@ -25,8 +25,8 @@ Description: Implements the AdaptiveImpute matrix completion
     often out performs competing matrix completion algorithms, and
     self-tunes its hyperparameter, making usage easy.
 License: MIT + file LICENSE
-URL: https://rohelab.github.io/fastadi/, https://github.com/RoheLab/fastadi
-BugReports: https://github.com/RoheLab/fastadi/issues
+URL: https://rohelab.github.io/fastadi/, https://github.com/RoheLab/fastadi, https://github.com/alexpghayes/fastadi
+BugReports: https://github.com/alexpghayes/fastadi/issues
 Depends: 
     LRMF3,
     Matrix,
@@ -50,5 +50,5 @@ LinkingTo:
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE, roclets = c ("namespace", "rd"))
-RoxygenNote: 7.3.1.9000
+RoxygenNote: 7.3.2
 Config/testthat/edition: 3
