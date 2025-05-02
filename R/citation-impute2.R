@@ -49,7 +49,7 @@ citation_impute2 <- function(
   epsilon = 1e-7,
   additional = NULL
 ) {
-  ellipsis::check_dots_used()
+  rlang::check_dots_used()
 
   rank <- as.integer(rank)
 
