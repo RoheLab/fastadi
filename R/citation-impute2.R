@@ -28,15 +28,14 @@
 #'
 #' set.seed(887)
 #'
-#' n <- 1000
+#' n <- 100
 #' A <- rsparsematrix(n, n, 0.1, rand.x = NULL) * 1
 #' A <- as(triu(A), "generalMatrix")
 #'
-#' mf <- citation_impute(A, rank = 50, max_iter = 10L, check_interval = NULL)
+#' mf <- citation_impute(A, rank = 5, max_iter = 5L, check_interval = NULL)
 #' mf
 #'
-#'
-#' mf2 <- citation_impute2(A, rank = 50L, max_iter = 10L, check_interval = NULL)
+#' mf2 <- citation_impute2(A, rank = 5L, max_iter = 5L, check_interval = NULL)
 #' mf2
 #'
 #'

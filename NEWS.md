@@ -1,5 +1,7 @@
 # fastadi (development version)
 
+* No longer uses C++ 11 standard to comply with CRAN request
+
 # fastadi 0.1.1
 
 * Updates to accommodate deprecations in Matrix 1.5.0

@@ -16,8 +16,8 @@ coverage](https://codecov.io/gh/RoheLab/fastadi/branch/main/graph/badge.svg)](ht
 [`softImpute`](https://cran.r-project.org/package=softImpute) package),
 truncated SVD, maximum margin matrix factorization, and weighted
 regularized matrix factorization (implemented in the
-[`rsparse`](https://github.com/rexyai/rsparse) package). In simulations
-`fastadi` often outperforms `softImpute` by a small margin.
+[`rsparse`](https://github.com/dselivanov/rsparse) package). In
+simulations `fastadi` often outperforms `softImpute` by a small margin.
 
 You may find `fastadi` useful if you are developing embeddings for
 sparsely observed data, if you are working in natural language
@@ -80,7 +80,10 @@ developers and are not yet ready for general consumption.
 
 ## References
 
-1.  Alex Hayes and Karl Rohe. “Finding Topics in Citation Data”. 2022+
+1.  Hayes, Alex, and Karl Rohe. “Co-Factor Analysis of Citation
+    Networks.” Journal of Computational and Graphical Statistics,
+    October 1, 2024, 1–14.
+    <https://doi.org/10.1080/10618600.2024.2394464>.
 
 2.  Cho, Juhee, Donggyu Kim, and Karl Rohe. “Asymptotic Theory for
     Estimating the Singular Vectors and Values of a Partially-Observed
@@ -98,5 +101,5 @@ developers and are not yet ready for general consumption.
     Journal of Machine Learning Research, 2010.
     <https://web.stanford.edu/~hastie/Papers/mazumder10a.pdf>.
 
-You can find the original implementation accompanying these papers
+You can find the original implementation accompanying \[2\] and \[3\]
 [here](https://github.com/chojuhee/hello-world).

@@ -1,5 +1,1 @@
-## R CMD check results
-
-Minor update to fix some deprecation warnings from Matrix 1.5.0
-
-0 errors | 0 warnings | 0 notes
+Minor update to remove dependence on C++ 11 standard, per CRAN request
